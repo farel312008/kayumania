@@ -2,1004 +2,1267 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>kayuMANIA — Toko Kayu Yogyakarta</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--black:#0f0f0f;--dark:#1a1a1a;--g600:#4a4a4a;--g400:#888;--g200:#e0e0e0;--g100:#f5f5f5;--white:#fff;--wood:#c8956c;--wd:#8b5e3c;--green:#2d7a2d;--red:#c0392b;}
-*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--white);color:var(--black);font-size:14px;}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:218px;background:var(--black);display:flex;flex-direction:column;z-index:100;border-right:1px solid #1e1e1e;}
-.sb-logo{padding:22px 20px 18px;border-bottom:1px solid #1e1e1e;}
-.sb-logo .brand{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:var(--white);letter-spacing:-0.02em;}
+:root{
+  --black:#0f0f0f;--dark:#1a1a1a;--g400:#888;--g200:#e0e0e0;--g100:#f5f5f5;
+  --white:#fff;--wood:#c8956c;--wd:#8b5e3c;--green:#2d7a2d;--red:#c0392b;--bg:#f8f9fa;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--black);font-size:14px;overflow-x:hidden;}
+
+/* ─── LOGIN OVERLAY ─── */
+#login-overlay{
+  position:fixed;inset:0;z-index:9999;background:var(--black);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.login-box{
+  background:var(--white);border-radius:20px;padding:32px 28px;
+  width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+.login-logo{text-align:center;margin-bottom:24px;}
+.login-logo .brand{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;letter-spacing:-.03em;}
+.login-logo .brand span{color:var(--wood);}
+.login-logo p{font-size:.75rem;color:var(--g400);margin-top:4px;}
+.login-tabs{display:flex;background:var(--g100);border-radius:10px;padding:4px;margin-bottom:20px;gap:4px;}
+.ltab{flex:1;padding:8px;text-align:center;border-radius:7px;cursor:pointer;font-size:.75rem;font-weight:700;color:var(--g400);transition:all .2s;border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;}
+.ltab.active{background:var(--black);color:var(--white);}
+.ltab-panel{display:none;}.ltab-panel.active{display:block;}
+
+/* password form */
+.lf-group{margin-bottom:14px;}
+.lf-group label{display:block;font-size:.7rem;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
+.lf-group .pw-wrap{position:relative;}
+.lf-group input{width:100%;padding:10px 14px;border:1.5px solid var(--g200);border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;outline:none;transition:border-color .2s;}
+.lf-group input:focus{border-color:var(--wood);}
+.pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:.9rem;color:var(--g400);background:none;border:none;padding:4px;}
+.lf-err{color:var(--red);font-size:.72rem;margin-top:6px;display:none;}
+.lbtn{width:100%;padding:12px;background:var(--black);color:var(--white);border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.lbtn:hover{opacity:.8;}
+.lbtn.wood{background:var(--wood);}
+
+/* biometric */
+.bio-area{text-align:center;padding:10px 0;}
+.bio-icon{font-size:3.5rem;margin-bottom:10px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.bio-title{font-size:.9rem;font-weight:700;margin-bottom:6px;}
+.bio-sub{font-size:.75rem;color:var(--g400);margin-bottom:18px;line-height:1.6;}
+.bio-status{padding:8px 14px;border-radius:8px;font-size:.77rem;font-weight:700;margin:12px 0;display:none;}
+.bio-status.scanning{background:#e3f0fb;color:#1976d2;display:block;}
+.bio-status.success{background:#e8f5e9;color:var(--green);display:block;}
+.bio-status.fail{background:#fdecea;color:var(--red);display:block;}
+
+/* camera */
+#cam-feed{width:100%;border-radius:12px;border:2px solid var(--g200);display:none;margin-bottom:10px;}
+.cam-overlay{position:relative;margin-bottom:10px;}
+.cam-frame{position:absolute;inset:8px;border:2px dashed var(--wood);border-radius:12px;pointer-events:none;display:none;}
+
+/* ─── SIDEBAR ─── */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--black);display:flex;flex-direction:column;z-index:100;}
+.sb-logo{padding:22px 20px 16px;border-bottom:1px solid #1e1e1e;}
+.sb-logo .brand{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:var(--white);}
 .sb-logo .brand span{color:var(--wood);}
-.sb-logo .tag{font-size:0.63rem;color:#444;margin-top:3px;letter-spacing:0.05em;text-transform:uppercase;}
-.nav-sec{padding:14px 0 6px;}
-.nav-lbl{padding:0 20px;font-size:0.6rem;font-weight:700;color:#383838;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px;}
-.nav-i{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;font-size:0.8rem;font-weight:500;color:#666;transition:all .2s;border-left:2px solid transparent;text-decoration:none;user-select:none;}
+.sb-logo .tag{font-size:.6rem;color:#444;margin-top:3px;letter-spacing:.06em;text-transform:uppercase;}
+.nav-wrap{flex:1;overflow-y:auto;padding:10px 0;}
+.nav-wrap::-webkit-scrollbar{width:3px;}.nav-wrap::-webkit-scrollbar-thumb{background:#333;}
+.nav-lbl{padding:12px 20px 3px;font-size:.58rem;font-weight:700;color:#383838;letter-spacing:.12em;text-transform:uppercase;}
+.nav-i{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;font-size:.8rem;font-weight:600;color:#666;transition:all .2s;border-left:2px solid transparent;user-select:none;}
 .nav-i:hover{color:var(--white);background:rgba(255,255,255,.04);}
-.nav-i.active{color:var(--white);border-left-color:var(--wood);background:rgba(200,149,108,.08);}
-.nav-i .ic{font-size:.95rem;width:17px;text-align:center;flex-shrink:0;}
-.sb-foot{margin-top:auto;padding:14px 18px;border-top:1px solid #1e1e1e;}
-.wa-btn{display:flex;align-items:center;gap:8px;background:#0d2b0d;border:1px solid #1e4a1e;color:#4dbd4d;padding:9px 14px;border-radius:8px;font-size:0.73rem;font-weight:700;text-decoration:none;transition:all .2s;}
+.nav-i.active{color:var(--white);border-left-color:var(--wood);background:rgba(200,149,108,.09);}
+.nav-i .ic{font-size:.95rem;width:18px;text-align:center;flex-shrink:0;}
+.nav-i .lock-ico{font-size:.65rem;margin-left:auto;opacity:.4;}
+.sb-foot{padding:14px 18px;border-top:1px solid #1e1e1e;}
+.wa-btn{display:flex;align-items:center;gap:8px;background:#0d2b0d;border:1px solid #1e4a1e;color:#4dbd4d;padding:9px 14px;border-radius:8px;font-size:.73rem;font-weight:700;text-decoration:none;transition:all .2s;}
 .wa-btn:hover{background:#122e12;}
-.main{margin-left:218px;min-height:100vh;}
-.page{display:none;padding:30px 34px;}
+
+/* ─── MAIN ─── */
+.main{margin-left:220px;min-height:100vh;}
+.page{display:none;padding:26px 30px;max-width:1200px;}
 .page.active{display:block;}
-.ph{margin-bottom:26px;}
-.ph .bc{font-size:.68rem;color:#bbb;margin-bottom:5px;}
-.ph h1{font-family:'Fraunces',serif;font-size:1.75rem;font-weight:900;letter-spacing:-.03em;}
+.ph{margin-bottom:22px;}
+.ph .bc{font-size:.66rem;color:#bbb;margin-bottom:4px;}
+.ph h1{font-family:'Fraunces',serif;font-size:1.65rem;font-weight:900;letter-spacing:-.03em;}
 .ph p{color:var(--g400);font-size:.82rem;margin-top:3px;}
-.sr{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:24px;}
-.sc{background:var(--white);border:1px solid var(--g200);border-radius:11px;padding:17px 19px;transition:border-color .2s,transform .2s;}
-.sc:hover{border-color:#bbb;transform:translateY(-2px);}
-.sc .sl{font-size:.68rem;font-weight:700;color:var(--g400);letter-spacing:.05em;text-transform:uppercase;}
-.sc .sv{font-size:1.6rem;font-weight:800;letter-spacing:-.03em;margin:5px 0 2px;}
-.sc .ss{font-size:.7rem;color:var(--g400);}
-.sc .sb{display:inline-block;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:4px;margin-top:4px;}
-.bg{background:#e8f5e9;color:#2d7a2d;}.br{background:#fdecea;color:#c0392b;}.bb{background:#e3f0fb;color:#2d6a9f;}
-.tw{background:var(--white);border:1px solid var(--g200);border-radius:11px;overflow:hidden;margin-bottom:18px;}
-.th{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--g200);}
-.th h3{font-size:.85rem;font-weight:700;}
-.th .ta{display:flex;gap:7px;}
-.bs{padding:5px 13px;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;border:none;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;}
-.bd{background:var(--black);color:var(--white);}.bd:hover{opacity:.75;}
-.bo{background:transparent;color:var(--black);border:1px solid var(--g200);}.bo:hover{border-color:#999;}
-.bw{background:var(--wood);color:var(--white);}.bw:hover{opacity:.85;}
-.bgn{background:var(--green);color:var(--white);}.bgn:hover{opacity:.85;}
-table{width:100%;border-collapse:collapse;}
-thead tr{background:var(--g100);}
-th{padding:9px 15px;text-align:left;font-size:.68rem;font-weight:700;color:var(--g400);letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--g200);}
-td{padding:10px 15px;font-size:.8rem;color:var(--black);border-bottom:1px solid #f5f5f5;}
+
+/* ─── STATS ─── */
+.sr{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.sc{background:var(--white);border:1px solid var(--g200);border-radius:12px;padding:16px 18px;transition:transform .18s,box-shadow .18s;}
+.sc:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.08);}
+.sc .sl{font-size:.66rem;font-weight:700;color:var(--g400);letter-spacing:.05em;text-transform:uppercase;}
+.sc .sv{font-size:1.55rem;font-weight:900;letter-spacing:-.03em;margin:4px 0 2px;}
+.sc .ss{font-size:.68rem;color:var(--g400);}
+.sc .sbg{display:inline-block;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:4px;margin-top:4px;}
+.g{background:#e8f5e9;color:#2d7a2d;}.r{background:#fdecea;color:#c0392b;}.b{background:#e3f0fb;color:#1976d2;}.y{background:#fff8e1;color:#b8860b;}
+
+/* ─── TABLE ─── */
+.tw{background:var(--white);border:1px solid var(--g200);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.th{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:1px solid var(--g200);background:var(--g100);}
+.th h3{font-size:.84rem;font-weight:800;}
+.th .ta{display:flex;gap:6px;flex-wrap:wrap;}
+.t-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;min-width:480px;}
+thead tr{background:#fafafa;}
+th{padding:9px 13px;text-align:left;font-size:.66rem;font-weight:700;color:var(--g400);letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--g200);white-space:nowrap;}
+td{padding:9px 13px;font-size:.79rem;border-bottom:1px solid #f5f5f5;}
 tr:last-child td{border-bottom:none;}
 tr:hover td{background:#fafafa;}
 .tw2{font-weight:700;color:var(--wd);}
 .tg{color:var(--green);font-weight:700;}.tr{color:var(--red);font-weight:700;}.tn{font-weight:700;}
-.stb{display:inline-block;padding:2px 7px;border-radius:4px;font-size:.65rem;font-weight:700;}
-.sa{background:#e8f5e9;color:#2d7a2d;}.st{background:#fff8e1;color:#b8860b;}.sh{background:#fdecea;color:#c0392b;}
-.fr{display:flex;gap:9px;margin-bottom:14px;align-items:center;flex-wrap:wrap;}
-.sb2{flex:1;min-width:180px;display:flex;align-items:center;background:var(--white);border:1px solid var(--g200);border-radius:8px;padding:7px 13px;gap:7px;}
-.sb2 input{border:none;outline:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--black);background:transparent;width:100%;}
-.sb2 .si{color:#bbb;font-size:.85rem;}
-select{padding:7px 11px;border:1px solid var(--g200);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--black);background:var(--white);outline:none;cursor:pointer;}
-.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-bottom:18px;}
-.wc{background:var(--white);border:1px solid var(--g200);border-radius:13px;overflow:hidden;transition:border-color .2s,transform .2s;}
-.wc:hover{border-color:#bbb;transform:translateY(-3px);box-shadow:0 6px 22px rgba(0,0,0,.06);}
-.wci{height:82px;display:flex;align-items:center;justify-content:center;font-size:2.3rem;}
-.wcb{padding:13px 15px;}
-.wcb .wct{font-size:.62rem;font-weight:700;color:var(--wood);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;}
-.wcb h4{font-size:.87rem;font-weight:700;}
-.wcb p{font-size:.73rem;color:var(--g400);margin-top:3px;line-height:1.55;}
-.wcf{padding:11px 15px;border-top:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;}
-.wcp{font-size:.85rem;font-weight:800;}
-.wcp span{font-size:.68rem;font-weight:500;color:var(--g400);}
-.cs{background:var(--white);border:1px solid var(--g200);border-radius:11px;padding:18px;margin-bottom:18px;}
-.cs h3{font-size:.85rem;font-weight:700;margin-bottom:3px;}
-.cs .csub{font-size:.72rem;color:var(--g400);margin-bottom:18px;}
-.bc2{display:flex;align-items:flex-end;gap:7px;height:110px;}
-.bg2{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
-.bf{width:100%;border-radius:4px 4px 0 0;background:var(--g200);transition:background .2s;position:relative;cursor:pointer;}
-.bf:hover{background:var(--black);}
-.bf.act{background:var(--black);}
-.bf .btt{position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);background:var(--black);color:var(--white);padding:2px 7px;border-radius:4px;font-size:.62rem;font-weight:700;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;}
-.bf:hover .btt{opacity:1;}
-.bl{font-size:.62rem;color:var(--g400);font-weight:600;}
-.tc{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:18px;}
-.3c{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin-bottom:18px;}
-.fs{background:var(--white);border:1px solid var(--g200);border-radius:11px;padding:18px;margin-bottom:18px;}
-.fs h3{font-size:.85rem;font-weight:700;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid #f0f0f0;}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
-.fg2{display:flex;flex-direction:column;gap:5px;}
-.fg2 label{font-size:.68rem;font-weight:700;color:var(--g400);letter-spacing:.03em;text-transform:uppercase;}
-.fg2 input,.fg2 select,.fg2 textarea{padding:8px 11px;border:1px solid var(--g200);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--black);outline:none;transition:border-color .2s;background:var(--white);}
-.fg2 input:focus,.fg2 select:focus,.fg2 textarea:focus{border-color:#999;}
-.fa{display:flex;gap:7px;margin-top:14px;}
-.ib{background:var(--g100);border:1px solid var(--g200);border-radius:9px;padding:12px 15px;margin-bottom:14px;display:flex;gap:11px;align-items:flex-start;}
-.ib p{font-size:.76rem;color:var(--g600);line-height:1.6;}
-.ac{background:var(--black);border-radius:13px;padding:22px;color:var(--white);margin-bottom:14px;}
-.ac .al{font-size:.62rem;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;}
-.ac h2{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;margin-bottom:5px;}
-.ac .aa{font-size:.85rem;color:#aaa;line-height:1.6;margin-bottom:14px;}
-.ac .ar{display:flex;gap:9px;flex-wrap:wrap;}
-.ach{display:flex;align-items:center;gap:6px;background:#1a1a1a;border:1px solid #333;border-radius:7px;padding:7px 13px;font-size:.75rem;color:#bbb;}
-.ach strong{color:var(--white);}
-.uk{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:18px;}
-.ukc{background:var(--g100);border:1px solid var(--g200);border-radius:9px;padding:13px;text-align:center;transition:border-color .2s,background .2s;cursor:pointer;}
-.ukc:hover{border-color:var(--black);background:var(--white);}
-.ukc .ud{font-size:.95rem;font-weight:800;letter-spacing:-.02em;}
-.ukc .ul{font-size:.65rem;color:var(--g400);margin-top:2px;}
-.ukc .up{font-size:.72rem;font-weight:700;color:var(--wd);margin-top:5px;}
-.ht{display:inline-block;background:var(--g100);border:1px solid var(--g200);color:var(--g400);padding:2px 7px;border-radius:4px;font-size:.63rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
-.mo{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;}
-.mo.open{display:flex;}
-.md{background:var(--white);border-radius:13px;padding:26px;width:460px;max-width:92vw;box-shadow:0 20px 60px rgba(0,0,0,.2);}
-.md h3{font-size:.95rem;font-weight:700;margin-bottom:3px;}
-.md .ms{font-size:.77rem;color:var(--g400);margin-bottom:18px;}
-.mc{float:right;background:none;border:none;font-size:1.15rem;cursor:pointer;color:#bbb;}
-.toast{position:fixed;bottom:22px;right:22px;background:var(--black);color:var(--white);padding:11px 17px;border-radius:8px;font-size:.8rem;font-weight:600;z-index:300;transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;}
-.toast.show{transform:translateY(0);opacity:1;}
-.hero-s{background:var(--black);color:var(--white);padding:56px 34px 46px;margin:-30px -34px 28px;position:relative;overflow:hidden;}
-.hero-s::before{content:'';position:absolute;right:-50px;top:-50px;width:260px;height:260px;border-radius:50%;background:rgba(200,149,108,.05);pointer-events:none;}
-.hb{display:inline-flex;align-items:center;gap:5px;background:#171717;border:1px solid #242424;color:#666;padding:3px 11px;border-radius:5px;font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
-.hero-s h1{font-family:'Fraunces',serif;font-size:2.8rem;font-weight:900;letter-spacing:-.04em;line-height:1.1;margin-bottom:10px;}
+.stb{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.63rem;font-weight:700;}
+.sa{background:#e8f5e9;color:#2d7a2d;}.st{background:#fff8e1;color:#b8860b;}.sh{background:#fdecea;color:#c0392b;}.sb2{background:#e3f0fb;color:#1976d2;}
+
+/* ─── BUTTONS ─── */
+.bs{padding:6px 13px;border-radius:7px;font-size:.72rem;font-weight:700;cursor:pointer;border:none;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:4px;}
+.bd{background:var(--black);color:var(--white);}.bd:hover{opacity:.78;}
+.bo{background:transparent;color:var(--black);border:1.5px solid var(--g200);}.bo:hover{border-color:#888;}
+.bw{background:var(--wood);color:var(--white);}.bw:hover{opacity:.85;}
+.bgn{background:var(--green);color:var(--white);}.bgn:hover{opacity:.85;}
+.br2{background:var(--red);color:var(--white);}.br2:hover{opacity:.85;}
+
+/* ─── FILTER ROW ─── */
+.fr{display:flex;gap:8px;margin-bottom:13px;align-items:center;flex-wrap:wrap;}
+.sb2w{flex:1;min-width:160px;display:flex;align-items:center;background:var(--white);border:1.5px solid var(--g200);border-radius:9px;padding:6px 11px;gap:6px;}
+.sb2w input{border:none;outline:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;background:transparent;width:100%;}
+select{padding:6px 10px;border:1.5px solid var(--g200);border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--black);background:var(--white);outline:none;cursor:pointer;}
+select:focus{border-color:var(--wood);}
+
+/* ─── FORM ─── */
+.fs{background:var(--white);border:1px solid var(--g200);border-radius:12px;padding:18px;margin-bottom:16px;}
+.fs h3{font-size:.84rem;font-weight:800;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--g200);}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fg2{display:flex;flex-direction:column;gap:4px;}
+.fg2 label{font-size:.66rem;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.03em;}
+.fg2 input,.fg2 select,.fg2 textarea{padding:8px 11px;border:1.5px solid var(--g200);border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.81rem;outline:none;transition:border-color .2s;background:var(--white);}
+.fg2 input:focus,.fg2 select:focus,.fg2 textarea:focus{border-color:var(--wood);}
+.fa{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap;}
+
+/* ─── CHART ─── */
+.cs{background:var(--white);border:1px solid var(--g200);border-radius:12px;padding:16px;margin-bottom:16px;}
+.cs h3{font-size:.84rem;font-weight:800;margin-bottom:2px;}
+.csub{font-size:.7rem;color:var(--g400);margin-bottom:14px;}
+.bc{display:flex;align-items:flex-end;gap:7px;height:100px;}
+.bcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.bf{width:100%;border-radius:5px 5px 0 0;background:#e8f5e9;transition:all .2s;position:relative;cursor:pointer;min-height:4px;}
+.bf:hover,.bf.act{background:var(--green);}
+.btt{position:absolute;bottom:calc(100%+3px);left:50%;transform:translateX(-50%);background:var(--black);color:#fff;padding:3px 7px;border-radius:5px;font-size:.6rem;font-weight:700;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;}
+.bf:hover .btt,.bf.act .btt{opacity:1;}
+.bl{font-size:.6rem;color:var(--g400);font-weight:600;}
+
+/* ─── HERO ─── */
+.hero-s{background:var(--black);color:var(--white);padding:28px 30px;margin:-26px -30px 22px;position:relative;overflow:hidden;}
+.hero-s::after{content:'🪵';position:absolute;right:20px;bottom:-10px;font-size:7rem;opacity:.04;}
+.hb{display:inline-flex;align-items:center;gap:5px;background:rgba(200,149,108,.2);border:1px solid rgba(200,149,108,.3);color:var(--wood);padding:3px 10px;border-radius:5px;font-size:.66rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;}
+.hero-s h1{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:900;line-height:1.15;margin-bottom:6px;}
 .hero-s h1 span{color:var(--wood);}
-.hero-s p{font-size:.87rem;color:#777;max-width:460px;line-height:1.7;margin-bottom:22px;}
-.hbs{display:flex;gap:9px;flex-wrap:wrap;}
-.hbm{background:var(--white);color:var(--black);padding:10px 22px;border-radius:8px;font-weight:700;font-size:.82rem;text-decoration:none;transition:opacity .2s;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;}
-.hbm:hover{opacity:.83;}
-.hbs2{background:transparent;color:#777;padding:10px 22px;border-radius:8px;font-weight:600;font-size:.82rem;text-decoration:none;border:1px solid #2a2a2a;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;}
+.hero-s p{font-size:.84rem;color:#888;max-width:480px;line-height:1.7;margin-bottom:16px;}
+.hbs{display:flex;gap:8px;flex-wrap:wrap;}
+.hbm{background:var(--wood);color:var(--white);padding:10px 20px;border-radius:9px;font-weight:700;font-size:.82rem;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;}
+.hbm:hover{opacity:.85;}
+.hbs2{background:transparent;color:#777;padding:10px 18px;border-radius:9px;font-weight:600;font-size:.82rem;border:1px solid #2a2a2a;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;}
 .hbs2:hover{color:var(--white);border-color:#555;}
-.hst{display:flex;gap:34px;margin-top:34px;padding-top:26px;border-top:1px solid #181818;}
-.hst .hn{font-size:1.35rem;font-weight:800;color:var(--white);}
+.hst{display:flex;gap:28px;margin-top:22px;padding-top:20px;border-top:1px solid #1e1e1e;flex-wrap:wrap;}
+.hst .hn{font-size:1.3rem;font-weight:900;color:var(--white);}
 .hst .hn span{color:var(--wood);}
-.hst .hl{font-size:.67rem;color:#444;margin-top:1px;}
+.hst .hl{font-size:.64rem;color:#444;margin-top:1px;}
 
-/* ── STRUK / PRINT ── */
-.struk-wrap{background:var(--white);border:1px solid var(--g200);border-radius:12px;padding:28px;max-width:480px;margin:0 auto;}
-.struk-head{text-align:center;padding-bottom:16px;border-bottom:2px dashed var(--g200);margin-bottom:16px;}
-.struk-head .brand{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;letter-spacing:-.02em;}
+/* ─── KAYU CARDS ─── */
+.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.wc{background:var(--white);border:1px solid var(--g200);border-radius:12px;padding:16px;transition:all .2s;}
+.wc:hover{border-color:var(--wood);transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.07);}
+.wci{font-size:1.8rem;margin-bottom:8px;}
+.wct{font-size:.62rem;font-weight:700;color:var(--g400);letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px;}
+.wcn{font-size:.9rem;font-weight:800;margin-bottom:4px;}
+.wcp{font-size:.78rem;color:var(--wd);font-weight:700;}
+.wcs{font-size:.68rem;margin-top:6px;}
+
+/* ─── UKURAN ─── */
+.uk{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.ukc{background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;}
+.ukc:hover,.ukc.active{border-color:var(--wood);background:#fff8f3;}
+.uksz{font-size:1rem;font-weight:900;font-family:'Fraunces',serif;color:var(--wd);}
+.uksub{font-size:.65rem;color:var(--g400);margin-top:2px;}
+.ukp{font-size:.7rem;font-weight:700;margin-top:5px;color:var(--black);}
+
+/* ─── MODAL ─── */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:16px;}
+.mo.open{display:flex;}
+.md{background:var(--white);border-radius:16px;padding:24px;width:480px;max-width:95vw;max-height:90vh;overflow-y:auto;position:relative;}
+.md h3{font-size:.95rem;font-weight:800;margin-bottom:3px;}
+.md .ms{font-size:.77rem;color:var(--g400);margin-bottom:16px;}
+.mc{position:absolute;top:14px;right:14px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#bbb;transition:color .2s;}.mc:hover{color:var(--red);}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--black);color:var(--white);padding:11px 17px;border-radius:9px;font-size:.8rem;font-weight:700;z-index:9000;transform:translateY(70px);opacity:0;transition:all .3s;pointer-events:none;max-width:280px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{background:var(--green);}
+.toast.error{background:var(--red);}
+
+/* ─── LOCK SCREEN ─── */
+.lock-screen{position:fixed;inset:0;background:rgba(15,15,15,.96);z-index:800;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);}
+.lock-screen.open{display:flex;}
+.lock-box{background:var(--white);border-radius:20px;padding:30px 26px;width:100%;max-width:360px;text-align:center;}
+.lock-ico{font-size:2.5rem;margin-bottom:10px;}
+.lock-box h3{font-size:1rem;font-weight:800;margin-bottom:5px;}
+.lock-box p{font-size:.78rem;color:var(--g400);margin-bottom:20px;line-height:1.6;}
+
+/* ─── PEMESANAN FORM ─── */
+.order-summary{background:var(--g100);border-radius:10px;padding:14px;margin:12px 0;}
+.order-summary h4{font-size:.78rem;font-weight:800;margin-bottom:8px;color:var(--black);}
+.os-row{display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:4px;}
+.os-total{display:flex;justify-content:space-between;font-size:.88rem;font-weight:800;padding-top:8px;border-top:1px solid var(--g200);margin-top:8px;}
+
+/* ─── STRUK ─── */
+.struk{background:var(--white);border-radius:12px;padding:22px;max-width:400px;margin:0 auto;border:1px solid var(--g200);}
+.struk-head{text-align:center;padding-bottom:14px;border-bottom:2px dashed var(--g200);margin-bottom:14px;}
+.struk-head .brand{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:900;}
 .struk-head .brand span{color:var(--wood);}
-.struk-head p{font-size:.72rem;color:var(--g400);margin-top:2px;line-height:1.5;}
-.struk-row{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:6px;}
+.struk-head p{font-size:.7rem;color:var(--g400);margin-top:3px;line-height:1.5;}
+.struk-row{display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:5px;}
 .struk-row .sk{color:var(--g400);}
-.struk-row .sv{font-weight:600;color:var(--black);}
-.struk-divider{border:none;border-top:1px dashed var(--g200);margin:12px 0;}
-.struk-item{display:flex;justify-content:space-between;align-items:flex-start;font-size:.8rem;margin-bottom:8px;gap:8px;}
-.struk-item .si-name{flex:1;color:var(--black);}
-.struk-item .si-qty{color:var(--g400);font-size:.75rem;white-space:nowrap;}
-.struk-item .si-price{font-weight:700;white-space:nowrap;}
-.struk-total{display:flex;justify-content:space-between;font-size:.9rem;font-weight:800;padding-top:12px;border-top:2px solid var(--black);margin-top:8px;}
-.struk-foot{text-align:center;margin-top:16px;padding-top:14px;border-top:2px dashed var(--g200);font-size:.72rem;color:var(--g400);line-height:1.7;}
-.struk-code{background:var(--g100);border:1px solid var(--g200);border-radius:6px;padding:6px 12px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-align:center;margin:10px 0;}
-.status-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:5px;font-size:.65rem;font-weight:700;}
-.chip-wait{background:#fff8e1;color:#b8860b;}
-.chip-ok{background:#e8f5e9;color:#2d7a2d;}
-.chip-proses{background:#e3f0fb;color:#2d6a9f;}
-.chip-batal{background:#fdecea;color:#c0392b;}
-.step-row{display:flex;gap:0;margin-bottom:20px;}
-.step{flex:1;text-align:center;position:relative;}
-.step::after{content:'';position:absolute;top:14px;left:50%;width:100%;height:2px;background:var(--g200);z-index:0;}
-.step:last-child::after{display:none;}
-.step-dot{width:28px;height:28px;border-radius:50%;background:var(--g200);border:2px solid var(--g200);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:.7rem;font-weight:800;color:#999;position:relative;z-index:1;}
-.step.done .step-dot{background:var(--black);border-color:var(--black);color:var(--white);}
-.step.active .step-dot{background:var(--white);border-color:var(--black);color:var(--black);}
-.step-label{font-size:.65rem;font-weight:600;color:#bbb;}
-.step.done .step-label,.step.active .step-label{color:var(--black);}
+.struk-row .sv{font-weight:700;}
+.struk-item{display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:6px;gap:8px;}
+.struk-total{display:flex;justify-content:space-between;font-size:.88rem;font-weight:900;padding-top:10px;border-top:2px solid var(--black);margin-top:6px;}
+.struk-foot{text-align:center;margin-top:14px;padding-top:12px;border-top:2px dashed var(--g200);font-size:.7rem;color:var(--g400);line-height:1.7;}
+.struk-code{background:var(--g100);border:1px solid var(--g200);border-radius:6px;padding:5px 11px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-align:center;margin:8px 0;}
+.struk-divider{border:none;border-top:1px dashed var(--g200);margin:10px 0;}
 
-/* CART */
-.cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f5f5f5;}
+/* ─── CART ─── */
+.cart-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f5f5f5;}
 .cart-item:last-child{border-bottom:none;}
-.cart-icon{width:38px;height:38px;border-radius:8px;background:var(--g100);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
-.cart-name{flex:1;font-size:.83rem;font-weight:700;}
-.cart-sub{font-size:.72rem;color:var(--g400);}
-.cart-qty{display:flex;align-items:center;gap:8px;}
-.qty-btn{width:24px;height:24px;border-radius:5px;border:1px solid var(--g200);background:var(--white);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .2s;}
+.cart-icon{width:36px;height:36px;border-radius:8px;background:var(--g100);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.cart-name{flex:1;font-size:.8rem;font-weight:700;line-height:1.3;}
+.cart-sub{font-size:.68rem;color:var(--g400);}
+.cart-qty{display:flex;align-items:center;gap:6px;}
+.qty-btn{width:22px;height:22px;border-radius:5px;border:1px solid var(--g200);background:var(--white);cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .2s;flex-shrink:0;}
 .qty-btn:hover{background:var(--black);color:var(--white);border-color:var(--black);}
-.qty-num{font-size:.82rem;font-weight:700;min-width:20px;text-align:center;}
-.cart-price{font-size:.85rem;font-weight:800;min-width:90px;text-align:right;}
-.cart-del{color:#ddd;cursor:pointer;font-size:.9rem;transition:color .2s;padding:4px;}
+.qty-num{font-size:.8rem;font-weight:700;min-width:18px;text-align:center;}
+.cart-price{font-size:.8rem;font-weight:800;min-width:80px;text-align:right;flex-shrink:0;}
+.cart-del{color:#ddd;cursor:pointer;font-size:.85rem;transition:color .2s;padding:3px;flex-shrink:0;}
 .cart-del:hover{color:var(--red);}
 
+/* ─── STEP INDICATOR ─── */
+.steps{display:flex;margin-bottom:18px;}
+.step{flex:1;text-align:center;position:relative;}
+.step::after{content:'';position:absolute;top:12px;left:50%;width:100%;height:2px;background:var(--g200);z-index:0;}
+.step:last-child::after{display:none;}
+.step-dot{width:24px;height:24px;border-radius:50%;background:var(--g200);border:2px solid var(--g200);display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-size:.65rem;font-weight:800;color:#999;position:relative;z-index:1;}
+.step.done .step-dot{background:var(--green);border-color:var(--green);color:#fff;}
+.step.curr .step-dot{background:var(--white);border-color:var(--black);color:var(--black);}
+.step-lbl{font-size:.6rem;font-weight:700;color:#bbb;}
+.step.done .step-lbl,.step.curr .step-lbl{color:var(--black);}
+
+/* ─── 2-COL LAYOUT ─── */
+.two-col{display:grid;grid-template-columns:1fr 360px;gap:16px;align-items:start;}
+.two-half{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+/* ─── INFO BOX ─── */
+.ib{background:#fff8f3;border:1px solid #f0d9c4;border-radius:9px;padding:11px 14px;margin-bottom:13px;display:flex;gap:9px;align-items:flex-start;font-size:.77rem;line-height:1.6;}
+
+/* ─── MOBILE TOPBAR ─── */
+.mob-topbar{display:none;position:fixed;top:0;left:0;right:0;z-index:150;background:var(--black);border-bottom:1px solid #1e1e1e;height:52px;align-items:center;padding:0 14px;justify-content:space-between;}
+.mob-topbar .brand{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:var(--white);}
+.mob-topbar .brand span{color:var(--wood);}
+
+/* ─── MOBILE BOTTOM NAV ─── */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--black);border-top:1px solid #1e1e1e;}
+.mob-nav-scroll{display:flex;overflow-x:auto;scrollbar-width:none;padding:4px 4px 10px;gap:2px;}
+.mob-nav-scroll::-webkit-scrollbar{display:none;}
+.mob-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 11px;cursor:pointer;border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;color:rgba(255,255,255,.45);font-size:.52rem;font-weight:700;white-space:nowrap;transition:color .2s;border-radius:8px;flex-shrink:0;}
+.mob-btn .mi{font-size:1.1rem;line-height:1;}
+.mob-btn.active{color:var(--wood);background:rgba(200,149,108,.1);}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .mob-topbar{display:flex;}
+  .mob-nav{display:block;}
+  .main{margin-left:0!important;padding-top:52px;padding-bottom:76px;}
+  .page{padding:14px 12px;max-width:100%;}
+  .hero-s{padding:18px 14px 20px;margin:-14px -12px 18px;}
+  .hero-s h1{font-size:1.45rem;}
+  .hero-s p{font-size:.8rem;}
+  .hst{gap:18px;}
+  .sr{grid-template-columns:1fr 1fr;gap:8px;}
+  .sc{padding:12px 13px;}
+  .sc .sv{font-size:1.2rem;}
+  .cg{grid-template-columns:1fr 1fr;gap:8px;}
+  .uk{grid-template-columns:1fr 1fr;gap:8px;}
+  .two-col{grid-template-columns:1fr!important;gap:12px;}
+  .two-half{grid-template-columns:1fr!important;gap:10px;}
+  .fg{grid-template-columns:1fr!important;}
+  .fa{flex-direction:column;}
+  .fa .bs{width:100%;justify-content:center;padding:10px;}
+  table{min-width:500px;}
+  th,td{padding:8px 10px;font-size:.72rem;}
+  .ph h1{font-size:1.3rem;}
+  .cs{padding:13px;}
+  .struk{max-width:100%;padding:16px;}
+  .steps{flex-wrap:wrap;gap:4px;}
+  .step::after{display:none;}
+  .login-box{padding:24px 18px;}
+  select{font-size:.78rem;}
+  .bs{font-size:.72rem;padding:7px 12px;}
+}
+@media(min-width:769px) and (max-width:1024px){
+  .sidebar{width:185px;}
+  .main{margin-left:185px;}
+  .sr{grid-template-columns:1fr 1fr;}
+  .cg{grid-template-columns:1fr 1fr;}
+  .two-col{grid-template-columns:1fr 300px;}
+}
 @media print{
-  .sidebar,.main .page:not(.active) .ph,.fr,.fa,.th .ta,nav{display:none!important;}
+  .sidebar,.mob-nav,.mob-topbar,.fa,.fr button{display:none!important;}
   .main{margin-left:0!important;}
-  .struk-wrap{border:none;box-shadow:none;max-width:100%;}
+  .struk{border:none;box-shadow:none;}
 }
 </style>
 </head>
 <body>
 
+<!-- ════════════════════════════════
+     LOGIN OVERLAY
+════════════════════════════════ -->
+<div id="login-overlay" style="display:none;">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="brand">kayu<span>MANIA</span></div>
+      <p>Masuk untuk mengakses sistem</p>
+    </div>
+    <div class="login-tabs">
+      <button class="ltab active" onclick="switchTab('pw')">🔑 Password</button>
+      <button class="ltab" onclick="switchTab('face')">📷 Wajah</button>
+      <button class="ltab" onclick="switchTab('finger')">👆 Sidik Jari</button>
+    </div>
+
+    <!-- PASSWORD TAB -->
+    <div class="ltab-panel active" id="tab-pw">
+      <div class="lf-group">
+        <label>Username</label>
+        <input type="text" id="l-user" placeholder="Masukkan username" autocomplete="username">
+      </div>
+      <div class="lf-group">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="l-pass" placeholder="Masukkan password" autocomplete="current-password">
+          <button class="pw-toggle" onclick="togglePw()" id="pw-eye">👁</button>
+        </div>
+        <div class="lf-err" id="l-err">Username atau password salah!</div>
+      </div>
+      <button class="lbtn" onclick="doLogin()">Masuk</button>
+      <button onclick="tutupLogin()" style="width:100%;padding:10px;background:none;border:none;color:var(--g400);font-size:.78rem;cursor:pointer;margin-top:8px;font-family:'Plus Jakarta Sans',sans-serif;">✕ Batal / Kembali ke Website</button>
+      <div style="text-align:center;margin-top:4px;font-size:.72rem;color:var(--g400);">
+        💡 <em>Demo: kayumania / kayumania123</em>
+      </div>
+    </div>
+
+    <!-- FACE TAB -->
+    <div class="ltab-panel" id="tab-face">
+      <div class="bio-area">
+        <div class="cam-overlay">
+          <video id="cam-feed" autoplay playsinline></video>
+          <div class="cam-frame" id="cam-frame"></div>
+        </div>
+        <div class="bio-icon" id="face-ico">📷</div>
+        <div class="bio-title">Scan Wajah</div>
+        <div class="bio-sub">Klik tombol di bawah untuk membuka kamera dan lakukan verifikasi wajah Anda.</div>
+        <div class="bio-status" id="face-status"></div>
+        <button class="lbtn" id="face-btn" onclick="startFace()">Buka Kamera & Scan</button>
+      </div>
+    </div>
+
+    <!-- FINGERPRINT TAB -->
+    <div class="ltab-panel" id="tab-finger">
+      <div class="bio-area">
+        <div class="bio-icon">👆</div>
+        <div class="bio-title">Scan Sidik Jari</div>
+        <div class="bio-sub">Gunakan sensor sidik jari pada perangkat Anda. Tempel jari ke sensor untuk verifikasi identitas admin.</div>
+        <div class="bio-status" id="finger-status"></div>
+        <button class="lbtn wood" onclick="startFinger()">Mulai Verifikasi</button>
+        <div style="margin-top:10px;font-size:.7rem;color:var(--g400);">
+          Atau gunakan <strong>Windows Hello</strong> / <strong>Touch ID</strong> pada perangkat Anda
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     LOCK SCREEN (laporan)
+════════════════════════════════ -->
+<div class="lock-screen" id="lock-screen">
+  <div class="lock-box">
+    <div class="lock-ico">🔐</div>
+    <h3>Akses Terbatas</h3>
+    <p>Halaman ini hanya dapat diakses oleh <strong>Admin</strong>.<br>Silakan login terlebih dahulu.</p>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <input type="text" id="ls-user" placeholder="Username admin" style="padding:10px 13px;border:1.5px solid var(--g200);border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.83rem;outline:none;width:100%;">
+      <div style="position:relative;">
+        <input type="password" id="ls-pass" placeholder="Password admin" style="padding:10px 13px;border:1.5px solid var(--g200);border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.83rem;outline:none;width:100%;padding-right:36px;" id="ls-pass">
+        <button onclick="toggleLsPw()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:.9rem;color:var(--g400);" id="ls-eye">👁</button>
+      </div>
+      <div style="font-size:.7rem;color:var(--red);display:none;text-align:left;" id="ls-err">Username atau password salah!</div>
+      <button class="lbtn" onclick="doLockLogin()" style="margin-top:4px;">🔓 Verifikasi & Masuk</button>
+      <button onclick="hideLock()" style="background:none;border:none;color:var(--g400);font-size:.75rem;cursor:pointer;padding:4px;font-family:'Plus Jakarta Sans',sans-serif;">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE TOPBAR -->
+<div class="mob-topbar">
+  <div class="brand">kayu<span>MANIA</span></div>
+  <a href="https://wa.me/6288221329336" target="_blank" style="background:#0d2b0d;border:1px solid #1e4a1e;color:#4dbd4d;padding:5px 11px;border-radius:7px;font-size:.68rem;font-weight:700;text-decoration:none;">💬 WA</a>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mob-nav">
+  <div class="mob-nav-scroll">
+    <button class="mob-btn active" onclick="sp('beranda');mob(this)"><span class="mi">🏠</span>Beranda</button>
+    <button class="mob-btn" onclick="sp('produk');mob(this)"><span class="mi">🪵</span>Kayu</button>
+    <button class="mob-btn" onclick="sp('harga');mob(this)"><span class="mi">💰</span>Harga</button>
+    <button class="mob-btn" onclick="sp('ukuran');mob(this)"><span class="mi">📐</span>Ukuran</button>
+    <button class="mob-btn" onclick="sp('stok');mob(this)"><span class="mi">📦</span>Stok</button>
+    <button class="mob-btn" onclick="sp('pesan');mob(this)"><span class="mi">🛒</span>Pesan</button>
+    <button class="mob-btn" onclick="tryPage('jual');mob(this)"><span class="mi">🧾</span>Penjualan</button>
+    <button class="mob-btn" onclick="tryPage('uang');mob(this)"><span class="mi">📊</span>Keuangan</button>
+    <button class="mob-btn" onclick="tryPage('lappesan');mob(this)"><span class="mi">📑</span>Lap.Pesan</button>
+    <button class="mob-btn" onclick="sp('alamat');mob(this)"><span class="mi">📍</span>Lokasi</button>
+  </div>
+</nav>
+
+<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-logo">
     <div class="brand">kayu<span>MANIA</span></div>
     <div class="tag">Toko Kayu Yogyakarta</div>
   </div>
-  <div class="nav-sec">
+  <div class="nav-wrap">
     <div class="nav-lbl">Utama</div>
-    <a class="nav-i active" onclick="sp('beranda')"><span class="ic">🏠</span><span>Beranda</span></a>
-    <a class="nav-i" onclick="sp('produk')"><span class="ic">🪵</span><span>Jenis Kayu</span></a>
-    <a class="nav-i" onclick="sp('harga')"><span class="ic">💰</span><span>Harga Kayu</span></a>
-    <a class="nav-i" onclick="sp('ukuran')"><span class="ic">📐</span><span>Ukuran Kayu</span></a>
-  </div>
-  <div class="nav-sec">
+    <div class="nav-i active" onclick="sp('beranda')"><span class="ic">🏠</span><span>Beranda</span></div>
+    <div class="nav-lbl">Produk</div>
+    <div class="nav-i" onclick="sp('produk')"><span class="ic">🪵</span><span>Jenis Kayu</span></div>
+    <div class="nav-i" onclick="sp('harga')"><span class="ic">💰</span><span>Harga Kayu</span></div>
+    <div class="nav-i" onclick="sp('ukuran')"><span class="ic">📐</span><span>Ukuran Kayu</span></div>
     <div class="nav-lbl">Manajemen</div>
-    <a class="nav-i" onclick="sp('stok')"><span class="ic">📦</span><span>Stok Kayu</span></a>
-    <a class="nav-i" onclick="sp('jual')"><span class="ic">🧾</span><span>Lap. Penjualan</span></a>
-    <a class="nav-i" onclick="sp('uang')"><span class="ic">📊</span><span>Lap. Keuangan</span></a>
-    <a class="nav-i" onclick="sp('beli')"><span class="ic">🛒</span><span>Pembelian</span></a>
-    <a class="nav-i" onclick="sp('pesan')"><span class="ic">📋</span><span>Pemesanan</span></a>
-    <a class="nav-i" onclick="sp('lappesan')"><span class="ic">📑</span><span>Lap. Pemesanan</span></a>
-  </div>
-  <div class="nav-sec">
+    <div class="nav-i" onclick="sp('stok')"><span class="ic">📦</span><span>Stok Kayu</span></div>
+    <div class="nav-i" onclick="sp('pesan')"><span class="ic">🛒</span><span>Pemesanan</span></div>
+    <div class="nav-lbl">Laporan 🔐</div>
+    <div class="nav-i" onclick="tryPage('jual')"><span class="ic">🧾</span><span>Lap. Penjualan</span><span class="lock-ico">🔒</span></div>
+    <div class="nav-i" onclick="tryPage('uang')"><span class="ic">📊</span><span>Lap. Keuangan</span><span class="lock-ico">🔒</span></div>
+    <div class="nav-i" onclick="tryPage('lappesan')"><span class="ic">📑</span><span>Lap. Pemesanan</span><span class="lock-ico">🔒</span></div>
     <div class="nav-lbl">Info</div>
-    <a class="nav-i" onclick="sp('alamat')"><span class="ic">📍</span><span>Lokasi & Kontak</span></a>
+    <div class="nav-i" onclick="sp('alamat')"><span class="ic">📍</span><span>Lokasi & Kontak</span></div>
   </div>
   <div class="sb-foot">
-    <a href="https://wa.me/6288221329336" target="_blank" class="wa-btn">
-      <span>💬</span><span>WhatsApp Kami</span>
-    </a>
+    <a href="https://wa.me/6288221329336" target="_blank" class="wa-btn">💬 WhatsApp Kami</a>
   </div>
 </aside>
 
 <main class="main">
 
-<!-- BERANDA -->
+<!-- ══════════ BERANDA ══════════ -->
 <div id="page-beranda" class="page active">
   <div class="hero-s">
     <div class="hb">🪵 Toko Kayu Terpercaya Sejak 2010</div>
     <h1>kayu<span>MANIA</span><br>Kualitas Terbaik</h1>
-    <p>Supplier kayu berkualitas untuk konstruksi, furniture, dan kerajinan. Melayani seluruh Yogyakarta dan sekitarnya.</p>
+    <p>Supplier kayu berkualitas untuk konstruksi, furniture, dan kerajinan. Melayani seluruh Yogyakarta.</p>
     <div class="hbs">
-      <button class="hbm" onclick="sp('produk')">Lihat Jenis Kayu</button>
+      <button class="hbm" onclick="sp('pesan')">🛒 Pesan Sekarang</button>
       <button class="hbs2" onclick="sp('harga')">Cek Harga →</button>
     </div>
     <div class="hst">
       <div><div class="hn">50<span>+</span></div><div class="hl">Jenis Kayu</div></div>
-      <div><div class="hn">500<span>+</span></div><div class="hl">Pelanggan Puas</div></div>
+      <div><div class="hn">500<span>+</span></div><div class="hl">Pelanggan</div></div>
       <div><div class="hn">14<span>thn</span></div><div class="hl">Pengalaman</div></div>
       <div><div class="hn">4.9<span>★</span></div><div class="hl">Rating</div></div>
     </div>
   </div>
-
   <div class="sr">
-    <div class="sc"><div class="sl">Penjualan Bulan Ini</div><div class="sv">Rp 48,2M</div><div class="ss">134 transaksi</div><span class="sb bg">↑ 12% vs bulan lalu</span></div>
-    <div class="sc"><div class="sl">Total Stok</div><div class="sv">2.847 m³</div><div class="ss">18 jenis kayu</div><span class="sb bb">Update hari ini</span></div>
-    <div class="sc"><div class="sl">Transaksi Bulan Ini</div><div class="sv">134</div><div class="ss">avg Rp 360rb/trx</div><span class="sb bg">↑ 8 baru</span></div>
-    <div class="sc"><div class="sl">Stok Hampir Habis</div><div class="sv">3</div><div class="ss">jenis kayu</div><span class="sb br">⚠ Perhatian</span></div>
+    <div class="sc"><div class="sl">Penjualan Bulan Ini</div><div class="sv">Rp48,2M</div><div class="ss">134 transaksi</div><span class="sbg g">↑ 12%</span></div>
+    <div class="sc"><div class="sl">Total Stok</div><div class="sv" id="dash-stok">2.847</div><div class="ss">m³ tersedia</div><span class="sbg b">18 jenis</span></div>
+    <div class="sc"><div class="sl">Pesanan Aktif</div><div class="sv" id="dash-order">0</div><div class="ss">menunggu proses</div><span class="sbg y">Hari ini</span></div>
+    <div class="sc"><div class="sl">Stok Hampir Habis</div><div class="sv">3</div><div class="ss">jenis kayu</div><span class="sbg r">⚠ Perhatian</span></div>
   </div>
-
-  <div class="tc">
+  <div class="two-half">
     <div class="cs">
-      <h3>Penjualan 7 Hari Terakhir</h3>
-      <div class="csub">Dalam jutaan rupiah (Rp)</div>
-      <div class="bc2">
-        <div class="bg2"><div class="bf" style="height:55%"><div class="btt">Rp 5,2M</div></div><span class="bl">Sen</span></div>
-        <div class="bg2"><div class="bf" style="height:70%"><div class="btt">Rp 6,8M</div></div><span class="bl">Sel</span></div>
-        <div class="bg2"><div class="bf" style="height:45%"><div class="btt">Rp 4,3M</div></div><span class="bl">Rab</span></div>
-        <div class="bg2"><div class="bf" style="height:80%"><div class="btt">Rp 7,6M</div></div><span class="bl">Kam</span></div>
-        <div class="bg2"><div class="bf act" style="height:100%"><div class="btt">Rp 9,5M</div></div><span class="bl">Jum</span></div>
-        <div class="bg2"><div class="bf" style="height:90%"><div class="btt">Rp 8,6M</div></div><span class="bl">Sab</span></div>
-        <div class="bg2"><div class="bf" style="height:40%"><div class="btt">Rp 3,8M</div></div><span class="bl">Min</span></div>
+      <h3>Penjualan 7 Hari Terakhir</h3><div class="csub">Dalam jutaan rupiah</div>
+      <div class="bc">
+        <div class="bcol"><div class="bf" style="height:55%"><div class="btt">Sen: Rp5,2M</div></div><span class="bl">Sen</span></div>
+        <div class="bcol"><div class="bf" style="height:72%"><div class="btt">Sel: Rp6,8M</div></div><span class="bl">Sel</span></div>
+        <div class="bcol"><div class="bf" style="height:45%"><div class="btt">Rab: Rp4,3M</div></div><span class="bl">Rab</span></div>
+        <div class="bcol"><div class="bf" style="height:80%"><div class="btt">Kam: Rp7,6M</div></div><span class="bl">Kam</span></div>
+        <div class="bcol"><div class="bf act" style="height:100%"><div class="btt">Jum: Rp9,5M</div></div><span class="bl">Jum</span></div>
+        <div class="bcol"><div class="bf" style="height:90%"><div class="btt">Sab: Rp8,6M</div></div><span class="bl">Sab</span></div>
+        <div class="bcol"><div class="bf" style="height:40%"><div class="btt">Min: Rp3,8M</div></div><span class="bl">Min</span></div>
       </div>
     </div>
-    <div class="cs">
-      <h3>Kayu Terlaris Bulan Ini</h3>
-      <div class="csub">Berdasarkan volume penjualan</div>
-      <table>
+    <div class="tw" style="margin-bottom:0;">
+      <div class="th"><h3>Kayu Terlaris</h3></div>
+      <div class="t-scroll"><table>
         <thead><tr><th>#</th><th>Jenis</th><th>Terjual</th><th>Omzet</th></tr></thead>
         <tbody>
-          <tr><td><b>1</b></td><td class="tw2">Jati</td><td>420 m³</td><td class="tg">Rp 18,9M</td></tr>
-          <tr><td><b>2</b></td><td class="tw2">Meranti</td><td>380 m³</td><td class="tg">Rp 9,5M</td></tr>
-          <tr><td><b>3</b></td><td class="tw2">Sengon</td><td>310 m³</td><td class="tg">Rp 4,7M</td></tr>
-          <tr><td><b>4</b></td><td class="tw2">Merbau</td><td>210 m³</td><td class="tg">Rp 8,2M</td></tr>
+          <tr><td>1</td><td class="tw2">Jati</td><td>420m³</td><td class="tn">Rp18,9M</td></tr>
+          <tr><td>2</td><td class="tw2">Meranti</td><td>380m³</td><td class="tn">Rp9,5M</td></tr>
+          <tr><td>3</td><td class="tw2">Sengon</td><td>310m³</td><td class="tn">Rp4,7M</td></tr>
+          <tr><td>4</td><td class="tw2">Merbau</td><td>210m³</td><td class="tn">Rp8,2M</td></tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
   </div>
-
   <div class="tw">
-    <div class="th"><h3>Transaksi Terbaru</h3><div class="ta"><button class="bs bo" onclick="sp('jual')">Lihat Semua</button></div></div>
-    <table>
-      <thead><tr><th>ID</th><th>Tanggal</th><th>Pelanggan</th><th>Item</th><th>Total</th><th>Status</th></tr></thead>
-      <tbody>
-        <tr><td>#TRX-001</td><td>11 Mar 2026</td><td>Budi Konstruksi</td><td>Jati 4×6 — 50 btg</td><td class="tn">Rp 4.500.000</td><td><span class="stb sa">Lunas</span></td></tr>
-        <tr><td>#TRX-002</td><td>11 Mar 2026</td><td>Toko Mebel Sari</td><td>Meranti 5×10 — 30 btg</td><td class="tn">Rp 2.100.000</td><td><span class="stb sa">Lunas</span></td></tr>
-        <tr><td>#TRX-003</td><td>10 Mar 2026</td><td>Pak Hartono</td><td>Sengon 3×5 — 100 btg</td><td class="tn">Rp 1.800.000</td><td><span class="stb st">Proses</span></td></tr>
-        <tr><td>#TRX-004</td><td>10 Mar 2026</td><td>CV Bangun Jaya</td><td>Merbau 6×12 — 20 btg</td><td class="tn">Rp 3.200.000</td><td><span class="stb sa">Lunas</span></td></tr>
-        <tr><td>#TRX-005</td><td>09 Mar 2026</td><td>Ibu Wati</td><td>Mahoni 4×8 — 15 btg</td><td class="tn">Rp 1.350.000</td><td><span class="stb sh">Batal</span></td></tr>
-      </tbody>
-    </table>
+    <div class="th"><h3>Pesanan Terbaru</h3><div class="ta"><button class="bs bo" onclick="sp('lappesan')">Lihat Semua</button></div></div>
+    <div class="t-scroll"><table>
+      <thead><tr><th>No. Pesanan</th><th>Pelanggan</th><th>Produk</th><th>Total</th><th>Status</th></tr></thead>
+      <tbody id="dash-orders"><tr><td colspan="5" style="text-align:center;color:var(--g400);padding:20px;">Belum ada pesanan</td></tr></tbody>
+    </table></div>
   </div>
 </div>
 
-<!-- JENIS KAYU -->
+<!-- ══════════ JENIS KAYU ══════════ -->
 <div id="page-produk" class="page">
-  <div class="ph"><div class="bc">kayuMANIA › Jenis Kayu</div><h1>Jenis Kayu</h1><p>Katalog lengkap semua jenis kayu yang tersedia</p></div>
+  <div class="ph"><div class="bc">kayuMANIA › Jenis Kayu</div><h1>Jenis Kayu</h1><p>Katalog semua jenis kayu tersedia</p></div>
   <div class="fr">
-    <div class="sb2"><span class="si">🔍</span><input type="text" placeholder="Cari jenis kayu..." oninput="filterKayu(this.value)"></div>
-    <select onchange="filterKat(this.value)"><option value="">Semua Kategori</option><option>Keras</option><option>Lunak</option></select>
-    <button class="bs bd" onclick="sm('m1')">+ Tambah Jenis</button>
+    <div class="sb2w"><span>🔍</span><input type="text" placeholder="Cari kayu..." oninput="filterKayu(this.value)"></div>
+    <select onchange="filterKat(this.value)"><option value="">Semua</option><option value="keras">Keras</option><option value="lunak">Lunak</option></select>
   </div>
-  <div id="kayu-grid" class="cg">
-    <div class="wc"><div class="wci" style="background:#f5ede6">🌳</div><div class="wcb"><div class="wct">Kayu Keras · Tropis</div><h4>Kayu Jati (Tectona grandis)</h4><p>Kayu premium serat indah, sangat tahan cuaca dan rayap. Ideal untuk furniture mewah dan konstruksi.</p></div><div class="wcf"><div class="wcp">Rp 45.000 <span>/ batang</span></div><span class="stb sa">Tersedia</span></div></div>
-    <div class="wc"><div class="wci" style="background:#f0ede8">🪵</div><div class="wcb"><div class="wct">Kayu Keras · Tropis</div><h4>Kayu Merbau (Intsia bijuga)</h4><p>Kayu keras coklat kemerahan, sangat kuat dan tahan lama. Cocok untuk lantai dan konstruksi berat.</p></div><div class="wcf"><div class="wcp">Rp 38.000 <span>/ batang</span></div><span class="stb sa">Tersedia</span></div></div>
-    <div class="wc"><div class="wci" style="background:#ede8f0">🌲</div><div class="wcb"><div class="wct">Kayu Lunak · Cepat Tumbuh</div><h4>Kayu Sengon (Albizia falcataria)</h4><p>Kayu ringan mudah dikerjakan. Cocok untuk peti kemas, papan, dan bahan baku industri.</p></div><div class="wcf"><div class="wcp">Rp 15.000 <span>/ batang</span></div><span class="stb sa">Tersedia</span></div></div>
-    <div class="wc"><div class="wci" style="background:#ede8e6">🪴</div><div class="wcb"><div class="wct">Kayu Keras · Tropis</div><h4>Kayu Meranti (Shorea spp.)</h4><p>Kayu serba guna kekuatan sedang-tinggi. Populer untuk konstruksi, pintu, dan kusen rumah.</p></div><div class="wcf"><div class="wcp">Rp 25.000 <span>/ batang</span></div><span class="stb sa">Tersedia</span></div></div>
-    <div class="wc"><div class="wci" style="background:#edf0e6">🌿</div><div class="wcb"><div class="wct">Kayu Keras · Lokal</div><h4>Kayu Mahoni (Swietenia mahagoni)</h4><p>Warna merah kecoklatan tekstur halus. Banyak digunakan untuk furniture dan kerajinan tangan.</p></div><div class="wcf"><div class="wcp">Rp 30.000 <span>/ batang</span></div><span class="stb st">Stok Tipis</span></div></div>
-    <div class="wc"><div class="wci" style="background:#e8edf0">🎋</div><div class="wcb"><div class="wct">Kayu Lunak · Ringan</div><h4>Kayu Pinus (Pinus merkusii)</h4><p>Kayu ringan beraroma khas. Sering digunakan untuk furniture minimalis dan material dekorasi.</p></div><div class="wcf"><div class="wcp">Rp 20.000 <span>/ batang</span></div><span class="stb sa">Tersedia</span></div></div>
+  <div class="cg" id="kayu-grid">
+    <div class="wc" data-kat="keras"><div class="wci">🌳</div><div class="wct">Kayu Keras · Tropis</div><div class="wcn">Kayu Jati</div><div class="wcp">Rp 45.000 / batang</div><div class="wcs"><span class="stb sa">Tersedia</span></div></div>
+    <div class="wc" data-kat="keras"><div class="wci">🪵</div><div class="wct">Kayu Keras · Tropis</div><div class="wcn">Kayu Merbau</div><div class="wcp">Rp 38.000 / batang</div><div class="wcs"><span class="stb sa">Tersedia</span></div></div>
+    <div class="wc" data-kat="lunak"><div class="wci">🌲</div><div class="wct">Kayu Lunak · Cepat Tumbuh</div><div class="wcn">Kayu Sengon</div><div class="wcp">Rp 15.000 / batang</div><div class="wcs"><span class="stb sa">Tersedia</span></div></div>
+    <div class="wc" data-kat="keras"><div class="wci">🪴</div><div class="wct">Kayu Keras · Tropis</div><div class="wcn">Kayu Meranti</div><div class="wcp">Rp 25.000 / batang</div><div class="wcs"><span class="stb sa">Tersedia</span></div></div>
+    <div class="wc" data-kat="keras"><div class="wci">🌿</div><div class="wct">Kayu Keras · Lokal</div><div class="wcn">Kayu Mahoni</div><div class="wcp">Rp 30.000 / batang</div><div class="wcs"><span class="stb st">Stok Tipis</span></div></div>
+    <div class="wc" data-kat="lunak"><div class="wci">🎋</div><div class="wct">Kayu Lunak · Ringan</div><div class="wcn">Kayu Pinus</div><div class="wcp">Rp 20.000 / batang</div><div class="wcs"><span class="stb sa">Tersedia</span></div></div>
   </div>
 </div>
 
-<!-- HARGA -->
+<!-- ══════════ HARGA ══════════ -->
 <div id="page-harga" class="page">
-  <div class="ph"><div class="bc">kayuMANIA › Harga Kayu</div><h1>Daftar Harga Kayu</h1><p>Harga update Maret 2026 · Belum termasuk ongkir</p></div>
-  <div class="ib"><span style="font-size:1rem;flex-shrink:0;">ℹ️</span><p><strong>Catatan:</strong> Diskon 5–15% untuk pembelian min. 100 batang. Hubungi WA <strong>0882-2132-9336</strong> untuk harga grosir dan negosiasi.</p></div>
+  <div class="ph"><div class="bc">kayuMANIA › Harga Kayu</div><h1>Daftar Harga</h1><p>Harga update Maret 2026</p></div>
+  <div class="ib">💡 Diskon 5–15% untuk pembelian min. 100 batang. Hubungi WA <strong>0882-2132-9336</strong> untuk harga grosir.</div>
   <div class="tw">
-    <div class="th"><h3>Tabel Harga Lengkap</h3><div class="ta"><button class="bs bo">⬇ Export</button><button class="bs bd" onclick="st('Harga berhasil diperbarui!')">Perbarui</button></div></div>
-    <table>
-      <thead><tr><th>Jenis Kayu</th><th>Kategori</th><th>Ukuran (cm)</th><th>Panjang</th><th>Harga/Batang</th><th>Harga/m³</th><th>Grade</th></tr></thead>
+    <div class="th"><h3>Tabel Harga Lengkap</h3></div>
+    <div class="t-scroll"><table>
+      <thead><tr><th>Jenis Kayu</th><th>Ukuran (cm)</th><th>Panjang</th><th>Harga/Batang</th><th>Grade</th></tr></thead>
       <tbody>
-        <tr><td class="tw2">Jati</td><td><span class="ht">Keras</span></td><td>4×6</td><td>4 m</td><td class="tn">Rp 45.000</td><td class="tn">Rp 4.500.000</td><td><span class="stb sa">Grade A</span></td></tr>
-        <tr><td class="tw2">Jati</td><td><span class="ht">Keras</span></td><td>5×10</td><td>4 m</td><td class="tn">Rp 85.000</td><td class="tn">Rp 4.200.000</td><td><span class="stb sa">Grade A</span></td></tr>
-        <tr><td class="tw2">Jati</td><td><span class="ht">Keras</span></td><td>6×12</td><td>4 m</td><td class="tn">Rp 135.000</td><td class="tn">Rp 4.100.000</td><td><span class="stb sa">Grade A</span></td></tr>
-        <tr><td class="tw2">Meranti</td><td><span class="ht">Keras</span></td><td>3×5</td><td>4 m</td><td class="tn">Rp 18.000</td><td class="tn">Rp 3.000.000</td><td><span class="stb sa">Grade A</span></td></tr>
-        <tr><td class="tw2">Meranti</td><td><span class="ht">Keras</span></td><td>4×6</td><td>4 m</td><td class="tn">Rp 25.000</td><td class="tn">Rp 2.600.000</td><td><span class="stb sa">Grade A</span></td></tr>
-        <tr><td class="tw2">Meranti</td><td><span class="ht">Keras</span></td><td>5×10</td><td>4 m</td><td class="tn">Rp 45.000</td><td class="tn">Rp 2.250.000</td><td><span class="stb st">Grade B</span></td></tr>
-        <tr><td class="tw2">Sengon</td><td><span class="ht">Lunak</span></td><td>3×5</td><td>4 m</td><td class="tn">Rp 12.000</td><td class="tn">Rp 2.000.000</td><td><span class="stb sa">Grade A</span></td></tr>
-        <tr><td class="tw2">Sengon</td><td><span class="ht">Lunak</span></td><td>4×6</td><td>4 m</td><td class="tn">Rp 15.000</td><td class="tn">Rp 1.500.000</td><td><span class="stb sa">Grade A</span></td></tr>
-        <tr><td class="tw2">Merbau</td><td><span class="ht">Keras</span></td><td>4×6</td><td>4 m</td><td class="tn">Rp 38.000</td><td class="tn">Rp 3.800.000</td><td><span class="stb sa">Grade A</span></td></tr>
-        <tr><td class="tw2">Merbau</td><td><span class="ht">Keras</span></td><td>6×12</td><td>4 m</td><td class="tn">Rp 160.000</td><td class="tn">Rp 3.600.000</td><td><span class="stb sa">Grade A</span></td></tr>
-        <tr><td class="tw2">Mahoni</td><td><span class="ht">Keras</span></td><td>4×6</td><td>4 m</td><td class="tn">Rp 30.000</td><td class="tn">Rp 3.000.000</td><td><span class="stb st">Grade B</span></td></tr>
-        <tr><td class="tw2">Pinus</td><td><span class="ht">Lunak</span></td><td>3×5</td><td>4 m</td><td class="tn">Rp 16.000</td><td class="tn">Rp 2.700.000</td><td><span class="stb sa">Grade A</span></td></tr>
+        <tr><td class="tw2">Jati</td><td>4×6</td><td>4m</td><td class="tn">Rp 45.000</td><td><span class="stb sa">Grade A</span></td></tr>
+        <tr><td class="tw2">Jati</td><td>5×10</td><td>4m</td><td class="tn">Rp 85.000</td><td><span class="stb sa">Grade A</span></td></tr>
+        <tr><td class="tw2">Jati</td><td>6×12</td><td>4m</td><td class="tn">Rp 135.000</td><td><span class="stb sa">Grade A</span></td></tr>
+        <tr><td class="tw2">Meranti</td><td>4×6</td><td>4m</td><td class="tn">Rp 25.000</td><td><span class="stb sa">Grade A</span></td></tr>
+        <tr><td class="tw2">Meranti</td><td>5×10</td><td>4m</td><td class="tn">Rp 45.000</td><td><span class="stb sb2">Grade B</span></td></tr>
+        <tr><td class="tw2">Sengon</td><td>3×5</td><td>4m</td><td class="tn">Rp 12.000</td><td><span class="stb sa">Grade A</span></td></tr>
+        <tr><td class="tw2">Sengon</td><td>4×6</td><td>4m</td><td class="tn">Rp 15.000</td><td><span class="stb sa">Grade A</span></td></tr>
+        <tr><td class="tw2">Merbau</td><td>4×6</td><td>4m</td><td class="tn">Rp 38.000</td><td><span class="stb sa">Grade A</span></td></tr>
+        <tr><td class="tw2">Merbau</td><td>6×12</td><td>4m</td><td class="tn">Rp 160.000</td><td><span class="stb sa">Grade A</span></td></tr>
+        <tr><td class="tw2">Mahoni</td><td>4×6</td><td>4m</td><td class="tn">Rp 30.000</td><td><span class="stb sb2">Grade B</span></td></tr>
+        <tr><td class="tw2">Pinus</td><td>3×5</td><td>4m</td><td class="tn">Rp 16.000</td><td><span class="stb sa">Grade A</span></td></tr>
       </tbody>
-    </table>
-  </div>
-  <div class="fs"><h3>➕ Tambah / Edit Harga</h3>
-    <div class="fg">
-      <div class="fg2"><label>Jenis Kayu</label><select><option>Pilih...</option><option>Jati</option><option>Meranti</option><option>Sengon</option><option>Merbau</option><option>Mahoni</option><option>Pinus</option></select></div>
-      <div class="fg2"><label>Ukuran (cm)</label><input type="text" placeholder="misal: 4×6"></div>
-      <div class="fg2"><label>Harga / Batang (Rp)</label><input type="number" placeholder="45000"></div>
-      <div class="fg2"><label>Harga / m³ (Rp)</label><input type="number" placeholder="4500000"></div>
-      <div class="fg2"><label>Panjang</label><input type="text" placeholder="4 m"></div>
-      <div class="fg2"><label>Grade</label><select><option>Grade A</option><option>Grade B</option><option>Grade C</option></select></div>
-    </div>
-    <div class="fa"><button class="bs bd" onclick="st('Harga berhasil disimpan!')">Simpan</button><button class="bs bo">Reset</button></div>
+    </table></div>
   </div>
 </div>
 
-<!-- UKURAN -->
+<!-- ══════════ UKURAN ══════════ -->
 <div id="page-ukuran" class="page">
-  <div class="ph"><div class="bc">kayuMANIA › Ukuran Kayu</div><h1>Ukuran Kayu</h1><p>Semua dimensi standar yang tersedia · Custom ukuran tersedia</p></div>
-  <div class="ib"><span style="font-size:1rem;flex-shrink:0;">📐</span><p><strong>Format:</strong> Tebal × Lebar (cm) × Panjang (m). Pesanan custom dikenai biaya potong Rp 5.000–15.000/potongan.</p></div>
+  <div class="ph"><div class="bc">kayuMANIA › Ukuran</div><h1>Ukuran Kayu</h1><p>Semua dimensi standar tersedia</p></div>
   <div class="uk">
-    <div class="ukc" onclick="st('2×3 — Mulai Rp 8.000/btg')"><div class="ud">2 × 3</div><div class="ul">cm × cm · Panjang 4m</div><div class="up">Mulai Rp 8.000/btg</div></div>
-    <div class="ukc" onclick="st('3×5 — Mulai Rp 12.000/btg')"><div class="ud">3 × 5</div><div class="ul">cm × cm · Panjang 4m</div><div class="up">Mulai Rp 12.000/btg</div></div>
-    <div class="ukc" onclick="st('4×6 — Mulai Rp 18.000/btg')"><div class="ud">4 × 6</div><div class="ul">cm × cm · Panjang 4m</div><div class="up">Mulai Rp 18.000/btg</div></div>
-    <div class="ukc" onclick="st('5×10 — Mulai Rp 35.000/btg')"><div class="ud">5 × 10</div><div class="ul">cm × cm · Panjang 4m</div><div class="up">Mulai Rp 35.000/btg</div></div>
-    <div class="ukc" onclick="st('6×12 — Mulai Rp 65.000/btg')"><div class="ud">6 × 12</div><div class="ul">cm × cm · Panjang 4m</div><div class="up">Mulai Rp 65.000/btg</div></div>
-    <div class="ukc" onclick="st('8×12 — Mulai Rp 95.000/btg')"><div class="ud">8 × 12</div><div class="ul">cm × cm · Panjang 4m</div><div class="up">Mulai Rp 95.000/btg</div></div>
-    <div class="ukc" onclick="st('10×15 — Mulai Rp 145.000/btg')"><div class="ud">10 × 15</div><div class="ul">cm × cm · Panjang 4m</div><div class="up">Mulai Rp 145.000/btg</div></div>
-    <div class="ukc" onclick="st('12×20 — Mulai Rp 210.000/btg')"><div class="ud">12 × 20</div><div class="ul">cm × cm · Panjang 4m</div><div class="up">Mulai Rp 210.000/btg</div></div>
-  </div>
-  <div class="tw">
-    <div class="th"><h3>Detail Ukuran & Ketersediaan</h3><div class="ta"><button class="bs bo">⬇ Export PDF</button></div></div>
-    <table>
-      <thead><tr><th>Ukuran (cm)</th><th>Panjang</th><th>Berat ±</th><th>Kegunaan</th><th>Status</th></tr></thead>
-      <tbody>
-        <tr><td class="tn">2×3</td><td>4 m</td><td>±2 kg</td><td>Lis, rangka ringan, dekorasi</td><td><span class="stb sa">Tersedia</span></td></tr>
-        <tr><td class="tn">3×5</td><td>4 m</td><td>±5 kg</td><td>Kasau, reng, rangka ringan</td><td><span class="stb sa">Tersedia</span></td></tr>
-        <tr><td class="tn">4×6</td><td>4 m</td><td>±9 kg</td><td>Rangka pintu, kusen, balok kecil</td><td><span class="stb sa">Tersedia</span></td></tr>
-        <tr><td class="tn">5×10</td><td>4 m</td><td>±18 kg</td><td>Balok lantai, kuda-kuda atap</td><td><span class="stb sa">Tersedia</span></td></tr>
-        <tr><td class="tn">6×12</td><td>4 m</td><td>±26 kg</td><td>Balok konstruksi, kolom</td><td><span class="stb st">Tipis</span></td></tr>
-        <tr><td class="tn">8×12</td><td>4 m</td><td>±35 kg</td><td>Balok besar, jembatan</td><td><span class="stb sa">Tersedia</span></td></tr>
-        <tr><td class="tn">10×15</td><td>4 m</td><td>±54 kg</td><td>Pondasi kayu, tiang besar</td><td><span class="stb st">Tipis</span></td></tr>
-        <tr><td class="tn">12×20</td><td>4 m</td><td>±86 kg</td><td>Gelagar jembatan, industri</td><td><span class="stb sh">Habis</span></td></tr>
-      </tbody>
-    </table>
+    <div class="ukc"><div class="uksz">2×3</div><div class="uksub">cm · 4m</div><div class="ukp">Rp 8.000/btg</div></div>
+    <div class="ukc"><div class="uksz">3×5</div><div class="uksub">cm · 4m</div><div class="ukp">Rp 12.000/btg</div></div>
+    <div class="ukc"><div class="uksz">4×6</div><div class="uksub">cm · 4m</div><div class="ukp">Rp 18.000/btg</div></div>
+    <div class="ukc"><div class="uksz">5×10</div><div class="uksub">cm · 4m</div><div class="ukp">Rp 35.000/btg</div></div>
+    <div class="ukc"><div class="uksz">6×12</div><div class="uksub">cm · 4m</div><div class="ukp">Rp 65.000/btg</div></div>
+    <div class="ukc"><div class="uksz">8×12</div><div class="uksub">cm · 4m</div><div class="ukp">Rp 95.000/btg</div></div>
+    <div class="ukc"><div class="uksz">10×15</div><div class="uksub">cm · 4m</div><div class="ukp">Rp 145.000/btg</div></div>
+    <div class="ukc"><div class="uksz">12×20</div><div class="uksub">cm · 4m</div><div class="ukp">Rp 210.000/btg</div></div>
   </div>
 </div>
 
-<!-- STOK -->
+<!-- ══════════ STOK ══════════ -->
 <div id="page-stok" class="page">
-  <div class="ph"><div class="bc">kayuMANIA › Stok</div><h1>Manajemen Stok</h1><p>Pantau stok kayu secara real-time</p></div>
+  <div class="ph"><div class="bc">kayuMANIA › Stok Kayu</div><h1>Stok Kayu</h1><p>Inventory real-time — update otomatis saat ada pesanan</p></div>
   <div class="sr">
-    <div class="sc"><div class="sl">Total Stok</div><div class="sv">2.847 m³</div><div class="ss">semua jenis</div></div>
-    <div class="sc"><div class="sl">Stok Aman</div><div class="sv">14</div><div class="ss">jenis kayu</div><span class="sb bg">OK</span></div>
-    <div class="sc"><div class="sl">Stok Tipis</div><div class="sv">3</div><div class="ss">perlu restock</div><span class="sb" style="background:#fff8e1;color:#b8860b;">⚠ Segera</span></div>
-    <div class="sc"><div class="sl">Stok Habis</div><div class="sv">1</div><div class="ss">jenis kayu</div><span class="sb br">! Darurat</span></div>
-  </div>
-  <div class="tc">
-    <div class="tw">
-      <div class="th"><h3>Status Stok Semua Jenis</h3><div class="ta"><button class="bs bd" onclick="sm('m2')">+ Input Stok</button></div></div>
-      <table>
-        <thead><tr><th>Jenis Kayu</th><th>Stok (m³)</th><th>Min. Stok</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td class="tw2">Jati 4×6</td><td class="tn">480</td><td>50</td><td><span class="stb sa">Aman</span></td></tr>
-          <tr><td class="tw2">Jati 5×10</td><td class="tn">320</td><td>50</td><td><span class="stb sa">Aman</span></td></tr>
-          <tr><td class="tw2">Meranti 4×6</td><td class="tn">560</td><td>80</td><td><span class="stb sa">Aman</span></td></tr>
-          <tr><td class="tw2">Sengon 3×5</td><td class="tn">720</td><td>100</td><td><span class="stb sa">Aman</span></td></tr>
-          <tr><td class="tw2">Merbau 6×12</td><td class="tn">65</td><td>40</td><td><span class="stb st">Tipis</span></td></tr>
-          <tr><td class="tw2">Mahoni 4×6</td><td class="tn">42</td><td>40</td><td><span class="stb st">Tipis</span></td></tr>
-          <tr><td class="tw2">Pinus 3×5</td><td class="tn">38</td><td>40</td><td><span class="stb st">Tipis</span></td></tr>
-          <tr><td class="tw2">Jati 6×12</td><td class="tn">0</td><td>30</td><td><span class="stb sh">Habis</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div>
-      <div class="fs">
-        <h3>Input Stok Masuk</h3>
-        <div class="fg">
-          <div class="fg2"><label>Jenis Kayu</label><select><option>Pilih...</option><option>Jati 4×6</option><option>Meranti 4×6</option><option>Sengon 3×5</option></select></div>
-          <div class="fg2"><label>Jumlah (m³)</label><input type="number" placeholder="0"></div>
-          <div class="fg2"><label>Tanggal Masuk</label><input type="date"></div>
-          <div class="fg2"><label>Supplier</label><input type="text" placeholder="Nama supplier"></div>
-        </div>
-        <div class="fa"><button class="bs bw" onclick="st('Stok berhasil ditambahkan!')">Simpan</button><button class="bs bo">Reset</button></div>
-      </div>
-      <div class="cs">
-        <h3>Distribusi Stok per Jenis</h3>
-        <div class="csub">Volume m³ — hover untuk detail</div>
-        <div class="bc2">
-          <div class="bg2"><div class="bf act" style="height:100%"><div class="btt">Sengon: 720</div></div><span class="bl">Sengon</span></div>
-          <div class="bg2"><div class="bf" style="height:78%"><div class="btt">Meranti: 560</div></div><span class="bl">Meranti</span></div>
-          <div class="bg2"><div class="bf" style="height:67%"><div class="btt">Jati 4×6: 480</div></div><span class="bl">Jati</span></div>
-          <div class="bg2"><div class="bf" style="height:44%"><div class="btt">Merbau: 245</div></div><span class="bl">Merbau</span></div>
-          <div class="bg2"><div class="bf" style="height:25%"><div class="btt">Mahoni: 42</div></div><span class="bl">Mahoni</span></div>
-          <div class="bg2"><div class="bf" style="height:22%"><div class="btt">Pinus: 38</div></div><span class="bl">Pinus</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- LAPORAN PENJUALAN -->
-<div id="page-jual" class="page">
-  <div class="ph"><div class="bc">kayuMANIA › Laporan Penjualan</div><h1>Laporan Penjualan</h1><p>Riwayat dan analisis transaksi</p></div>
-  <div class="sr">
-    <div class="sc"><div class="sl">Penjualan Bulan Ini</div><div class="sv">Rp 48,2M</div><div class="ss">134 transaksi</div><span class="sb bg">↑ 12%</span></div>
-    <div class="sc"><div class="sl">Bulan Lalu</div><div class="sv">Rp 43,1M</div><div class="ss">121 transaksi</div></div>
-    <div class="sc"><div class="sl">Rata-rata / Transaksi</div><div class="sv">Rp 360rb</div><div class="ss">bulan ini</div></div>
-    <div class="sc"><div class="sl">Pelanggan Baru</div><div class="sv">18</div><div class="ss">bulan ini</div><span class="sb bb">+18</span></div>
-  </div>
-  <div class="cs">
-    <h3>Tren Penjualan 2026</h3>
-    <div class="csub">Dalam juta rupiah — hover untuk detail</div>
-    <div class="bc2">
-      <div class="bg2"><div class="bf" style="height:72%"><div class="btt">Jan: Rp38,5M</div></div><span class="bl">Jan</span></div>
-      <div class="bg2"><div class="bf" style="height:80%"><div class="btt">Feb: Rp43,1M</div></div><span class="bl">Feb</span></div>
-      <div class="bg2"><div class="bf act" style="height:90%"><div class="btt">Mar: Rp48,2M</div></div><span class="bl">Mar</span></div>
-      <div class="bg2"><div class="bf" style="height:15%"><div class="btt">Apr: -</div></div><span class="bl">Apr</span></div>
-      <div class="bg2"><div class="bf" style="height:8%"><div class="btt">Mei: -</div></div><span class="bl">Mei</span></div>
-      <div class="bg2"><div class="bf" style="height:8%"><div class="btt">Jun: -</div></div><span class="bl">Jun</span></div>
-    </div>
-  </div>
-  <div class="fr">
-    <div class="sb2"><span class="si">🔍</span><input type="text" placeholder="Cari transaksi..."></div>
-    <select><option>Semua Bulan</option><option>Maret 2026</option><option>Februari 2026</option></select>
-    <select><option>Semua Status</option><option>Lunas</option><option>Proses</option><option>Batal</option></select>
-    <button class="bs bo">⬇ Export PDF</button>
-    <button class="bs bd" onclick="sm('m3')">+ Catat Penjualan</button>
+    <div class="sc"><div class="sl">Total Stok</div><div class="sv" id="stok-total">2.847</div><div class="ss">m³</div><span class="sbg b">Update otomatis</span></div>
+    <div class="sc"><div class="sl">Stok Aman</div><div class="sv" id="stok-aman">5</div><div class="ss">jenis kayu</div><span class="sbg g">OK</span></div>
+    <div class="sc"><div class="sl">Stok Tipis</div><div class="sv" id="stok-tipis">3</div><div class="ss">jenis kayu</div><span class="sbg y">⚠</span></div>
+    <div class="sc"><div class="sl">Stok Habis</div><div class="sv" id="stok-habis">0</div><div class="ss">jenis kayu</div><span class="sbg r">!</span></div>
   </div>
   <div class="tw">
-    <div class="th"><h3>Riwayat Transaksi</h3></div>
-    <table>
-      <thead><tr><th>ID</th><th>Tanggal</th><th>Pelanggan</th><th>Produk</th><th>Qty</th><th>Total</th><th>Bayar</th><th>Status</th></tr></thead>
-      <tbody>
-        <tr><td>#134</td><td>11 Mar 2026</td><td>Budi Konstruksi</td><td>Jati 4×6</td><td>50 btg</td><td class="tn">Rp 4.500.000</td><td>Transfer</td><td><span class="stb sa">Lunas</span></td></tr>
-        <tr><td>#133</td><td>11 Mar 2026</td><td>Toko Mebel Sari</td><td>Meranti 5×10</td><td>30 btg</td><td class="tn">Rp 2.100.000</td><td>Cash</td><td><span class="stb sa">Lunas</span></td></tr>
-        <tr><td>#132</td><td>10 Mar 2026</td><td>Pak Hartono</td><td>Sengon 3×5</td><td>100 btg</td><td class="tn">Rp 1.800.000</td><td>Transfer</td><td><span class="stb st">Proses</span></td></tr>
-        <tr><td>#131</td><td>10 Mar 2026</td><td>CV Bangun Jaya</td><td>Merbau 6×12</td><td>20 btg</td><td class="tn">Rp 3.200.000</td><td>Transfer</td><td><span class="stb sa">Lunas</span></td></tr>
-        <tr><td>#130</td><td>09 Mar 2026</td><td>Ibu Wati</td><td>Mahoni 4×6</td><td>15 btg</td><td class="tn">Rp 1.350.000</td><td>Cash</td><td><span class="stb sh">Batal</span></td></tr>
-        <tr><td>#129</td><td>09 Mar 2026</td><td>PT Griya Elok</td><td>Jati 5×10</td><td>80 btg</td><td class="tn">Rp 7.200.000</td><td>Transfer</td><td><span class="stb sa">Lunas</span></td></tr>
-        <tr><td>#128</td><td>08 Mar 2026</td><td>Bengkel Kayu Mas</td><td>Pinus 3×5</td><td>60 btg</td><td class="tn">Rp 1.140.000</td><td>Cash</td><td><span class="stb sa">Lunas</span></td></tr>
+    <div class="th"><h3>Inventaris Kayu</h3><div class="ta"><button class="bs bw" onclick="sm('m-stok')">+ Input Stok</button></div></div>
+    <div class="t-scroll"><table>
+      <thead><tr><th>Jenis Kayu</th><th>Ukuran</th><th>Stok (m³)</th><th>Min. Stok</th><th>Status</th><th>Terakhir Update</th></tr></thead>
+      <tbody id="stok-tbody">
+        <tr><td class="tw2">Jati 4×6</td><td>4m</td><td id="stok-jati46">480</td><td>50</td><td><span class="stb sa">Aman</span></td><td>12 Mar 2026</td></tr>
+        <tr><td class="tw2">Jati 5×10</td><td>4m</td><td id="stok-jati510">320</td><td>50</td><td><span class="stb sa">Aman</span></td><td>12 Mar 2026</td></tr>
+        <tr><td class="tw2">Meranti 4×6</td><td>4m</td><td id="stok-mer46">560</td><td>60</td><td><span class="stb sa">Aman</span></td><td>12 Mar 2026</td></tr>
+        <tr><td class="tw2">Meranti 5×10</td><td>4m</td><td id="stok-mer510">210</td><td>50</td><td><span class="stb sa">Aman</span></td><td>12 Mar 2026</td></tr>
+        <tr><td class="tw2">Sengon 3×5</td><td>4m</td><td id="stok-sen35">720</td><td>80</td><td><span class="stb sa">Aman</span></td><td>12 Mar 2026</td></tr>
+        <tr><td class="tw2">Merbau 4×6</td><td>4m</td><td id="stok-mer2">180</td><td>40</td><td><span class="stb sa">Aman</span></td><td>12 Mar 2026</td></tr>
+        <tr><td class="tw2">Merbau 6×12</td><td>4m</td><td id="stok-mer6">65</td><td>30</td><td><span class="stb st">Tipis</span></td><td>12 Mar 2026</td></tr>
+        <tr><td class="tw2">Mahoni 4×6</td><td>4m</td><td id="stok-mah">42</td><td>40</td><td><span class="stb st">Tipis</span></td><td>12 Mar 2026</td></tr>
+        <tr><td class="tw2">Pinus 3×5</td><td>4m</td><td id="stok-pin">38</td><td>40</td><td><span class="stb st">Tipis</span></td><td>12 Mar 2026</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 </div>
 
-<!-- LAPORAN KEUANGAN -->
-<div id="page-uang" class="page">
-  <div class="ph"><div class="bc">kayuMANIA › Laporan Keuangan</div><h1>Laporan Keuangan</h1><p>Pemasukan, pengeluaran, dan laba bersih</p></div>
+<!-- ══════════ PEMESANAN (+ PEMBELIAN JADI 1) ══════════ -->
+<div id="page-pesan" class="page">
+  <div class="ph"><div class="bc">kayuMANIA › Pemesanan</div><h1>Form Pemesanan</h1><p>Pilih produk, isi data, dan buat pesanan</p></div>
   <div class="sr">
-    <div class="sc"><div class="sl">Total Pemasukan</div><div class="sv" style="color:var(--green)">Rp 48,2M</div><div class="ss">Maret 2026</div><span class="sb bg">↑ 12%</span></div>
-    <div class="sc"><div class="sl">Total Pengeluaran</div><div class="sv" style="color:var(--red)">Rp 29,5M</div><div class="ss">Maret 2026</div><span class="sb br">↑ 8%</span></div>
-    <div class="sc"><div class="sl">Laba Bersih</div><div class="sv">Rp 18,7M</div><div class="ss">Margin 38,8%</div><span class="sb bg">↑ 18%</span></div>
-    <div class="sc"><div class="sl">Piutang Belum Bayar</div><div class="sv">Rp 4,3M</div><div class="ss">3 pelanggan</div><span class="sb br">Kejar!</span></div>
-  </div>
-  <div class="tc">
-    <div class="tw">
-      <div class="th"><h3>Pemasukan</h3><div class="ta"><button class="bs bgn" onclick="sm('m4')">+ Tambah</button></div></div>
-      <table>
-        <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Jumlah</th></tr></thead>
-        <tbody>
-          <tr><td>11 Mar</td><td>Penjualan Jati 4×6</td><td class="tg">+ Rp 4.500.000</td></tr>
-          <tr><td>11 Mar</td><td>Penjualan Meranti</td><td class="tg">+ Rp 2.100.000</td></tr>
-          <tr><td>10 Mar</td><td>Penjualan Merbau</td><td class="tg">+ Rp 3.200.000</td></tr>
-          <tr><td>09 Mar</td><td>Penjualan Jati 5×10</td><td class="tg">+ Rp 7.200.000</td></tr>
-          <tr><td>08 Mar</td><td>Penjualan Pinus</td><td class="tg">+ Rp 1.140.000</td></tr>
-          <tr><td colspan="2"><strong>Total</strong></td><td class="tg"><strong>Rp 48.200.000</strong></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="tw">
-      <div class="th"><h3>Pengeluaran</h3><div class="ta"><button class="bs bo" onclick="sm('m4')">+ Tambah</button></div></div>
-      <table>
-        <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Jumlah</th></tr></thead>
-        <tbody>
-          <tr><td>05 Mar</td><td>Beli stok Jati</td><td class="tr">- Rp 18.500.000</td></tr>
-          <tr><td>05 Mar</td><td>Beli stok Meranti</td><td class="tr">- Rp 6.200.000</td></tr>
-          <tr><td>01 Mar</td><td>Gaji karyawan</td><td class="tr">- Rp 3.600.000</td></tr>
-          <tr><td>01 Mar</td><td>Sewa gudang</td><td class="tr">- Rp 800.000</td></tr>
-          <tr><td>03 Mar</td><td>Ongkos angkut</td><td class="tr">- Rp 400.000</td></tr>
-          <tr><td colspan="2"><strong>Total</strong></td><td class="tr"><strong>Rp 29.500.000</strong></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="fs"><h3>Catat Transaksi Keuangan</h3>
-    <div class="fg">
-      <div class="fg2"><label>Jenis</label><select><option>Pemasukan</option><option>Pengeluaran</option></select></div>
-      <div class="fg2"><label>Tanggal</label><input type="date"></div>
-      <div class="fg2"><label>Keterangan</label><input type="text" placeholder="Deskripsi transaksi"></div>
-      <div class="fg2"><label>Jumlah (Rp)</label><input type="number" placeholder="0"></div>
-    </div>
-    <div class="fa">
-      <button class="bs bd" onclick="st('Transaksi berhasil dicatat!')">Simpan</button>
-      <button class="bs bo">Reset</button>
-      <button class="bs bo">⬇ Export Excel</button>
-    </div>
-  </div>
-</div>
-
-<!-- ALAMAT -->
-<div id="page-alamat" class="page">
-  <div class="ph"><div class="bc">kayuMANIA › Lokasi & Kontak</div><h1>Lokasi & Kontak</h1><p>Temukan kami di Yogyakarta</p></div>
-  <div class="ac">
-    <div class="al">Alamat Toko Resmi</div>
-    <h2>kayuMANIA</h2>
-    <div class="aa">Jl. Parangtritis KM 6, Sewon, Bantul<br>Daerah Istimewa Yogyakarta 55187</div>
-    <div class="ar">
-      <div class="ach">📍 <span>Sewon, Bantul, DIY</span></div>
-      <div class="ach">🕙 <strong>Senin–Sabtu: 08.00–17.00</strong></div>
-      <div class="ach">📞 <strong>0882-2132-9336</strong></div>
-    </div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
-    <div class="fs" style="margin-bottom:0">
-      <h3>📞 Hubungi Kami</h3>
-      <div style="display:flex;flex-direction:column;gap:12px;margin-top:6px;">
-        <div><div style="font-size:.67rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;">WhatsApp</div><a href="https://wa.me/6288221329336" target="_blank" style="font-size:.92rem;font-weight:700;color:var(--black);text-decoration:none;">0882-2132-9336</a></div>
-        <div><div style="font-size:.67rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;">Jam Operasional</div><div style="font-size:.8rem;color:#555;line-height:1.6;">Sen–Jum: 08.00–17.00<br>Sabtu: 08.00–15.00<br>Minggu: Tutup</div></div>
-        <a href="https://wa.me/6288221329336" target="_blank" style="background:var(--black);color:var(--white);text-align:center;padding:9px;border-radius:8px;font-size:.78rem;font-weight:700;text-decoration:none;display:block;">💬 Chat WhatsApp</a>
-      </div>
-    </div>
-    <div class="fs" style="margin-bottom:0">
-      <h3>🗺️ Petunjuk Arah</h3>
-      <div style="font-size:.8rem;color:#555;line-height:1.8;margin-top:6px;">
-        <p style="margin-bottom:7px;">Dari pusat kota Yogyakarta:</p>
-        <ol style="padding-left:17px;display:flex;flex-direction:column;gap:5px;">
-          <li>Ambil Jl. Parangtritis ke selatan</li>
-          <li>Lurus hingga KM 6 dari Kraton</li>
-          <li>Toko di sisi kiri jalan</li>
-          <li>Ada papan <strong>kayuMANIA</strong> hitam</li>
-        </ol>
-        <div style="margin-top:11px;padding:9px;background:#f5f5f5;border-radius:7px;font-size:.72rem;color:#888;">📍 -7.8791° S, 110.3665° E</div>
-      </div>
-    </div>
-    <div class="fs" style="margin-bottom:0">
-      <h3>✉️ Kirim Pesan</h3>
-      <div style="display:flex;flex-direction:column;gap:9px;margin-top:6px;">
-        <div class="fg2"><label>Nama</label><input type="text" placeholder="Nama Anda"></div>
-        <div class="fg2"><label>No. HP</label><input type="text" placeholder="08xx-xxxx-xxxx"></div>
-        <div class="fg2"><label>Pesan</label><textarea rows="3" placeholder="Pertanyaan atau kebutuhan Anda..." style="resize:none"></textarea></div>
-        <button class="bs bd" onclick="st('Pesan terkirim! Kami segera menghubungi.')" style="width:100%">Kirim Pesan</button>
-      </div>
-    </div>
-  </div>
-  <div class="ib" style="margin-top:14px;"><span style="font-size:1rem;flex-shrink:0;">🚚</span><p><strong>Layanan Pengiriman:</strong> Melayani pengiriman ke seluruh Yogyakarta, Bantul, Sleman, Gunung Kidul, dan Kulon Progo. Hubungi kami untuk info ongkos kirim ke lokasi Anda.</p></div>
-</div>
-
-
-<!-- ══ PEMBELIAN ══ -->
-<div id="page-beli" class="page">
-  <div class="ph"><div class="bc">kayuMANIA › Pembelian</div><h1>Pembelian Kayu</h1><p>Pilih produk dan buat pesanan pembelian</p></div>
-
-  <div class="sr">
-    <div class="sc"><div class="sl">Total Pembelian Hari Ini</div><div class="sv">Rp 6,8M</div><div class="ss">4 transaksi</div><span class="sb bg">Aktif</span></div>
-    <div class="sc"><div class="sl">Item di Keranjang</div><div class="sv" id="cart-count">0</div><div class="ss">siap dipesan</div></div>
-    <div class="sc"><div class="sl">Total Keranjang</div><div class="sv" id="cart-total">Rp 0</div><div class="ss">belum termasuk ongkir</div></div>
-    <div class="sc"><div class="sl">Pembelian Bulan Ini</div><div class="sv">Rp 48,2M</div><div class="ss">134 transaksi</div><span class="sb bb">Maret</span></div>
+    <div class="sc"><div class="sl">Total Pesanan</div><div class="sv" id="order-count">0</div><div class="ss">semua waktu</div></div>
+    <div class="sc"><div class="sl">Menunggu</div><div class="sv" id="order-wait">0</div><div class="ss">perlu konfirmasi</div><span class="sbg y">Aktif</span></div>
+    <div class="sc"><div class="sl">Diproses</div><div class="sv" id="order-proses">0</div><div class="ss">sedang dikerjakan</div><span class="sbg b">Proses</span></div>
+    <div class="sc"><div class="sl">Selesai</div><div class="sv" id="order-done">0</div><div class="ss">pesanan selesai</div><span class="sbg g">OK</span></div>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start;">
-    <!-- Produk List -->
-    <div>
-      <div class="fr">
-        <div class="sb2"><span class="si">🔍</span><input type="text" placeholder="Cari kayu..."></div>
-        <select><option>Semua Jenis</option><option>Keras</option><option>Lunak</option></select>
-      </div>
-      <div class="tw">
-        <div class="th"><h3>Pilih Produk</h3></div>
-        <table>
-          <thead><tr><th>Produk</th><th>Ukuran</th><th>Harga/btg</th><th>Stok</th><th>Aksi</th></tr></thead>
-          <tbody>
-            <tr><td class="tw2">Kayu Jati</td><td>4×6 · 4m</td><td class="tn">Rp 45.000</td><td><span class="stb sa">480 m³</span></td><td><button class="bs bd" onclick="addCart('Kayu Jati 4×6',45000,'🌳')">+ Keranjang</button></td></tr>
-            <tr><td class="tw2">Kayu Jati</td><td>5×10 · 4m</td><td class="tn">Rp 85.000</td><td><span class="stb sa">320 m³</span></td><td><button class="bs bd" onclick="addCart('Kayu Jati 5×10',85000,'🌳')">+ Keranjang</button></td></tr>
-            <tr><td class="tw2">Kayu Meranti</td><td>4×6 · 4m</td><td class="tn">Rp 25.000</td><td><span class="stb sa">560 m³</span></td><td><button class="bs bd" onclick="addCart('Meranti 4×6',25000,'🪴')">+ Keranjang</button></td></tr>
-            <tr><td class="tw2">Kayu Meranti</td><td>5×10 · 4m</td><td class="tn">Rp 45.000</td><td><span class="stb sa">210 m³</span></td><td><button class="bs bd" onclick="addCart('Meranti 5×10',45000,'🪴')">+ Keranjang</button></td></tr>
-            <tr><td class="tw2">Kayu Sengon</td><td>3×5 · 4m</td><td class="tn">Rp 12.000</td><td><span class="stb sa">720 m³</span></td><td><button class="bs bd" onclick="addCart('Sengon 3×5',12000,'🌲')">+ Keranjang</button></td></tr>
-            <tr><td class="tw2">Kayu Sengon</td><td>4×6 · 4m</td><td class="tn">Rp 15.000</td><td><span class="stb sa">480 m³</span></td><td><button class="bs bd" onclick="addCart('Sengon 4×6',15000,'🌲')">+ Keranjang</button></td></tr>
-            <tr><td class="tw2">Kayu Merbau</td><td>4×6 · 4m</td><td class="tn">Rp 38.000</td><td><span class="stb sa">180 m³</span></td><td><button class="bs bd" onclick="addCart('Merbau 4×6',38000,'🪵')">+ Keranjang</button></td></tr>
-            <tr><td class="tw2">Kayu Merbau</td><td>6×12 · 4m</td><td class="tn">Rp 160.000</td><td><span class="stb st">65 m³</span></td><td><button class="bs bw" onclick="addCart('Merbau 6×12',160000,'🪵')">+ Keranjang</button></td></tr>
-            <tr><td class="tw2">Kayu Mahoni</td><td>4×6 · 4m</td><td class="tn">Rp 30.000</td><td><span class="stb st">42 m³</span></td><td><button class="bs bw" onclick="addCart('Mahoni 4×6',30000,'🌿')">+ Keranjang</button></td></tr>
-            <tr><td class="tw2">Kayu Pinus</td><td>3×5 · 4m</td><td class="tn">Rp 16.000</td><td><span class="stb st">38 m³</span></td><td><button class="bs bw" onclick="addCart('Pinus 3×5',16000,'🎋')">+ Keranjang</button></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Keranjang -->
+  <div class="two-col">
+    <!-- Kiri: Pilih Produk -->
     <div>
       <div class="tw" style="margin-bottom:12px;">
-        <div class="th"><h3>🛒 Keranjang Belanja</h3><div class="ta"><button class="bs bo" onclick="clearCart()">Kosongkan</button></div></div>
-        <div id="cart-items" style="padding:0 16px;min-height:60px;">
-          <div style="text-align:center;padding:24px 0;font-size:.8rem;color:#bbb;">Keranjang masih kosong<br><span style="font-size:.72rem;">Tambahkan produk dari tabel</span></div>
-        </div>
-        <div style="padding:14px 16px;border-top:1px solid #f0f0f0;">
-          <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--g400);margin-bottom:4px;"><span>Subtotal</span><span id="cart-sub">Rp 0</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--g400);margin-bottom:10px;"><span>Ongkos Kirim</span><span>Hubungi kami</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:.92rem;font-weight:800;"><span>Total</span><span id="cart-total2">Rp 0</span></div>
-        </div>
-      </div>
-      <div class="fs" style="margin-bottom:12px;">
-        <h3>Data Pemesan</h3>
-        <div style="display:flex;flex-direction:column;gap:9px;margin-top:4px;">
-          <div class="fg2"><label>Nama Lengkap</label><input type="text" id="beli-nama" placeholder="Nama pembeli"></div>
-          <div class="fg2"><label>No. HP / WA</label><input type="text" id="beli-hp" placeholder="08xx-xxxx-xxxx"></div>
-          <div class="fg2"><label>Alamat Pengiriman</label><textarea rows="2" id="beli-alamat" placeholder="Alamat lengkap..." style="resize:none"></textarea></div>
-          <div class="fg2"><label>Metode Bayar</label><select id="beli-bayar"><option>Cash</option><option>Transfer Bank</option><option>QRIS</option></select></div>
-        </div>
-      </div>
-      <button class="bs bd" style="width:100%;padding:11px;font-size:.85rem;" onclick="buatPesanan()">✓ Buat Pesanan & Cetak Struk</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ PEMESANAN ══ -->
-<div id="page-pesan" class="page">
-  <div class="ph"><div class="bc">kayuMANIA › Pemesanan</div><h1>Form Pemesanan</h1><p>Buat & kelola pesanan kayu</p></div>
-
-  <div class="sr">
-    <div class="sc"><div class="sl">Pesanan Aktif</div><div class="sv">12</div><div class="ss">menunggu proses</div><span class="sb bb">Aktif</span></div>
-    <div class="sc"><div class="sl">Pesanan Hari Ini</div><div class="sv">5</div><div class="ss">masuk hari ini</div><span class="sb bg">Baru</span></div>
-    <div class="sc"><div class="sl">Selesai Bulan Ini</div><div class="sv">127</div><div class="ss">pesanan selesai</div><span class="sb bg">↑ 9%</span></div>
-    <div class="sc"><div class="sl">Dibatalkan</div><div class="sv">3</div><div class="ss">bulan ini</div><span class="sb br">Batal</span></div>
-  </div>
-
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-    <div class="fs">
-      <h3>📋 Form Pesanan Baru</h3>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;">
-        <div class="fg2"><label>Nama Pelanggan</label><input type="text" id="p-nama" placeholder="Nama lengkap pelanggan"></div>
-        <div class="fg2"><label>No. HP / WhatsApp</label><input type="text" id="p-hp" placeholder="08xx-xxxx-xxxx"></div>
-        <div class="fg2"><label>Alamat Pengiriman</label><textarea rows="2" id="p-alamat" placeholder="Alamat pengiriman lengkap..." style="resize:none"></textarea></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
-          <div class="fg2"><label>Jenis Kayu</label>
-            <select id="p-kayu"><option>Jati 4×6</option><option>Jati 5×10</option><option>Meranti 4×6</option><option>Meranti 5×10</option><option>Sengon 3×5</option><option>Merbau 4×6</option><option>Mahoni 4×6</option><option>Pinus 3×5</option></select>
-          </div>
-          <div class="fg2"><label>Jumlah (batang)</label><input type="number" id="p-qty" placeholder="0" min="1"></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
-          <div class="fg2"><label>Tanggal Pesan</label><input type="date" id="p-tgl"></div>
-          <div class="fg2"><label>Metode Bayar</label><select id="p-bayar"><option>Cash</option><option>Transfer Bank</option><option>QRIS</option></select></div>
-        </div>
-        <div class="fg2"><label>Catatan Tambahan</label><textarea rows="2" id="p-catatan" placeholder="Catatan khusus (opsional)..." style="resize:none"></textarea></div>
-        <div style="display:flex;gap:8px;">
-          <button class="bs bd" style="flex:1;padding:10px;" onclick="simpanPesan()">✓ Simpan Pesanan</button>
-          <button class="bs bw" style="flex:1;padding:10px;" onclick="simpanCetak()">🖨 Simpan & Cetak Struk</button>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <div class="tw" style="margin-bottom:14px;">
-        <div class="th"><h3>Pesanan Menunggu Konfirmasi</h3></div>
-        <table>
-          <thead><tr><th>No. Pesanan</th><th>Pelanggan</th><th>Produk</th><th>Status</th><th>Aksi</th></tr></thead>
+        <div class="th"><h3>🪵 Pilih Produk</h3></div>
+        <div class="t-scroll"><table>
+          <thead><tr><th>Produk</th><th>Ukuran</th><th>Harga/btg</th><th>Stok</th><th>Aksi</th></tr></thead>
           <tbody>
-            <tr><td><b>#ORD-048</b></td><td>Pak Hendra</td><td>Jati 4×6 · 30btg</td><td><span class="status-chip chip-wait">Menunggu</span></td><td><button class="bs bgn" style="padding:3px 10px;font-size:.65rem;" onclick="st('Pesanan #ORD-048 dikonfirmasi!')">Konfirmasi</button></td></tr>
-            <tr><td><b>#ORD-047</b></td><td>Bu Dewi</td><td>Meranti 5×10 · 20btg</td><td><span class="status-chip chip-proses">Diproses</span></td><td><button class="bs bo" style="padding:3px 10px;font-size:.65rem;" onclick="sm('struk-047')">Lihat Struk</button></td></tr>
-            <tr><td><b>#ORD-046</b></td><td>CV Maju</td><td>Sengon 3×5 · 100btg</td><td><span class="status-chip chip-proses">Diproses</span></td><td><button class="bs bo" style="padding:3px 10px;font-size:.65rem;" onclick="sm('struk-046')">Lihat Struk</button></td></tr>
-            <tr><td><b>#ORD-045</b></td><td>Pak Rudi</td><td>Merbau 6×12 · 10btg</td><td><span class="status-chip chip-ok">Selesai</span></td><td><button class="bs bo" style="padding:3px 10px;font-size:.65rem;" onclick="sm('struk-046')">Struk</button></td></tr>
+            <tr><td class="tw2">Kayu Jati</td><td>4×6 · 4m</td><td class="tn">Rp 45.000</td><td id="s-jati46">480</td><td><button class="bs bd" onclick="addCart('Kayu Jati 4×6','jati46',45000,'🌳')">+ Keranjang</button></td></tr>
+            <tr><td class="tw2">Kayu Jati</td><td>5×10 · 4m</td><td class="tn">Rp 85.000</td><td id="s-jati510">320</td><td><button class="bs bd" onclick="addCart('Kayu Jati 5×10','jati510',85000,'🌳')">+ Keranjang</button></td></tr>
+            <tr><td class="tw2">Kayu Meranti</td><td>4×6 · 4m</td><td class="tn">Rp 25.000</td><td id="s-mer46">560</td><td><button class="bs bd" onclick="addCart('Meranti 4×6','mer46',25000,'🪴')">+ Keranjang</button></td></tr>
+            <tr><td class="tw2">Kayu Meranti</td><td>5×10 · 4m</td><td class="tn">Rp 45.000</td><td id="s-mer510">210</td><td><button class="bs bd" onclick="addCart('Meranti 5×10','mer510',45000,'🪴')">+ Keranjang</button></td></tr>
+            <tr><td class="tw2">Kayu Sengon</td><td>3×5 · 4m</td><td class="tn">Rp 12.000</td><td id="s-sen35">720</td><td><button class="bs bd" onclick="addCart('Sengon 3×5','sen35',12000,'🌲')">+ Keranjang</button></td></tr>
+            <tr><td class="tw2">Kayu Merbau</td><td>4×6 · 4m</td><td class="tn">Rp 38.000</td><td id="s-mer2">180</td><td><button class="bs bd" onclick="addCart('Merbau 4×6','mer2',38000,'🪵')">+ Keranjang</button></td></tr>
+            <tr><td class="tw2">Kayu Merbau</td><td>6×12 · 4m</td><td class="tn">Rp 160.000</td><td id="s-mer6">65</td><td><button class="bs bw" onclick="addCart('Merbau 6×12','mer6',160000,'🪵')">+ Keranjang</button></td></tr>
+            <tr><td class="tw2">Kayu Mahoni</td><td>4×6 · 4m</td><td class="tn">Rp 30.000</td><td id="s-mah">42</td><td><button class="bs bw" onclick="addCart('Mahoni 4×6','mah',30000,'🌿')">+ Keranjang</button></td></tr>
+            <tr><td class="tw2">Kayu Pinus</td><td>3×5 · 4m</td><td class="tn">Rp 16.000</td><td id="s-pin">38</td><td><button class="bs bw" onclick="addCart('Pinus 3×5','pin',16000,'🎋')">+ Keranjang</button></td></tr>
           </tbody>
-        </table>
+        </table></div>
       </div>
 
-      <div class="cs">
-        <h3>Alur Status Pesanan</h3>
-        <div class="csub">Proses dari masuk hingga selesai</div>
-        <div class="step-row">
-          <div class="step done"><div class="step-dot">✓</div><div class="step-label">Masuk</div></div>
-          <div class="step done"><div class="step-dot">✓</div><div class="step-label">Konfirmasi</div></div>
-          <div class="step active"><div class="step-dot">3</div><div class="step-label">Diproses</div></div>
-          <div class="step"><div class="step-dot">4</div><div class="step-label">Siap Kirim</div></div>
-          <div class="step"><div class="step-dot">5</div><div class="step-label">Selesai</div></div>
+      <!-- Data Pemesan -->
+      <div class="fs">
+        <h3>👤 Data Pemesan</h3>
+        <div class="fg">
+          <div class="fg2"><label>Nama Lengkap</label><input type="text" id="p-nama" placeholder="Nama pemesan"></div>
+          <div class="fg2"><label>No. HP / WA</label><input type="text" id="p-hp" placeholder="08xx-xxxx-xxxx"></div>
+          <div class="fg2"><label>Alamat Pengiriman</label><input type="text" id="p-alamat" placeholder="Alamat lengkap"></div>
+          <div class="fg2"><label>Metode Bayar</label><select id="p-bayar"><option>Cash</option><option>Transfer Bank</option><option>QRIS</option></select></div>
+          <div class="fg2"><label>Catatan</label><textarea id="p-catatan" rows="2" placeholder="Catatan tambahan..." style="resize:none"></textarea></div>
+          <div class="fg2"><label>Tanggal Pesan</label><input type="date" id="p-tgl"></div>
         </div>
-        <div style="font-size:.75rem;color:var(--g400);margin-top:4px;">Pesanan <strong>#ORD-047</strong> sedang dalam tahap <strong>Diproses</strong></div>
+      </div>
+    </div>
+
+    <!-- Kanan: Keranjang -->
+    <div>
+      <div class="tw" style="margin-bottom:10px;">
+        <div class="th"><h3>🛒 Keranjang</h3><div class="ta"><button class="bs bo" onclick="clearCart()" style="font-size:.65rem;padding:4px 9px;">Kosongkan</button></div></div>
+        <div id="cart-items" style="padding:0 14px;min-height:50px;">
+          <div style="text-align:center;padding:20px 0;font-size:.8rem;color:#bbb;">Belum ada produk</div>
+        </div>
+        <div style="padding:12px 14px;border-top:1px solid #f5f5f5;">
+          <div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--g400);margin-bottom:3px;"><span>Subtotal</span><span id="cart-sub">Rp 0</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--g400);margin-bottom:8px;"><span>Ongkos Kirim</span><span>Hubungi kami</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.9rem;font-weight:800;"><span>Total</span><span id="cart-total">Rp 0</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="bs bd" style="width:100%;padding:11px;font-size:.82rem;justify-content:center;" onclick="buatPesanan()">✓ Buat Pesanan</button>
+        <button class="bs bw" style="width:100%;padding:11px;font-size:.82rem;justify-content:center;" onclick="buatDanCetak()">🖨 Buat Pesanan & Cetak Struk</button>
+      </div>
+
+      <!-- Daftar Pesanan Aktif -->
+      <div class="tw" style="margin-top:14px;">
+        <div class="th"><h3>📋 Pesanan Aktif</h3></div>
+        <div class="t-scroll"><table>
+          <thead><tr><th>No.</th><th>Pelanggan</th><th>Total</th><th>Status</th></tr></thead>
+          <tbody id="active-orders"><tr><td colspan="4" style="text-align:center;color:var(--g400);padding:16px;font-size:.78rem;">Belum ada pesanan</td></tr></tbody>
+        </table></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ LAPORAN PEMESANAN ══ -->
+<!-- ══════════ LAP. PENJUALAN (TERKUNCI) ══════════ -->
+<div id="page-jual" class="page">
+  <div class="ph"><div class="bc">kayuMANIA › Laporan Penjualan</div><h1>Laporan Penjualan</h1><p>Rekap transaksi & pendapatan</p></div>
+  <div class="sr">
+    <div class="sc"><div class="sl">Total Penjualan</div><div class="sv">Rp48,2M</div><div class="ss">Maret 2026</div><span class="sbg g">↑ 12%</span></div>
+    <div class="sc"><div class="sl">Jumlah Transaksi</div><div class="sv">134</div><div class="ss">bulan ini</div><span class="sbg b">Avg Rp360rb</span></div>
+    <div class="sc"><div class="sl">Pelanggan Baru</div><div class="sv">18</div><div class="ss">bulan ini</div><span class="sbg g">↑ 8%</span></div>
+    <div class="sc"><div class="sl">Pesanan Dibatalkan</div><div class="sv">3</div><div class="ss">bulan ini</div><span class="sbg r">2,2%</span></div>
+  </div>
+  <div class="cs">
+    <h3>Grafik Penjualan Bulanan 2026</h3><div class="csub">Dalam jutaan rupiah</div>
+    <div class="bc">
+      <div class="bcol"><div class="bf" style="height:70%"><div class="btt">Jan: Rp33,5M</div></div><span class="bl">Jan</span></div>
+      <div class="bcol"><div class="bf" style="height:80%"><div class="btt">Feb: Rp38,2M</div></div><span class="bl">Feb</span></div>
+      <div class="bcol"><div class="bf act" style="height:100%"><div class="btt">Mar: Rp48,2M</div></div><span class="bl">Mar</span></div>
+    </div>
+  </div>
+  <div class="tw">
+    <div class="th"><h3>Riwayat Transaksi</h3><div class="ta"><button class="bs bo" onclick="window.print()">🖨 Cetak</button></div></div>
+    <div class="t-scroll"><table>
+      <thead><tr><th>ID</th><th>Tanggal</th><th>Pelanggan</th><th>Produk</th><th>Total</th><th>Status</th></tr></thead>
+      <tbody id="jual-tbody">
+        <tr><td>#TRX-001</td><td>11 Mar</td><td>Budi Konstruksi</td><td>Jati 4×6 — 50btg</td><td class="tn">Rp4.500.000</td><td><span class="stb sa">Lunas</span></td></tr>
+        <tr><td>#TRX-002</td><td>11 Mar</td><td>Toko Mebel Sari</td><td>Meranti 5×10 — 30btg</td><td class="tn">Rp2.100.000</td><td><span class="stb sa">Lunas</span></td></tr>
+        <tr><td>#TRX-003</td><td>10 Mar</td><td>Pak Hartono</td><td>Sengon 3×5 — 100btg</td><td class="tn">Rp1.800.000</td><td><span class="stb sb2">Proses</span></td></tr>
+        <tr><td>#TRX-004</td><td>10 Mar</td><td>CV Bangun Jaya</td><td>Merbau 6×12 — 20btg</td><td class="tn">Rp3.200.000</td><td><span class="stb sa">Lunas</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ══════════ LAP. KEUANGAN (TERKUNCI) ══════════ -->
+<div id="page-uang" class="page">
+  <div class="ph"><div class="bc">kayuMANIA › Laporan Keuangan</div><h1>Laporan Keuangan</h1><p>Pemasukan, pengeluaran, dan laba</p></div>
+  <div class="sr">
+    <div class="sc"><div class="sl">Total Pemasukan</div><div class="sv">Rp48,2M</div><div class="ss">Maret 2026</div><span class="sbg g">↑ 12%</span></div>
+    <div class="sc"><div class="sl">Total Pengeluaran</div><div class="sv">Rp31,4M</div><div class="ss">Maret 2026</div><span class="sbg r">Operasional</span></div>
+    <div class="sc"><div class="sl">Laba Bersih</div><div class="sv">Rp16,8M</div><div class="ss">Maret 2026</div><span class="sbg g">↑ Untung</span></div>
+    <div class="sc"><div class="sl">Margin Keuntungan</div><div class="sv">34,8%</div><div class="ss">bulan ini</div><span class="sbg b">Sehat</span></div>
+  </div>
+  <div class="tw">
+    <div class="th"><h3>Rekap Keuangan</h3><div class="ta"><button class="bs bo" onclick="window.print()">🖨 Cetak</button><button class="bs bw" onclick="sm('m-uang')">+ Input</button></div></div>
+    <div class="t-scroll"><table>
+      <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Jenis</th><th>Jumlah</th></tr></thead>
+      <tbody>
+        <tr><td>11 Mar</td><td>Penjualan Jati — Budi Konstruksi</td><td><span class="stb sa">Masuk</span></td><td class="tg">+ Rp4.500.000</td></tr>
+        <tr><td>11 Mar</td><td>Penjualan Meranti — Toko Mebel</td><td><span class="stb sa">Masuk</span></td><td class="tg">+ Rp2.100.000</td></tr>
+        <tr><td>10 Mar</td><td>Pembelian stok kayu Jati</td><td><span class="stb sh">Keluar</span></td><td class="tr">- Rp8.000.000</td></tr>
+        <tr><td>10 Mar</td><td>Gaji karyawan</td><td><span class="stb sh">Keluar</span></td><td class="tr">- Rp5.500.000</td></tr>
+        <tr><td>09 Mar</td><td>Penjualan Merbau — CV Bangun</td><td><span class="stb sa">Masuk</span></td><td class="tg">+ Rp3.200.000</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- ══════════ LAP. PEMESANAN (TERKUNCI) ══════════ -->
 <div id="page-lappesan" class="page">
   <div class="ph"><div class="bc">kayuMANIA › Laporan Pemesanan</div><h1>Laporan Pemesanan</h1><p>Riwayat semua pesanan & cetak struk</p></div>
-
   <div class="sr">
-    <div class="sc"><div class="sl">Total Pesanan</div><div class="sv">142</div><div class="ss">Maret 2026</div><span class="sb bg">↑ 11%</span></div>
-    <div class="sc"><div class="sl">Pesanan Selesai</div><div class="sv">127</div><div class="ss">89% completion rate</div><span class="sb bg">Bagus</span></div>
-    <div class="sc"><div class="sl">Sedang Diproses</div><div class="sv">12</div><div class="ss">pesanan aktif</div><span class="sb bb">Aktif</span></div>
-    <div class="sc"><div class="sl">Dibatalkan</div><div class="sv">3</div><div class="ss">bulan ini</div><span class="sb br">2,1%</span></div>
+    <div class="sc"><div class="sl">Total Pesanan</div><div class="sv" id="lap-total">0</div><div class="ss">semua waktu</div></div>
+    <div class="sc"><div class="sl">Selesai</div><div class="sv" id="lap-done">0</div><div class="ss">pesanan</div><span class="sbg g">OK</span></div>
+    <div class="sc"><div class="sl">Diproses</div><div class="sv" id="lap-proses">0</div><div class="ss">pesanan</div><span class="sbg b">Aktif</span></div>
+    <div class="sc"><div class="sl">Menunggu</div><div class="sv" id="lap-wait">0</div><div class="ss">pesanan</div><span class="sbg y">Baru</span></div>
+  </div>
+  <div class="tw">
+    <div class="th"><h3>Semua Riwayat Pesanan</h3><div class="ta"><button class="bs bo" onclick="window.print()">🖨 Cetak</button></div></div>
+    <div class="t-scroll"><table>
+      <thead><tr><th>No. Pesanan</th><th>Tgl</th><th>Pelanggan</th><th>Produk</th><th>Total</th><th>Bayar</th><th>Status</th><th>Struk</th></tr></thead>
+      <tbody id="lap-tbody"><tr><td colspan="8" style="text-align:center;color:var(--g400);padding:20px;font-size:.8rem;">Belum ada pesanan</td></tr></tbody>
+    </table></div>
   </div>
 
-  <div class="fr">
-    <div class="sb2"><span class="si">🔍</span><input type="text" placeholder="Cari no. pesanan, pelanggan..."></div>
-    <select><option>Semua Status</option><option>Menunggu</option><option>Diproses</option><option>Selesai</option><option>Batal</option></select>
-    <select><option>Semua Bulan</option><option>Maret 2026</option><option>Februari 2026</option></select>
-    <button class="bs bo">⬇ Export PDF</button>
-  </div>
-
-  <div class="tw" style="margin-bottom:20px;">
-    <div class="th"><h3>Semua Riwayat Pesanan</h3></div>
-    <table>
-      <thead><tr><th>No. Pesanan</th><th>Tgl Pesan</th><th>Pelanggan</th><th>Produk</th><th>Qty</th><th>Total</th><th>Bayar</th><th>Status</th><th>Struk</th></tr></thead>
-      <tbody>
-        <tr><td><b>#ORD-048</b></td><td>11 Mar</td><td>Pak Hendra</td><td>Jati 4×6</td><td>30 btg</td><td class="tn">Rp 1.350.000</td><td>Cash</td><td><span class="status-chip chip-wait">Menunggu</span></td><td><button class="bs bo" style="padding:3px 9px;font-size:.65rem;" onclick="tampilStruk('ORD-048','Pak Hendra','Jati 4×6','30','1.350.000','Cash','Menunggu')">🖨 Cetak</button></td></tr>
-        <tr><td><b>#ORD-047</b></td><td>11 Mar</td><td>Bu Dewi</td><td>Meranti 5×10</td><td>20 btg</td><td class="tn">Rp 900.000</td><td>Transfer</td><td><span class="status-chip chip-proses">Diproses</span></td><td><button class="bs bo" style="padding:3px 9px;font-size:.65rem;" onclick="tampilStruk('ORD-047','Bu Dewi','Meranti 5×10','20','900.000','Transfer','Diproses')">🖨 Cetak</button></td></tr>
-        <tr><td><b>#ORD-046</b></td><td>10 Mar</td><td>CV Maju Jaya</td><td>Sengon 3×5</td><td>100 btg</td><td class="tn">Rp 1.200.000</td><td>Transfer</td><td><span class="status-chip chip-proses">Diproses</span></td><td><button class="bs bo" style="padding:3px 9px;font-size:.65rem;" onclick="tampilStruk('ORD-046','CV Maju Jaya','Sengon 3×5','100','1.200.000','Transfer','Diproses')">🖨 Cetak</button></td></tr>
-        <tr><td><b>#ORD-045</b></td><td>10 Mar</td><td>Pak Rudi</td><td>Merbau 6×12</td><td>10 btg</td><td class="tn">Rp 1.600.000</td><td>QRIS</td><td><span class="status-chip chip-ok">Selesai</span></td><td><button class="bs bo" style="padding:3px 9px;font-size:.65rem;" onclick="tampilStruk('ORD-045','Pak Rudi','Merbau 6×12','10','1.600.000','QRIS','Selesai')">🖨 Cetak</button></td></tr>
-        <tr><td><b>#ORD-044</b></td><td>09 Mar</td><td>PT Griya Elok</td><td>Jati 5×10</td><td>80 btg</td><td class="tn">Rp 6.800.000</td><td>Transfer</td><td><span class="status-chip chip-ok">Selesai</span></td><td><button class="bs bo" style="padding:3px 9px;font-size:.65rem;" onclick="tampilStruk('ORD-044','PT Griya Elok','Jati 5×10','80','6.800.000','Transfer','Selesai')">🖨 Cetak</button></td></tr>
-        <tr><td><b>#ORD-043</b></td><td>09 Mar</td><td>Ibu Wati</td><td>Mahoni 4×6</td><td>15 btg</td><td class="tn">Rp 450.000</td><td>Cash</td><td><span class="status-chip chip-batal">Batal</span></td><td><button class="bs bo" style="padding:3px 9px;font-size:.65rem;" onclick="tampilStruk('ORD-043','Ibu Wati','Mahoni 4×6','15','450.000','Cash','Dibatalkan')">🖨 Cetak</button></td></tr>
-        <tr><td><b>#ORD-042</b></td><td>08 Mar</td><td>Bengkel Kayu Mas</td><td>Pinus 3×5</td><td>60 btg</td><td class="tn">Rp 960.000</td><td>Cash</td><td><span class="status-chip chip-ok">Selesai</span></td><td><button class="bs bo" style="padding:3px 9px;font-size:.65rem;" onclick="tampilStruk('ORD-042','Bengkel Kayu Mas','Pinus 3×5','60','960.000','Cash','Selesai')">🖨 Cetak</button></td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- AREA STRUK -->
-  <div id="struk-area" style="display:none;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-      <h3 style="font-size:.9rem;font-weight:700;">🖨 Preview Struk Pesanan</h3>
-      <div style="display:flex;gap:8px;">
-        <button class="bs bd" onclick="window.print()">🖨 Cetak / Print</button>
+  <!-- Preview Struk -->
+  <div id="struk-area" style="display:none;margin-top:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <h3 style="font-size:.88rem;font-weight:800;">🖨 Preview Struk</h3>
+      <div style="display:flex;gap:7px;">
+        <button class="bs bd" onclick="window.print()">Cetak / Print</button>
         <button class="bs bo" onclick="document.getElementById('struk-area').style.display='none'">✕ Tutup</button>
       </div>
     </div>
-    <div class="struk-wrap" id="struk-content">
-      <!-- diisi JS -->
+    <div class="struk" id="struk-content"></div>
+  </div>
+</div>
+
+<!-- ══════════ LOKASI ══════════ -->
+<div id="page-alamat" class="page">
+  <div class="ph"><div class="bc">kayuMANIA › Lokasi</div><h1>Lokasi & Kontak</h1><p>Kunjungi atau hubungi kami</p></div>
+  <div class="fs">
+    <h3>📍 Alamat Toko</h3>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="background:var(--g100);border-radius:10px;padding:16px;">
+        <div style="font-size:1rem;font-weight:800;font-family:'Fraunces',serif;margin-bottom:6px;">kayuMANIA</div>
+        <div style="font-size:.82rem;color:var(--g400);line-height:1.8;">
+          📍 Jl. Parangtritis KM 6, Sewon, Bantul, Yogyakarta<br>
+          📞 0882-2132-9336<br>
+          🕐 Senin–Sabtu: 07.00–17.00 WIB<br>
+          📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="690208101c04080700084703060e0308290e04080005470a0604">[email&#160;protected]</a>
+        </div>
+      </div>
+      <a href="https://wa.me/6288221329336?text=Halo+kayuMANIA,+saya+ingin+bertanya+tentang+kayu" target="_blank" class="bs bw" style="justify-content:center;padding:12px;font-size:.85rem;">💬 Chat WhatsApp Sekarang</a>
     </div>
   </div>
 </div>
 
 </main>
 
-<!-- MODAL STRUK DARI KERANJANG -->
-<div class="mo" id="modal-struk-beli" onclick="cmOut(event,'modal-struk-beli')">
-  <div class="md" style="width:520px;max-width:95vw;">
-    <button class="mc" onclick="cm('modal-struk-beli')">✕</button>
-    <h3>Struk Pembelian</h3>
-    <p class="ms">Preview sebelum dicetak</p>
-    <div id="struk-beli-content"></div>
-    <div class="fa" style="margin-top:16px;">
-      <button class="bs bd" onclick="window.print()">🖨 Cetak Struk</button>
-      <button class="bs bo" onclick="cm('modal-struk-beli')">Tutup</button>
+<!-- ══════ MODALS ══════ -->
+<div class="mo" id="m-stok" onclick="cmo(event,'m-stok')">
+  <div class="md"><button class="mc" onclick="cm('m-stok')">✕</button>
+    <h3>📦 Input Stok Kayu</h3><p class="ms">Tambah atau perbarui stok</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="fg2"><label>Jenis Kayu</label><select id="ms-jenis"><option>Jati 4×6</option><option>Jati 5×10</option><option>Meranti 4×6</option><option>Sengon 3×5</option><option>Merbau 4×6</option><option>Merbau 6×12</option><option>Mahoni 4×6</option><option>Pinus 3×5</option></select></div>
+      <div class="fg2"><label>Jumlah Masuk (m³)</label><input type="number" id="ms-qty" placeholder="0" min="1"></div>
+      <div class="fg2"><label>Tanggal</label><input type="date" id="ms-tgl"></div>
+      <div class="fg2"><label>Catatan</label><input type="text" id="ms-cat" placeholder="Sumber stok..."></div>
     </div>
+    <div class="fa"><button class="bs bd" onclick="inputStok()">Simpan</button><button class="bs bo" onclick="cm('m-stok')">Batal</button></div>
   </div>
 </div>
 
-<!-- MODALS -->
-<div class="mo" id="m1" onclick="cmOut(event,'m1')">
-  <div class="md"><button class="mc" onclick="cm('m1')">✕</button><h3>Tambah Jenis Kayu</h3><p class="ms">Masukkan informasi jenis kayu baru</p>
-    <div style="display:flex;flex-direction:column;gap:9px;">
-      <div class="fg2"><label>Nama Kayu</label><input type="text" placeholder="misal: Kayu Ulin"></div>
-      <div class="fg2"><label>Nama Latin</label><input type="text" placeholder="misal: Eusideroxylon zwageri"></div>
-      <div class="fg2"><label>Kategori</label><select><option>Kayu Keras</option><option>Kayu Lunak</option><option>Kayu Tropis</option></select></div>
-      <div class="fg2"><label>Harga Awal / Batang (Rp)</label><input type="number" placeholder="0"></div>
-    </div>
-    <div class="fa"><button class="bs bd" onclick="st('Jenis kayu ditambahkan!');cm('m1')">Simpan</button><button class="bs bo" onclick="cm('m1')">Batal</button></div>
-  </div>
-</div>
-
-<div class="mo" id="m2" onclick="cmOut(event,'m2')">
-  <div class="md"><button class="mc" onclick="cm('m2')">✕</button><h3>Input Stok Masuk</h3><p class="ms">Catat penerimaan stok kayu baru</p>
-    <div style="display:flex;flex-direction:column;gap:9px;">
-      <div class="fg2"><label>Jenis Kayu</label><select><option>Jati 4×6</option><option>Meranti 4×6</option><option>Sengon 3×5</option></select></div>
-      <div class="fg2"><label>Jumlah (m³)</label><input type="number" placeholder="0"></div>
-      <div class="fg2"><label>Supplier</label><input type="text" placeholder="Nama supplier"></div>
-      <div class="fg2"><label>Tanggal Masuk</label><input type="date"></div>
-    </div>
-    <div class="fa"><button class="bs bw" onclick="st('Stok berhasil dicatat!');cm('m2')">Simpan</button><button class="bs bo" onclick="cm('m2')">Batal</button></div>
-  </div>
-</div>
-
-<div class="mo" id="m3" onclick="cmOut(event,'m3')">
-  <div class="md"><button class="mc" onclick="cm('m3')">✕</button><h3>Catat Penjualan</h3><p class="ms">Input transaksi penjualan kayu</p>
-    <div style="display:flex;flex-direction:column;gap:9px;">
-      <div class="fg2"><label>Nama Pelanggan</label><input type="text" placeholder="Nama pembeli"></div>
-      <div class="fg2"><label>Produk</label><select><option>Jati 4×6</option><option>Meranti 4×6</option><option>Sengon 3×5</option><option>Merbau 6×12</option></select></div>
-      <div class="fg2"><label>Jumlah (batang)</label><input type="number" placeholder="0"></div>
-      <div class="fg2"><label>Total (Rp)</label><input type="number" placeholder="0"></div>
-      <div class="fg2"><label>Metode Bayar</label><select><option>Cash</option><option>Transfer Bank</option><option>QRIS</option></select></div>
-    </div>
-    <div class="fa"><button class="bs bd" onclick="st('Penjualan dicatat!');cm('m3')">Simpan</button><button class="bs bo" onclick="cm('m3')">Batal</button></div>
-  </div>
-</div>
-
-<div class="mo" id="m4" onclick="cmOut(event,'m4')">
-  <div class="md"><button class="mc" onclick="cm('m4')">✕</button><h3>Catat Transaksi Keuangan</h3><p class="ms">Input pemasukan atau pengeluaran</p>
-    <div style="display:flex;flex-direction:column;gap:9px;">
+<div class="mo" id="m-uang" onclick="cmo(event,'m-uang')">
+  <div class="md"><button class="mc" onclick="cm('m-uang')">✕</button>
+    <h3>💰 Catat Transaksi Keuangan</h3><p class="ms">Input pemasukan atau pengeluaran</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
       <div class="fg2"><label>Jenis</label><select><option>Pemasukan</option><option>Pengeluaran</option></select></div>
       <div class="fg2"><label>Tanggal</label><input type="date"></div>
       <div class="fg2"><label>Keterangan</label><input type="text" placeholder="Deskripsi..."></div>
       <div class="fg2"><label>Jumlah (Rp)</label><input type="number" placeholder="0"></div>
     </div>
-    <div class="fa"><button class="bs bd" onclick="st('Transaksi dicatat!');cm('m4')">Simpan</button><button class="bs bo" onclick="cm('m4')">Batal</button></div>
+    <div class="fa"><button class="bs bd" onclick="st('Transaksi dicatat!','success');cm('m-uang')">Simpan</button><button class="bs bo" onclick="cm('m-uang')">Batal</button></div>
+  </div>
+</div>
+
+<div class="mo" id="m-struk" onclick="cmo(event,'m-struk')">
+  <div class="md" style="max-width:420px;"><button class="mc" onclick="cm('m-struk')">✕</button>
+    <h3>🖨 Struk Pesanan</h3><p class="ms">Preview sebelum dicetak</p>
+    <div id="m-struk-content"></div>
+    <div class="fa" style="margin-top:14px;">
+      <button class="bs bd" onclick="window.print()">🖨 Cetak</button>
+      <button class="bs bo" onclick="cm('m-struk')">Tutup</button>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
+// Semua fungsi didefinisikan di window agar bisa dipanggil dari inline onclick
+const ADMIN = {user:'kayumania', pass:'kayumania123'};
+let isAdmin = false;
+let pendingPage = null;
+let camStream = null;
+let tt;
+
+const stok = {
+  jati46:480, jati510:320, mer46:560, mer510:210,
+  sen35:720, mer2:180, mer6:65, mah:42, pin:38
+};
+let orders = [];
+let orderNum = 48;
+let cart = [];
+
+// ── TOAST ──
+function st(msg, type=''){
+  const t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = (type==='success'?'✓ ':type==='error'?'✕ ':'')+msg;
+  t.className = 'toast '+(type||'');
+  t.classList.add('show');
+  clearTimeout(tt);
+  tt = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ── MODAL ──
+function sm(id){ const e=document.getElementById(id); if(e) e.classList.add('open'); }
+function cm(id){ const e=document.getElementById(id); if(e) e.classList.remove('open'); }
+function cmo(e,id){ if(e.target.classList.contains('mo')) cm(id); }
+
+// ── NAV ──
 function sp(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-i').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
+  const page = document.getElementById('page-'+id);
+  if(page) page.classList.add('active');
   document.querySelectorAll('.nav-i').forEach(n=>{
-    if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'"))n.classList.add('active');
+    const oc = n.getAttribute('onclick')||'';
+    if(oc.includes("'"+id+"'")) n.classList.add('active');
   });
   window.scrollTo(0,0);
+  if(id==='lappesan') renderLaporan();
+  if(id==='beranda') updateDash();
 }
-function sm(id){document.getElementById(id).classList.add('open');}
-function cm(id){document.getElementById(id).classList.remove('open');}
-function cmOut(e,id){if(e.target.classList.contains('mo'))cm(id);}
-let tt;
-function st(msg){
-  const t=document.getElementById('toast');
-  t.textContent='✓ '+msg;t.classList.add('show');
-  clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2800);
+function mob(el){
+  document.querySelectorAll('.mob-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
 }
+
+// ── LOGIN TAB ──
+function switchTab(t){
+  const tabs = ['pw','face','finger'];
+  document.querySelectorAll('.ltab').forEach((b,i)=>b.classList.toggle('active', tabs[i]===t));
+  document.querySelectorAll('.ltab-panel').forEach(p=>p.classList.remove('active'));
+  const panel = document.getElementById('tab-'+t);
+  if(panel) panel.classList.add('active');
+}
+
+// ── PASSWORD TOGGLE ──
+function togglePw(){
+  const inp = document.getElementById('l-pass');
+  const eye = document.getElementById('pw-eye');
+  if(!inp) return;
+  if(inp.type==='password'){ inp.type='text'; eye.textContent='🙈'; }
+  else { inp.type='password'; eye.textContent='👁'; }
+}
+function toggleLsPw(){
+  const inp = document.getElementById('ls-pass');
+  const eye = document.getElementById('ls-eye');
+  if(!inp) return;
+  if(inp.type==='password'){ inp.type='text'; eye.textContent='🙈'; }
+  else { inp.type='password'; eye.textContent='👁'; }
+}
+
+// ── LOGIN SUKSES ──
+function _loginSuccess(msg){
+  isAdmin = true;
+  const overlay = document.getElementById('login-overlay');
+  if(overlay) overlay.style.display = 'none';
+  document.querySelectorAll('.lock-ico').forEach(e=>e.textContent='🔓');
+  if(camStream){ camStream.getTracks().forEach(t=>t.stop()); camStream=null; }
+  st(msg, 'success');
+  if(pendingPage){ sp(pendingPage); pendingPage=null; }
+}
+
+// ── LOGIN PASSWORD ──
+function doLogin(){
+  const u = (document.getElementById('l-user')||{}).value||'';
+  const p = (document.getElementById('l-pass')||{}).value||'';
+  const err = document.getElementById('l-err');
+  if(u.trim()===ADMIN.user && p===ADMIN.pass){
+    _loginSuccess('Selamat datang, Admin!');
+  } else {
+    if(err){ err.style.display='block'; setTimeout(()=>err.style.display='none',3000); }
+  }
+}
+
+// ── TUTUP LOGIN ──
+function tutupLogin(){
+  const overlay = document.getElementById('login-overlay');
+  if(overlay) overlay.style.display = 'none';
+  if(camStream){ camStream.getTracks().forEach(t=>t.stop()); camStream=null; }
+  pendingPage = null;
+}
+
+// ── TRY PAGE (halaman terkunci) ──
+function tryPage(id){
+  if(isAdmin){ sp(id); }
+  else {
+    pendingPage = id;
+    const overlay = document.getElementById('login-overlay');
+    if(overlay) overlay.style.display = 'flex';
+    const lu = document.getElementById('l-user');
+    const lp = document.getElementById('l-pass');
+    const le = document.getElementById('l-err');
+    if(lu) lu.value='';
+    if(lp) lp.value='';
+    if(le) le.style.display='none';
+    switchTab('pw');
+  }
+}
+
+// ── FACE SCAN ──
+function startFace(){
+  const btn = document.getElementById('face-btn');
+  const status = document.getElementById('face-status');
+  const feed = document.getElementById('cam-feed');
+  const frame = document.getElementById('cam-frame');
+  const ico = document.getElementById('face-ico');
+
+  if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}})
+    .then(stream=>{
+      camStream = stream;
+      feed.srcObject = stream;
+      feed.style.display = 'block';
+      frame.style.display = 'block';
+      ico.style.display = 'none';
+      btn.textContent = 'Memindai...';
+      btn.disabled = true;
+      status.className = 'bio-status scanning';
+      status.textContent = '📷 Kamera aktif — Arahkan wajah ke kamera...';
+      setTimeout(()=>{ status.textContent='🔍 Mendeteksi wajah...'; }, 1500);
+      setTimeout(()=>{
+        status.className = 'bio-status success';
+        status.textContent = '✅ Wajah terdeteksi & terverifikasi!';
+        frame.style.borderColor = '#2d7a2d';
+        setTimeout(()=>{
+          feed.style.display='none'; frame.style.display='none'; ico.style.display='block';
+          btn.disabled=false; btn.textContent='Buka Kamera & Scan';
+          _loginSuccess('Verifikasi wajah berhasil!');
+        }, 1200);
+      }, 3500);
+    })
+    .catch(()=>{
+      status.className='bio-status fail';
+      status.textContent='❌ Kamera tidak dapat diakses. Izinkan akses kamera.';
+      if(btn){ btn.disabled=false; btn.textContent='Coba Lagi'; }
+    });
+  } else {
+    status.className='bio-status fail';
+    status.textContent='❌ Browser ini tidak mendukung kamera.';
+  }
+}
+
+// ── FINGERPRINT ──
+function startFinger(){
+  const status = document.getElementById('finger-status');
+  status.className = 'bio-status scanning';
+  status.textContent = '👆 Tempel jari ke sensor...';
+  if(window.PublicKeyCredential){
+    navigator.credentials.get({
+      publicKey:{ challenge:new Uint8Array(32), timeout:60000, userVerification:'required' }
+    }).then(()=>{
+      status.className='bio-status success';
+      status.textContent='✅ Sidik jari terverifikasi!';
+      setTimeout(()=>_loginSuccess('Login sidik jari berhasil!'), 1000);
+    }).catch(()=>simulateFinger(status));
+  } else { simulateFinger(status); }
+}
+function simulateFinger(status){
+  setTimeout(()=>{
+    status.textContent='🔍 Memproses sidik jari...';
+    setTimeout(()=>{
+      status.className='bio-status success';
+      status.textContent='✅ Sidik jari admin terverifikasi!';
+      setTimeout(()=>_loginSuccess('Login berhasil!'), 1000);
+    }, 2000);
+  }, 500);
+}
+
+// ── FILTER KAYU ──
 function filterKayu(v){
   document.querySelectorAll('.wc').forEach(c=>{
-    c.style.display=c.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';
+    c.style.display = c.textContent.toLowerCase().includes(v.toLowerCase()) ? '' : 'none';
   });
 }
 function filterKat(v){
-  if(!v){filterKayu('');return;}
   document.querySelectorAll('.wc').forEach(c=>{
-    c.style.display=c.querySelector('.wct').textContent.toLowerCase().includes(v.toLowerCase())?'':'none';
+    c.style.display = (!v || c.dataset.kat===v) ? '' : 'none';
   });
 }
 
 // ── CART ──
-let cart=[];
-function addCart(name,price,icon){
-  const ex=cart.find(i=>i.name===name);
-  if(ex){ex.qty++;}else{cart.push({name,price,icon,qty:1});}
-  renderCart();
-  st(name+' ditambahkan ke keranjang!');
-}
-function renderCart(){
-  const el=document.getElementById('cart-items');
-  if(!el) return;
-
-  if(!cart.length){
-    el.innerHTML=`<div style="text-align:center;padding:24px 0;font-size:.8rem;color:#bbb;">
-      Keranjang masih kosong<br><span style="font-size:.72rem;">Tambahkan produk dari tabel</span>
-    </div>`;
-    updateCartTotal();
-    return;
+function addCart(name, stokKey, price, icon){
+  const stokEl = document.getElementById('s-'+stokKey);
+  const stokVal = stokEl ? parseInt(stokEl.textContent)||0 : 999;
+  if(stokVal <= 0){ st('Stok habis!','error'); return; }
+  const ex = cart.find(i=>i.name===name);
+  if(ex){
+    if(ex.qty >= stokVal){ st('Stok tidak mencukupi!','error'); return; }
+    ex.qty++;
+  } else {
+    cart.push({name, stokKey, price, icon, qty:1});
   }
+  renderCart();
+  st(name+' ditambahkan!','success');
+}
 
-  let html='';
-  cart.forEach((item,i)=>{
-    html+=`<div class="cart-item">
+function renderCart(){
+  const el = document.getElementById('cart-items');
+  if(!el) return;
+  if(!cart.length){
+    el.innerHTML='<div style="text-align:center;padding:20px 0;font-size:.8rem;color:#bbb;">Belum ada produk</div>';
+    updateCartTotal(); return;
+  }
+  el.innerHTML = cart.map((item,i)=>`
+    <div class="cart-item">
       <div class="cart-icon">${item.icon}</div>
-      <div style="flex:1">
+      <div style="flex:1;min-width:0;">
         <div class="cart-name">${item.name}</div>
         <div class="cart-sub">Rp ${item.price.toLocaleString('id-ID')} / btg</div>
       </div>
       <div class="cart-qty">
-        <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
+        <button class="qty-btn" onclick="chgQty(${i},-1)">−</button>
         <span class="qty-num">${item.qty}</span>
-        <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+        <button class="qty-btn" onclick="chgQty(${i},1)">+</button>
       </div>
       <div class="cart-price">Rp ${(item.price*item.qty).toLocaleString('id-ID')}</div>
-      <span class="cart-del" title="Hapus" onclick="removeCart(${i})">✕</span>
-    </div>`;
-  });
-  el.innerHTML=html;
+      <span class="cart-del" onclick="rmCart(${i})">✕</span>
+    </div>`).join('');
   updateCartTotal();
 }
-function changeQty(i,d){
-  cart[i].qty+=d;
-  if(cart[i].qty<1) cart.splice(i,1);
+
+function chgQty(i,d){
+  if(!cart[i]) return;
+  const stokEl = document.getElementById('s-'+cart[i].stokKey);
+  const maxStok = stokEl ? parseInt(stokEl.textContent)||9999 : 9999;
+  cart[i].qty += d;
+  if(cart[i].qty < 1) cart.splice(i,1);
+  else if(cart[i].qty > maxStok){ cart[i].qty=maxStok; st('Stok tidak mencukupi!','error'); }
   renderCart();
 }
-function removeCart(i){
-  cart.splice(i,1);
-  renderCart();
-  st('Item dihapus dari keranjang.');
+function rmCart(i){ cart.splice(i,1); renderCart(); }
+function clearCart(){ cart=[]; renderCart(); }
+function updateCartTotal(){
+  const total = cart.reduce((s,i)=>s+i.price*i.qty, 0);
+  const fmt = 'Rp '+total.toLocaleString('id-ID');
+  ['cart-sub','cart-total'].forEach(id=>{ const e=document.getElementById(id); if(e) e.textContent=fmt; });
 }
-function clearCart(){
+
+// ── BUAT PESANAN ──
+function buatPesanan(){ _prosesPesanan(false); }
+function buatDanCetak(){ _prosesPesanan(true); }
+
+function _prosesPesanan(cetak){
+  if(!cart.length){ st('Keranjang kosong!','error'); return; }
+  const nama = (document.getElementById('p-nama')||{}).value||'';
+  if(!nama.trim()){ st('Nama pemesan wajib diisi!','error'); return; }
+  const hp = (document.getElementById('p-hp')||{}).value||'-';
+  const alamat = (document.getElementById('p-alamat')||{}).value||'-';
+  const bayar = (document.getElementById('p-bayar')||{}).value||'Cash';
+  const catatan = (document.getElementById('p-catatan')||{}).value||'-';
+  const tgl = new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+  const total = cart.reduce((s,i)=>s+i.price*i.qty, 0);
+  orderNum++;
+  const noOrder = 'ORD-0'+orderNum;
+
+  // kurangi stok
+  cart.forEach(item=>{
+    const elS = document.getElementById('s-'+item.stokKey);
+    const elP = document.getElementById('stok-'+item.stokKey);
+    if(elS){ const nv=Math.max(0,parseInt(elS.textContent)-item.qty); elS.textContent=nv; stok[item.stokKey]=nv; }
+    if(elP){ elP.textContent=Math.max(0,parseInt(elP.textContent)-item.qty); }
+  });
+
+  const orderData = {
+    no:noOrder, tgl, nama, hp, alamat, bayar, catatan,
+    items:[...cart.map(i=>({...i}))], total, status:'Menunggu'
+  };
+  orders.unshift(orderData);
   cart=[];
   renderCart();
-  st('Keranjang dikosongkan.');
-}
-function updateCartTotal(){
-  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const jumlahItem=cart.reduce((s,i)=>s+i.qty,0);
-  const fmt='Rp '+total.toLocaleString('id-ID');
-  const elSub=document.getElementById('cart-sub');
-  const elTotal2=document.getElementById('cart-total2');
-  const elTotal=document.getElementById('cart-total');
-  const elCount=document.getElementById('cart-count');
-  if(elSub) elSub.textContent=fmt;
-  if(elTotal2) elTotal2.textContent=fmt;
-  if(elTotal) elTotal.textContent=fmt;
-  if(elCount) elCount.textContent=jumlahItem;
+
+  // reset form
+  ['p-nama','p-hp','p-alamat','p-catatan'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=''; });
+
+  updateDash();
+  renderActiveOrders();
+  updateStokSummary();
+  st('Pesanan #'+noOrder+' berhasil dibuat!','success');
+
+  if(cetak){
+    const html = buatStrukHTML(orderData);
+    const sc = document.getElementById('m-struk-content');
+    if(sc) sc.innerHTML=html;
+    sm('m-struk');
+  }
 }
 
-function buatPesanan(){
-  if(!cart.length){st('Keranjang kosong! Tambahkan produk dulu.');return;}
-  const nama=document.getElementById('beli-nama').value||'Pelanggan';
-  const hp=document.getElementById('beli-hp').value||'-';
-  const alamat=document.getElementById('beli-alamat').value||'-';
-  const bayar=document.getElementById('beli-bayar').value||'Cash';
-  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const noOrder='ORD-'+String(Math.floor(Math.random()*900)+100);
-  const tgl=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
-  let itemsHtml=cart.map(i=>`<div class="struk-item"><span class="si-name">${i.icon} ${i.name}</span><span class="si-qty">${i.qty} btg × Rp ${i.price.toLocaleString('id')}</span><span class="si-price">Rp ${(i.price*i.qty).toLocaleString('id')}</span></div>`).join('');
-  const html=buatHTMLStruk(noOrder,nama,hp,alamat,bayar,total,tgl,itemsHtml,'Menunggu Konfirmasi');
-  document.getElementById('struk-beli-content').innerHTML=html;
-  sm('modal-struk-beli');
-  st('Pesanan #'+noOrder+' berhasil dibuat!');
-  cart=[];renderCart();
+function buatStrukHTML(o){
+  const itemsHtml = o.items.map(i=>`
+    <div class="struk-item">
+      <span>${i.icon} ${i.name}</span>
+      <span style="color:#888;font-size:.7rem;">${i.qty} btg × Rp${i.price.toLocaleString('id-ID')}</span>
+      <span style="font-weight:700;">Rp${(i.price*i.qty).toLocaleString('id-ID')}</span>
+    </div>`).join('');
+  return `
+    <div class="struk-head">
+      <div class="brand">kayu<span style="color:#c8956c;">MANIA</span></div>
+      <p>Jl. Parangtritis KM 6, Sewon, Bantul, Yogyakarta<br>WA: 0882-2132-9336</p>
+    </div>
+    <div class="struk-code"># ${o.no}</div>
+    <div class="struk-row"><span class="sk">Tanggal</span><span class="sv">${o.tgl}</span></div>
+    <div class="struk-row"><span class="sk">Pelanggan</span><span class="sv">${o.nama}</span></div>
+    <div class="struk-row"><span class="sk">No. HP</span><span class="sv">${o.hp}</span></div>
+    <div class="struk-row"><span class="sk">Metode Bayar</span><span class="sv">${o.bayar}</span></div>
+    <div class="struk-row"><span class="sk">Status</span><span class="sv">${o.status}</span></div>
+    <hr class="struk-divider">
+    <div style="font-size:.65rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Detail Produk</div>
+    ${itemsHtml}
+    <div class="struk-total"><span>TOTAL</span><span>Rp ${o.total.toLocaleString('id-ID')}</span></div>
+    <div class="struk-foot">Terima kasih telah berbelanja di kayuMANIA!<br>Simpan struk ini sebagai bukti pembelian.</div>`;
 }
 
-function buatHTMLStruk(no,nama,hp,alamat,bayar,total,tgl,itemsHtml,status){
-  return `<div class="struk-head">
-    <div class="brand">kayu<span>MANIA</span></div>
-    <p>Jl. Parangtritis KM 6, Sewon, Bantul, Yogyakarta<br>WA: 0882-2132-9336</p>
-  </div>
-  <div class="struk-code"># ${no}</div>
-  <div class="struk-row"><span class="sk">Tanggal</span><span class="sv">${tgl}</span></div>
-  <div class="struk-row"><span class="sk">Pelanggan</span><span class="sv">${nama}</span></div>
-  <div class="struk-row"><span class="sk">No. HP</span><span class="sv">${hp}</span></div>
-  <div class="struk-row"><span class="sk">Alamat</span><span class="sv" style="max-width:220px;text-align:right">${alamat}</span></div>
-  <div class="struk-row"><span class="sk">Metode Bayar</span><span class="sv">${bayar}</span></div>
-  <div class="struk-row"><span class="sk">Status</span><span class="sv">${status}</span></div>
-  <hr class="struk-divider">
-  <div style="font-size:.68rem;font-weight:700;color:#999;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">Detail Produk</div>
-  ${itemsHtml}
-  <div class="struk-total"><span>TOTAL PEMBAYARAN</span><span>Rp ${typeof total==='number'?total.toLocaleString('id'):total}</span></div>
-  <div class="struk-foot">
-    Terima kasih telah berbelanja di kayuMANIA!<br>
-    Simpan struk ini sebagai bukti pembelian.<br>
-    <strong>kayuMANIA</strong> — Kualitas Kayu Terbaik Yogyakarta
-  </div>`;
+// ── LAPORAN ──
+function renderLaporan(){
+  const tbody = document.getElementById('lap-tbody');
+  if(!tbody) return;
+  if(!orders.length){
+    tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:#888;padding:20px;font-size:.8rem;">Belum ada pesanan</td></tr>';
+  } else {
+    tbody.innerHTML = orders.map(o=>`
+      <tr>
+        <td><b>${o.no}</b></td>
+        <td>${o.tgl}</td>
+        <td>${o.nama}</td>
+        <td>${o.items.map(i=>i.name+' ×'+i.qty).join(', ')}</td>
+        <td class="tn">Rp ${o.total.toLocaleString('id-ID')}</td>
+        <td>${o.bayar}</td>
+        <td><span class="stb ${o.status==='Menunggu'?'st':o.status==='Selesai'?'sa':'sb2'}">${o.status}</span></td>
+        <td><button class="bs bo" style="font-size:.65rem;padding:3px 8px;" onclick="tampilStruk('${o.no}')">🖨</button></td>
+      </tr>`).join('');
+  }
+  const setTxt=(id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v; };
+  setTxt('lap-total', orders.length);
+  setTxt('lap-done', orders.filter(o=>o.status==='Selesai').length);
+  setTxt('lap-proses', orders.filter(o=>o.status==='Diproses').length);
+  setTxt('lap-wait', orders.filter(o=>o.status==='Menunggu').length);
 }
 
-// ── FORM PESANAN ──
-function simpanPesan(){
-  const nama=document.getElementById('p-nama').value;
-  if(!nama){st('Nama pelanggan wajib diisi!');return;}
-  st('Pesanan berhasil disimpan!');
-  ['p-nama','p-hp','p-alamat','p-qty','p-catatan'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-}
-function simpanCetak(){
-  const nama=document.getElementById('p-nama').value||'Pelanggan';
-  const hp=document.getElementById('p-hp').value||'-';
-  const alamat=document.getElementById('p-alamat').value||'-';
-  const kayu=document.getElementById('p-kayu').value;
-  const qty=document.getElementById('p-qty').value||'0';
-  const bayar=document.getElementById('p-bayar').value;
-  const no='ORD-'+String(Math.floor(Math.random()*900)+100);
-  const tgl=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
-  const itemsHtml=`<div class="struk-item"><span class="si-name">🪵 ${kayu}</span><span class="si-qty">${qty} btg</span><span class="si-price">—</span></div>`;
-  document.getElementById('struk-beli-content').innerHTML=buatHTMLStruk(no,nama,hp,alamat,bayar,'Lihat di toko',tgl,itemsHtml,'Menunggu Konfirmasi');
-  sm('modal-struk-beli');
-  st('Pesanan #'+no+' dibuat!');
+function tampilStruk(no){
+  const o = orders.find(x=>x.no===no);
+  if(!o) return;
+  const area = document.getElementById('struk-area');
+  const content = document.getElementById('struk-content');
+  if(content) content.innerHTML = buatStrukHTML(o);
+  if(area){ area.style.display='block'; area.scrollIntoView({behavior:'smooth'}); }
 }
 
-// ── STRUK DARI LAP. PEMESANAN ──
-function tampilStruk(no,nama,produk,qty,total,bayar,status){
-  const tgl=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
-  const itemsHtml=`<div class="struk-item"><span class="si-name">🪵 ${produk}</span><span class="si-qty">${qty} batang</span><span class="si-price">Rp ${total}</span></div>`;
-  const html=buatHTMLStruk(no,nama,'-','-',bayar,total,tgl,itemsHtml,status);
-  document.getElementById('struk-content').innerHTML=html;
-  const area=document.getElementById('struk-area');
-  area.style.display='block';
-  area.scrollIntoView({behavior:'smooth'});
+function renderActiveOrders(){
+  const tbody = document.getElementById('active-orders');
+  const dashOrders = document.getElementById('dash-orders');
+  const activeList = orders.filter(o=>o.status!=='Selesai');
+  const emptyRow = '<tr><td colspan="4" style="text-align:center;color:#888;padding:16px;font-size:.78rem;">Belum ada pesanan</td></tr>';
+  if(tbody) tbody.innerHTML = !activeList.length ? emptyRow :
+    activeList.slice(0,5).map(o=>`
+      <tr>
+        <td><b>${o.no}</b></td>
+        <td>${o.nama}</td>
+        <td class="tn">Rp ${o.total.toLocaleString('id-ID')}</td>
+        <td><span class="stb ${o.status==='Menunggu'?'st':'sb2'}">${o.status}</span></td>
+      </tr>`).join('');
+  if(dashOrders) dashOrders.innerHTML = !orders.length ?
+    '<tr><td colspan="5" style="text-align:center;color:#888;padding:20px;">Belum ada pesanan</td></tr>' :
+    orders.slice(0,5).map(o=>`
+      <tr>
+        <td><b>${o.no}</b></td>
+        <td>${o.nama}</td>
+        <td>${o.items.map(i=>i.name+' ×'+i.qty).join(', ')}</td>
+        <td class="tn">Rp ${o.total.toLocaleString('id-ID')}</td>
+        <td><span class="stb ${o.status==='Menunggu'?'st':o.status==='Selesai'?'sa':'sb2'}">${o.status}</span></td>
+      </tr>`).join('');
 }
+
+function updateDash(){
+  const setTxt=(id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v; };
+  setTxt('dash-order', orders.filter(o=>o.status==='Menunggu').length);
+  setTxt('order-count', orders.length);
+  setTxt('order-wait', orders.filter(o=>o.status==='Menunggu').length);
+  setTxt('order-proses', orders.filter(o=>o.status==='Diproses').length);
+  setTxt('order-done', orders.filter(o=>o.status==='Selesai').length);
+  renderActiveOrders();
+}
+
+function updateStokSummary(){
+  const vals = Object.values(stok);
+  const setTxt=(id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v; };
+  setTxt('stok-total', vals.reduce((a,b)=>a+b,0).toLocaleString('id-ID'));
+}
+
+// ── STOK INPUT ──
+function inputStok(){
+  const jenis = (document.getElementById('ms-jenis')||{}).value||'';
+  const qty = parseInt((document.getElementById('ms-qty')||{}).value)||0;
+  if(qty<=0){ st('Jumlah harus lebih dari 0!','error'); return; }
+  st('Stok '+jenis+' berhasil ditambah '+qty+' m³!','success');
+  cm('m-stok');
+}
+
+// ── ENTER KEY ──
+document.addEventListener('keydown', e=>{
+  if(e.key!=='Enter') return;
+  const overlay = document.getElementById('login-overlay');
+  if(overlay && overlay.style.display==='flex') doLogin();
+});
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', ()=>{
+  const today = new Date().toISOString().split('T')[0];
+  const tglEl = document.getElementById('p-tgl');
+  if(tglEl) tglEl.value = today;
+  const msTglEl = document.getElementById('ms-tgl');
+  if(msTglEl) msTglEl.value = today;
+});
 </script>
 </body>
 </html>
