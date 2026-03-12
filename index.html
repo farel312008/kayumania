@@ -312,10 +312,96 @@ select:focus{border-color:var(--wood);}
   .cg{grid-template-columns:1fr 1fr;}
   .two-col{grid-template-columns:1fr 300px;}
 }
+/* ─── GIFT PAGE ─── */
+.size-btn{
+  padding:6px 12px;border-radius:7px;border:1.5px solid #333;background:#111;
+  color:#888;font-size:.78rem;font-weight:800;cursor:pointer;transition:all .2s;
+  font-family:'Plus Jakarta Sans',sans-serif;min-width:46px;
+}
+.size-btn:hover{border-color:var(--wood);color:var(--wood);}
+.size-btn.active{background:var(--wood);border-color:var(--wood);color:var(--white);}
+
 @media print{
   .sidebar,.mob-nav,.mob-topbar,.fa,.fr button{display:none!important;}
   .main{margin-left:0!important;}
   .struk{border:none;box-shadow:none;}
+}
+
+/* ─── MEMBER TIERS ─── */
+.tier-card{border-radius:14px;padding:18px 16px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:default;}
+.tier-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12);}
+.tier-1{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);border:1px solid #3a3a5c;}
+.tier-2{background:linear-gradient(135deg,#1a0a00 0%,#2d1200 100%);border:1px solid var(--wood);}
+.tier-3{background:linear-gradient(135deg,#0a1a0a 0%,#0f2e0f 100%);border:1px solid #2d7a2d;}
+.tier-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:5px;font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
+.tier-1 .tier-badge{background:rgba(100,100,200,.3);color:#aab4ff;}
+.tier-2 .tier-badge{background:rgba(200,149,108,.25);color:var(--wood);}
+.tier-3 .tier-badge{background:rgba(45,122,45,.3);color:#6fcf6f;}
+.tier-name{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:var(--white);margin-bottom:4px;}
+.tier-req{font-size:.72rem;color:#aaa;margin-bottom:10px;}
+.tier-disc{font-size:1.5rem;font-weight:900;margin-bottom:2px;}
+.tier-1 .tier-disc{color:#aab4ff;}
+.tier-2 .tier-disc{color:var(--wood);}
+.tier-3 .tier-disc{color:#6fcf6f;}
+.tier-desc{font-size:.72rem;color:#999;line-height:1.6;}
+.tier-ico{position:absolute;right:14px;top:14px;font-size:2.2rem;opacity:.2;}
+.tier-grd{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+
+/* Member badge inline */
+.mbadge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;font-size:.62rem;font-weight:700;}
+.mb1{background:#1a1a2e;color:#aab4ff;border:1px solid #3a3a5c;}
+.mb2{background:#2d1200;color:#c8956c;border:1px solid #8b5e3c;}
+.mb3{background:#0f2e0f;color:#6fcf6f;border:1px solid #2d7a2d;}
+
+/* Member list table */
+.mem-card{background:var(--white);border:1px solid var(--g200);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.mem-card .th{background:var(--g100);}
+
+/* ─── LEADERBOARD ─── */
+.lb-wrap{background:var(--black);border-radius:14px;padding:0;overflow:hidden;margin-bottom:16px;}
+.lb-head{padding:16px 18px 10px;background:linear-gradient(90deg,#0f0f0f,#1a1a1a);border-bottom:1px solid #222;}
+.lb-head h3{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--white);margin-bottom:2px;}
+.lb-head p{font-size:.7rem;color:#555;}
+.lb-month{font-size:.66rem;color:var(--wood);font-weight:700;}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #111;transition:background .15s;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row:hover{background:#111;}
+.lb-rank{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;flex-shrink:0;}
+.lbr1{background:#f4c430;color:#000;}
+.lbr2{background:#c0c0c0;color:#000;}
+.lbr3{background:#cd7f32;color:#fff;}
+.lbr-n{background:#1e1e1e;color:#666;font-size:.65rem;}
+.lb-ava{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.lb-info{flex:1;min-width:0;}
+.lb-name{font-size:.82rem;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-sub{font-size:.66rem;color:#555;margin-top:1px;}
+.lb-qty{font-size:.88rem;font-weight:900;color:var(--wood);text-align:right;white-space:nowrap;flex-shrink:0;}
+.lb-gift{display:inline-flex;align-items:center;gap:3px;background:#1a0a00;border:1px solid #8b5e3c;color:var(--wood);padding:2px 7px;border-radius:4px;font-size:.58rem;font-weight:700;margin-left:4px;}
+
+/* Gift form */
+.gift-box{background:var(--black);border-radius:14px;padding:18px;margin-bottom:16px;border:1px solid #222;}
+.gift-box h3{font-family:'Fraunces',serif;color:var(--white);font-size:1rem;margin-bottom:12px;}
+.gift-item{display:flex;align-items:flex-start;gap:12px;padding:12px;background:#111;border-radius:10px;margin-bottom:8px;border:1px solid #1e1e1e;}
+.gift-ico{width:40px;height:40px;border-radius:9px;background:#1a0a00;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.gift-info{flex:1;}
+.gift-title{font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:2px;}
+.gift-desc{font-size:.7rem;color:#666;line-height:1.5;}
+.size-grid{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;}
+.sz-btn{padding:3px 9px;border-radius:5px;font-size:.68rem;font-weight:700;cursor:pointer;border:1px solid #333;background:#1a1a1a;color:#888;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.sz-btn.active,.sz-btn:hover{background:var(--wood);color:#fff;border-color:var(--wood);}
+
+/* Sticker designs */
+.stk-grid{display:flex;gap:7px;margin-top:6px;}
+.stk{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;border:2px solid #333;cursor:pointer;transition:all .2s;flex-shrink:0;}
+.stk:hover,.stk.active{border-color:var(--wood);box-shadow:0 0 0 2px rgba(200,149,108,.3);}
+.stk-1{background:radial-gradient(circle,#1a0a00,#0a0500);}
+.stk-2{background:radial-gradient(circle,#0a1a0a,#050a05);}
+.stk-3{background:radial-gradient(circle,#1a1a2e,#05050f);}
+
+@media(max-width:768px){
+  .tier-grd{grid-template-columns:1fr;}
+  .stk-grid{gap:10px;}
+  .stk{width:48px;height:48px;}
 }
 </style>
 </head>
@@ -427,6 +513,9 @@ select:focus{border-color:var(--wood);}
     <button class="mob-btn" onclick="tryPage('jual');mob(this)"><span class="mi">🧾</span>Penjualan</button>
     <button class="mob-btn" onclick="tryPage('uang');mob(this)"><span class="mi">📊</span>Keuangan</button>
     <button class="mob-btn" onclick="tryPage('lappesan');mob(this)"><span class="mi">📑</span>Lap.Pesan</button>
+    <button class="mob-btn" onclick="tryPage('member');mob(this)"><span class="mi">👑</span>Member</button>
+    <button class="mob-btn" onclick="sp('gift');mob(this)"><span class="mi">🎁</span>Gift</button>
+    <button class="mob-btn" onclick="sp('member-info');mob(this)"><span class="mi">⭐</span>Info Member</button>
     <button class="mob-btn" onclick="sp('alamat');mob(this)"><span class="mi">📍</span>Lokasi</button>
   </div>
 </nav>
@@ -451,7 +540,10 @@ select:focus{border-color:var(--wood);}
     <div class="nav-i" onclick="tryPage('jual')"><span class="ic">🧾</span><span>Lap. Penjualan</span><span class="lock-ico">🔒</span></div>
     <div class="nav-i" onclick="tryPage('uang')"><span class="ic">📊</span><span>Lap. Keuangan</span><span class="lock-ico">🔒</span></div>
     <div class="nav-i" onclick="tryPage('lappesan')"><span class="ic">📑</span><span>Lap. Pemesanan</span><span class="lock-ico">🔒</span></div>
+    <div class="nav-i" onclick="tryPage('member')"><span class="ic">👑</span><span>Data Member</span><span class="lock-ico">🔒</span></div>
     <div class="nav-lbl">Info</div>
+    <div class="nav-i" onclick="sp('gift')"><span class="ic">🎁</span><span>Gift Pembeli Terbaik</span></div>
+    <div class="nav-i" onclick="sp('member-info')"><span class="ic">⭐</span><span>Info Member</span></div>
     <div class="nav-i" onclick="sp('alamat')"><span class="ic">📍</span><span>Lokasi & Kontak</span></div>
   </div>
   <div class="sb-foot">
@@ -472,9 +564,9 @@ select:focus{border-color:var(--wood);}
       <button class="hbs2" onclick="sp('harga')">Cek Harga →</button>
     </div>
     <div class="hst">
-      <div><div class="hn">50<span>+</span></div><div class="hl">Jenis Kayu</div></div>
+      <div><div class="hn">7</div><div class="hl">Jenis Kayu</div></div>
       <div><div class="hn">500<span>+</span></div><div class="hl">Pelanggan</div></div>
-      <div><div class="hn">14<span>thn</span></div><div class="hl">Pengalaman</div></div>
+      <div><div class="hn">18<span>thn</span></div><div class="hl">Pengalaman</div></div>
       <div><div class="hn">4.9<span>★</span></div><div class="hl">Rating</div></div>
     </div>
   </div>
@@ -516,6 +608,97 @@ select:focus{border-color:var(--wood);}
       <thead><tr><th>No. Pesanan</th><th>Pelanggan</th><th>Produk</th><th>Total</th><th>Status</th></tr></thead>
       <tbody id="dash-orders"><tr><td colspan="5" style="text-align:center;color:var(--g400);padding:20px;">Belum ada pesanan</td></tr></tbody>
     </table></div>
+  </div>
+
+  <!-- ══ LEADERBOARD ══ -->
+  <div class="two-half" style="align-items:start;">
+    <!-- Top 10 Pembeli -->
+    <div class="lb-wrap">
+      <div class="lb-head">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <h3>🏆 Top 10 Pembeli Terbanyak</h3>
+            <p>Peringkat bulanan berdasarkan jumlah batang yang dipesan</p>
+          </div>
+          <span class="lb-month" id="lb-month-label">Maret 2026</span>
+        </div>
+      </div>
+      <div id="lb-list">
+        <!-- diisi JS -->
+      </div>
+    </div>
+
+    <!-- Info Gift Top 1 -->
+    <div>
+      <div class="gift-box">
+        <h3>🎁 Gift Spesial Top #1</h3>
+        <p style="font-size:.72rem;color:#666;margin-bottom:12px;">Pembeli terbanyak yang bertahan setiap bulan mendapatkan bundle gift eksklusif kayuMANIA:</p>
+
+        <div class="gift-item">
+          <div class="gift-ico">🗝️</div>
+          <div class="gift-info">
+            <div class="gift-title">Gantungan Kunci kayuMANIA</div>
+            <div class="gift-desc">Gantungan kunci premium bertuliskan <strong style="color:var(--wood)">kayuMANIA</strong> — eksklusif, solid, dan stylish.</div>
+          </div>
+        </div>
+
+        <div class="gift-item">
+          <div class="gift-ico">👕</div>
+          <div class="gift-info">
+            <div class="gift-title">Kaos Hitam kayuMANIA</div>
+            <div class="gift-desc">Kaos hitam desainer — depan logo <strong style="color:var(--wood)">kayuMANIA</strong>, belakang bertuliskan <em style="color:#aaa">"maniaakk mpruyy"</em>. Pilih size:</div>
+            <div class="size-grid" id="gift-size">
+              <button class="sz-btn" onclick="pilihSize(this,'M')">M</button>
+              <button class="sz-btn" onclick="pilihSize(this,'L')">L</button>
+              <button class="sz-btn" onclick="pilihSize(this,'XL')">XL</button>
+              <button class="sz-btn" onclick="pilihSize(this,'XXL')">XXL</button>
+              <button class="sz-btn" onclick="pilihSize(this,'XXXL')">XXXL</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-item">
+          <div class="gift-ico">🎨</div>
+          <div class="gift-info">
+            <div class="gift-title">3 Sticker Eksklusif kayuMANIA</div>
+            <div class="gift-desc">Tiga desain sticker kekinian:</div>
+            <div class="stk-grid">
+              <div class="stk stk-1" title="Sticker 1: Kayu Vintage Dark">🌳</div>
+              <div class="stk stk-2" title="Sticker 2: Forest Street">🪵</div>
+              <div class="stk stk-3" title="Sticker 3: Wood Galaxy">✨</div>
+            </div>
+            <div style="font-size:.64rem;color:#555;margin-top:5px;">① Kayu Vintage Dark &nbsp; ② Forest Street &nbsp; ③ Wood Galaxy</div>
+          </div>
+        </div>
+
+        <div style="background:#1a0a00;border:1px solid #8b5e3c;border-radius:10px;padding:10px 13px;margin-top:6px;display:flex;align-items:center;gap:10px;">
+          <span style="font-size:1.5rem;">📦</span>
+          <div>
+            <div style="font-size:.78rem;font-weight:700;color:var(--wood);">Bundle dalam Gift Box</div>
+            <div style="font-size:.68rem;color:#777;">Semua gift dikemas dalam 1 box premium kayuMANIA</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier Info mini -->
+      <div class="tw" style="background:var(--black);border-color:#222;">
+        <div class="th" style="background:#111;border-color:#222;"><h3 style="color:var(--white);">⭐ Tingkatan Member</h3><div class="ta"><button class="bs bw" onclick="sp('member-info')" style="font-size:.66rem;padding:4px 10px;">Info Lengkap</button></div></div>
+        <div style="padding:10px 14px;">
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #111;">
+            <span style="font-size:1rem;">🔵</span>
+            <div style="flex:1;"><div style="font-size:.78rem;font-weight:700;color:#aab4ff;">Pendatang Mpruy</div><div style="font-size:.65rem;color:#555;">≥100 btg · Diskon 5%</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #111;">
+            <span style="font-size:1rem;">🟤</span>
+            <div style="flex:1;"><div style="font-size:.78rem;font-weight:700;color:var(--wood);">Ici Bos</div><div style="font-size:.65rem;color:#555;">≥1.000 btg · Diskon 7%</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 0;">
+            <span style="font-size:1rem;">🟢</span>
+            <div style="flex:1;"><div style="font-size:.78rem;font-weight:700;color:#6fcf6f;">Bos Besar</div><div style="font-size:.65rem;color:#555;">≥10.000 btg · Diskon 10%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -780,6 +963,424 @@ select:focus{border-color:var(--wood);}
         </div>
       </div>
       <a href="https://wa.me/6288221329336?text=Halo+kayuMANIA,+saya+ingin+bertanya+tentang+kayu" target="_blank" class="bs bw" style="justify-content:center;padding:12px;font-size:.85rem;">💬 Chat WhatsApp Sekarang</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ INFO MEMBER (publik) ══════════ -->
+<div id="page-member-info" class="page">
+  <div class="ph"><div class="bc">kayuMANIA › Info Member</div><h1>Program Member</h1><p>Tingkatan & keuntungan jadi member kayuMANIA</p></div>
+  <div class="tier-grd">
+    <div class="tier-card tier-1">
+      <div class="tier-ico">🔵</div>
+      <div class="tier-badge">🔵 Tier 1</div>
+      <div class="tier-name">Pendatang Mpruy</div>
+      <div class="tier-req">Minimal pembelian total ≥ 100 batang</div>
+      <div class="tier-disc">5% OFF</div>
+      <div class="tier-desc">Dapatkan diskon <strong style="color:#aab4ff;">5%</strong> untuk setiap pembelian di atas 100 unit batang kayu.</div>
+    </div>
+    <div class="tier-card tier-2">
+      <div class="tier-ico">🟤</div>
+      <div class="tier-badge">🟤 Tier 2</div>
+      <div class="tier-name">Ici Bos</div>
+      <div class="tier-req">Minimal pembelian total ≥ 1.000 batang</div>
+      <div class="tier-disc">7% OFF</div>
+      <div class="tier-desc">Dapatkan diskon <strong style="color:var(--wood);">7%</strong> untuk setiap pembelian di atas 100 unit batang kayu.</div>
+    </div>
+    <div class="tier-card tier-3">
+      <div class="tier-ico">🟢</div>
+      <div class="tier-badge">🟢 Tier 3</div>
+      <div class="tier-name">Bos Besar</div>
+      <div class="tier-req">Minimal pembelian total ≥ 10.000 batang</div>
+      <div class="tier-disc">10% OFF</div>
+      <div class="tier-desc">Dapatkan diskon <strong style="color:#6fcf6f;">10%</strong> untuk setiap pembelian di atas 100 unit batang kayu.</div>
+    </div>
+  </div>
+  <div class="ib">💡 Pendaftaran member dilakukan oleh admin. Hubungi kami via <strong>WhatsApp 0882-2132-9336</strong> untuk informasi lebih lanjut.</div>
+  <div class="tw">
+    <div class="th"><h3>Cara Mendapatkan Member</h3></div>
+    <div style="padding:16px 18px;display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--wood);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:900;flex-shrink:0;">1</div>
+        <div><div style="font-size:.84rem;font-weight:700;">Hubungi admin via WhatsApp</div><div style="font-size:.76rem;color:var(--g400);margin-top:2px;">Kirim pesan ke 0882-2132-9336 dengan menyebutkan nama dan total pembelian Anda.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--wood);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:900;flex-shrink:0;">2</div>
+        <div><div style="font-size:.84rem;font-weight:700;">Admin verifikasi pembelian</div><div style="font-size:.76rem;color:var(--g400);margin-top:2px;">Admin akan memverifikasi riwayat pembelian dan mendaftarkan akun member Anda.</div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--wood);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:900;flex-shrink:0;">3</div>
+        <div><div style="font-size:.84rem;font-weight:700;">Nikmati diskon member</div><div style="font-size:.76rem;color:var(--g400);margin-top:2px;">Diskon otomatis berlaku saat Anda melakukan pemesanan berikutnya di atas 100 batang.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ DATA MEMBER (ADMIN) ══════════ -->
+<div id="page-member" class="page">
+  <div class="ph"><div class="bc">kayuMANIA › Data Member 🔐</div><h1>Manajemen Member</h1><p>Daftar & kelola member terdaftar</p></div>
+
+  <div class="sr">
+    <div class="sc"><div class="sl">Total Member</div><div class="sv" id="mem-total">0</div><div class="ss">terdaftar</div><span class="sbg b">Aktif</span></div>
+    <div class="sc"><div class="sl">Pendatang Mpruy</div><div class="sv" id="mem-t1">0</div><div class="ss">Tier 1 · 5% off</div><span class="sbg b">🔵</span></div>
+    <div class="sc"><div class="sl">Ici Bos</div><div class="sv" id="mem-t2">0</div><div class="ss">Tier 2 · 7% off</div><span class="sbg y">🟤</span></div>
+    <div class="sc"><div class="sl">Bos Besar</div><div class="sv" id="mem-t3">0</div><div class="ss">Tier 3 · 10% off</div><span class="sbg g">🟢</span></div>
+  </div>
+
+  <!-- Form Daftar Member -->
+  <div class="fs" style="background:var(--black);border-color:#222;">
+    <h3 style="color:var(--white);">➕ Daftarkan Member Baru</h3>
+    <div class="fg">
+      <div class="fg2">
+        <label style="color:#666;">Nama Lengkap</label>
+        <input type="text" id="m-nama" placeholder="Nama pelanggan" style="background:#111;border-color:#333;color:var(--white);">
+      </div>
+      <div class="fg2">
+        <label style="color:#666;">No. HP / WA</label>
+        <input type="text" id="m-hp" placeholder="08xx-xxxx-xxxx" style="background:#111;border-color:#333;color:var(--white);">
+      </div>
+      <div class="fg2">
+        <label style="color:#666;">Alamat</label>
+        <input type="text" id="m-alamat" placeholder="Alamat pelanggan" style="background:#111;border-color:#333;color:var(--white);">
+      </div>
+      <div class="fg2">
+        <label style="color:#666;">Total Pembelian (batang)</label>
+        <input type="number" id="m-btg" placeholder="0" min="0" style="background:#111;border-color:#333;color:var(--white);" oninput="previewTier()">
+      </div>
+      <div class="fg2">
+        <label style="color:#666;">Tanggal Daftar</label>
+        <input type="date" id="m-tgl" style="background:#111;border-color:#333;color:var(--white);">
+      </div>
+      <div class="fg2">
+        <label style="color:#666;">Tier Otomatis</label>
+        <div id="tier-preview" style="padding:9px 12px;background:#111;border:1.5px solid #333;border-radius:9px;font-size:.82rem;color:#555;min-height:38px;display:flex;align-items:center;">
+          Isi jumlah batang untuk melihat tier
+        </div>
+      </div>
+      <div class="fg2">
+        <label style="color:#666;">Catatan</label>
+        <input type="text" id="m-catatan" placeholder="Catatan tambahan..." style="background:#111;border-color:#333;color:var(--white);">
+      </div>
+    </div>
+    <div class="fa">
+      <button class="bs bw" onclick="daftarMember()">👑 Daftarkan Member</button>
+      <button class="bs bo" onclick="resetFormMember()" style="color:var(--white);border-color:#333;">Reset</button>
+    </div>
+  </div>
+
+  <!-- Tabel Member -->
+  <div class="tw">
+    <div class="th">
+      <h3>📋 Daftar Member Terdaftar</h3>
+      <div class="ta">
+        <select id="filter-tier" onchange="renderMemberTable()" style="font-size:.72rem;padding:5px 8px;">
+          <option value="">Semua Tier</option>
+          <option value="1">🔵 Pendatang Mpruy</option>
+          <option value="2">🟤 Ici Bos</option>
+          <option value="3">🟢 Bos Besar</option>
+        </select>
+        <button class="bs bo" onclick="window.print()">🖨 Cetak</button>
+      </div>
+    </div>
+    <div class="t-scroll">
+      <table>
+        <thead><tr><th>#</th><th>Nama</th><th>No. HP</th><th>Total Btg</th><th>Tier</th><th>Diskon</th><th>Daftar</th><th>Aksi</th></tr></thead>
+        <tbody id="member-tbody"><tr><td colspan="8" style="text-align:center;color:var(--g400);padding:20px;font-size:.8rem;">Belum ada member terdaftar</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Info Tier -->
+  <div class="tier-grd">
+    <div class="tier-card tier-1">
+      <div class="tier-ico">🔵</div>
+      <div class="tier-badge">Tier 1</div>
+      <div class="tier-name">Pendatang Mpruy</div>
+      <div class="tier-req">≥ 100 batang total</div>
+      <div class="tier-disc">5% OFF</div>
+      <div class="tier-desc">Diskon 5% saat pembelian di atas 100 unit.</div>
+    </div>
+    <div class="tier-card tier-2">
+      <div class="tier-ico">🟤</div>
+      <div class="tier-badge">Tier 2</div>
+      <div class="tier-name">Ici Bos</div>
+      <div class="tier-req">≥ 1.000 batang total</div>
+      <div class="tier-disc">7% OFF</div>
+      <div class="tier-desc">Diskon 7% saat pembelian di atas 100 unit.</div>
+    </div>
+    <div class="tier-card tier-3">
+      <div class="tier-ico">🟢</div>
+      <div class="tier-badge">Tier 3</div>
+      <div class="tier-name">Bos Besar</div>
+      <div class="tier-req">≥ 10.000 batang total</div>
+      <div class="tier-disc">10% OFF</div>
+      <div class="tier-desc">Diskon 10% saat pembelian di atas 100 unit.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ GIFT PEMBELI TERBAIK ══════════ -->
+<div id="page-gift" class="page">
+  <div class="ph">
+    <div class="bc">kayuMANIA › Gift Pembeli Terbaik</div>
+    <h1>🎁 Gift Pembeli Terbaik</h1>
+    <p>Top 10 pembeli terbanyak bulan ini mendapatkan hadiah eksklusif dari kayuMANIA</p>
+  </div>
+
+  <!-- Banner pengumuman -->
+  <div style="background:var(--black);border-radius:14px;padding:20px 24px;margin-bottom:20px;position:relative;overflow:hidden;border:1px solid #222;">
+    <div style="position:absolute;right:-10px;top:-10px;font-size:5rem;opacity:.07;line-height:1;">🎁</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <div style="background:var(--wood);border-radius:8px;padding:6px 12px;font-size:.7rem;font-weight:800;color:#fff;letter-spacing:.06em;text-transform:uppercase;">Program Bulan Maret 2026</div>
+      <div style="background:#1e3a1e;border:1px solid #2d7a2d;border-radius:6px;padding:4px 10px;font-size:.7rem;font-weight:700;color:#4dbd4d;">🟢 Aktif</div>
+    </div>
+    <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:var(--white);margin-bottom:6px;">Belanja Terbanyak = Dapat Gift Eksklusif!</div>
+    <div style="font-size:.82rem;color:#888;line-height:1.7;max-width:700px;">10 pembeli dengan total belanja tertinggi di bulan Maret 2026 berhak mendapatkan <strong style="color:var(--wood);">Gift Bundle kayuMANIA</strong> berisi kaos vintage eksklusif, gantungan kunci, dan stiker koleksi. Klaim hadiah Anda sebelum tanggal 5 April 2026.</div>
+  </div>
+
+  <!-- Leaderboard + Gift Bundle (2 kolom desktop) -->
+  <div class="two-col" style="grid-template-columns:1fr 340px;">
+
+    <!-- LEADERBOARD -->
+    <div>
+      <div class="tw" style="margin-bottom:0;">
+        <div class="th" style="background:var(--black);border-bottom:1px solid #222;">
+          <h3 style="color:var(--white);">🏆 Top 10 Pembeli Bulan Ini</h3>
+          <div class="ta">
+            <select onchange="filterBulanGift(this.value)" style="background:#111;color:#fff;border-color:#333;font-size:.72rem;">
+              <option value="maret">Maret 2026</option>
+              <option value="feb">Februari 2026</option>
+              <option value="jan">Januari 2026</option>
+            </select>
+          </div>
+        </div>
+        <div class="t-scroll">
+          <table style="min-width:420px;">
+            <thead style="background:#111;">
+              <tr>
+                <th style="color:#555;">RANK</th>
+                <th style="color:#555;">NAMA</th>
+                <th style="color:#555;">TOTAL BELANJA</th>
+                <th style="color:#555;">TRANSAKSI</th>
+                <th style="color:#555;">STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="gift-leaderboard"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Info klaim -->
+      <div style="background:#fff8f3;border:1px solid #f0d9c4;border-radius:10px;padding:14px 16px;margin-top:12px;">
+        <div style="font-size:.8rem;font-weight:800;color:var(--wd);margin-bottom:8px;">📋 Syarat & Cara Klaim Gift</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:10px;font-size:.78rem;color:#555;line-height:1.6;">
+            <span style="width:20px;height:20px;background:var(--black);color:var(--wood);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:900;flex-shrink:0;">1</span>
+            <span>Pastikan nama kamu <strong>tertera di Top 10</strong> leaderboard bulan ini.</span>
+          </div>
+          <div style="display:flex;gap:10px;font-size:.78rem;color:#555;line-height:1.6;">
+            <span style="width:20px;height:20px;background:var(--black);color:var(--wood);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:900;flex-shrink:0;">2</span>
+            <span>Isi <strong>Form Klaim Gift</strong> di bawah dengan data lengkap: nama, alamat pengiriman, pilihan size kaos, dan nomor pesanan.</span>
+          </div>
+          <div style="display:flex;gap:10px;font-size:.78rem;color:#555;line-height:1.6;">
+            <span style="width:20px;height:20px;background:var(--black);color:var(--wood);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:900;flex-shrink:0;">3</span>
+            <span>Upload atau sertakan <strong>bukti struk pesanan</strong> sebagai verifikasi bahwa kamu adalah pembeli teratas bulan ini.</span>
+          </div>
+          <div style="display:flex;gap:10px;font-size:.78rem;color:#555;line-height:1.6;">
+            <span style="width:20px;height:20px;background:var(--black);color:var(--wood);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:900;flex-shrink:0;">4</span>
+            <span>Tim kayuMANIA akan <strong>memverifikasi data</strong> dan mengirimkan gift bundle ke alamat yang kamu berikan maksimal 7 hari kerja.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GIFT BUNDLE SHOWCASE -->
+    <div>
+      <!-- Kaos -->
+      <div style="background:var(--black);border-radius:14px;overflow:hidden;margin-bottom:12px;border:1px solid #222;">
+        <div style="padding:16px 18px 0;">
+          <div style="font-size:.6rem;font-weight:800;color:var(--wood);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">Gift #1</div>
+          <div style="font-size:.95rem;font-weight:800;color:var(--white);margin-bottom:3px;">Kaos Vintage kayuMANIA</div>
+          <div style="font-size:.72rem;color:#666;margin-bottom:12px;">Edisi terbatas · Hanya untuk pembeli terbaik</div>
+        </div>
+        <!-- SVG Kaos Design -->
+        <div style="background:#0a0a0a;padding:16px;display:flex;justify-content:center;">
+          <svg width="180" height="190" viewBox="0 0 180 190" xmlns="http://www.w3.org/2000/svg">
+            <!-- Badan kaos hitam -->
+            <path d="M55,30 L20,55 L35,75 L50,62 L50,175 L130,175 L130,62 L145,75 L160,55 L125,30 Q112,20 90,18 Q68,20 55,30 Z" fill="#111" stroke="#2a2a2a" stroke-width="1.5"/>
+            <!-- Kerah -->
+            <path d="M70,30 Q90,42 110,30" fill="none" stroke="#1e1e1e" stroke-width="2.5"/>
+            <!-- Lingkaran tengah -->
+            <circle cx="90" cy="95" r="38" fill="none" stroke="#8B5E3C" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+            <!-- Teks kayuMANIA vintage -->
+            <text x="90" y="82" text-anchor="middle" font-family="Georgia,serif" font-size="8.5" font-weight="900" fill="#C8956C" letter-spacing="1.5">kayu</text>
+            <text x="90" y="95" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="900" fill="#C8956C" letter-spacing="2">MANIA</text>
+            <!-- Garis vintage bawah teks -->
+            <line x1="62" y1="100" x2="118" y2="100" stroke="#8B5E3C" stroke-width="0.7" opacity="0.7"/>
+            <!-- Ikon kayu vintage -->
+            <text x="90" y="114" text-anchor="middle" font-size="11" fill="#8B5E3C" opacity="0.8">🪵</text>
+            <!-- Teks bawah -->
+            <text x="90" y="125" text-anchor="middle" font-family="Georgia,serif" font-size="5.5" fill="#555" letter-spacing="2.5">EST. 2010 · YOGYAKARTA</text>
+            <!-- Bintang kecil dekorasi -->
+            <text x="58" y="98" text-anchor="middle" font-size="7" fill="#8B5E3C" opacity="0.5">✦</text>
+            <text x="122" y="98" text-anchor="middle" font-size="7" fill="#8B5E3C" opacity="0.5">✦</text>
+          </svg>
+        </div>
+        <!-- Pilihan size -->
+        <div style="padding:12px 18px 16px;">
+          <div style="font-size:.7rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Pilih Ukuran Kaos</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="size-btn" onclick="pilihSize(this,'M')">M</button>
+            <button class="size-btn" onclick="pilihSize(this,'L')">L</button>
+            <button class="size-btn" onclick="pilihSize(this,'XL')">XL</button>
+            <button class="size-btn" onclick="pilihSize(this,'XXL')">XXL</button>
+            <button class="size-btn" onclick="pilihSize(this,'XXXL')">XXXL</button>
+          </div>
+          <div style="font-size:.68rem;color:#555;margin-top:8px;">* Ukuran yang dipilih akan diterapkan ke form klaim</div>
+        </div>
+      </div>
+
+      <!-- Gantungan Kunci -->
+      <div style="background:var(--white);border:1px solid var(--g200);border-radius:12px;overflow:hidden;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;">
+          <div style="flex-shrink:0;">
+            <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <!-- Cincin gantungan -->
+              <circle cx="32" cy="14" r="9" fill="none" stroke="#C8956C" stroke-width="3"/>
+              <circle cx="32" cy="14" r="5" fill="none" stroke="#8B5E3C" stroke-width="1.5"/>
+              <!-- Rantai kecil -->
+              <line x1="32" y1="23" x2="32" y2="28" stroke="#C8956C" stroke-width="2.5"/>
+              <!-- Bentuk kayu (persegi panjang kayu) -->
+              <rect x="18" y="28" width="28" height="30" rx="4" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+              <!-- Serat kayu dekorasi -->
+              <line x1="20" y1="36" x2="44" y2="36" stroke="#2a2a2a" stroke-width="0.6"/>
+              <line x1="20" y1="40" x2="44" y2="40" stroke="#2a2a2a" stroke-width="0.6"/>
+              <line x1="20" y1="44" x2="44" y2="44" stroke="#2a2a2a" stroke-width="0.6"/>
+              <!-- Teks KM -->
+              <text x="32" y="35" text-anchor="middle" font-family="Georgia" font-size="7" font-weight="900" fill="#C8956C">kayu</text>
+              <text x="32" y="46" text-anchor="middle" font-family="Georgia" font-size="9" font-weight="900" fill="#C8956C">M</text>
+            </svg>
+          </div>
+          <div>
+            <div style="font-size:.62rem;font-weight:800;color:var(--wood);letter-spacing:.08em;text-transform:uppercase;">Gift #2</div>
+            <div style="font-size:.88rem;font-weight:800;margin-bottom:2px;">Gantungan Kunci Kayu</div>
+            <div style="font-size:.73rem;color:var(--g400);line-height:1.5;">Kayu jati ukir premium berbentuk lempengan kayu, ukiran logo kayuMANIA emas. Finishing natural wood varnish.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stiker -->
+      <div style="background:var(--white);border:1px solid var(--g200);border-radius:12px;overflow:hidden;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;">
+          <div style="flex-shrink:0;">
+            <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <!-- Stiker 1: bulat hitam -->
+              <circle cx="20" cy="20" r="16" fill="#111" stroke="#222" stroke-width="1"/>
+              <text x="20" y="16" text-anchor="middle" font-family="Georgia" font-size="5.5" font-weight="900" fill="#C8956C">kayu</text>
+              <text x="20" y="24" text-anchor="middle" font-family="Georgia" font-size="7" font-weight="900" fill="#C8956C">MANIA</text>
+              <circle cx="20" cy="20" r="13" fill="none" stroke="#8B5E3C" stroke-width="0.7" stroke-dasharray="3,2" opacity="0.6"/>
+              <!-- Stiker 2: petak kayu -->
+              <rect x="38" y="6" width="22" height="22" rx="3" fill="#C8956C"/>
+              <text x="49" y="22" text-anchor="middle" font-size="14">🪵</text>
+              <!-- Stiker 3: hexagon -->
+              <polygon points="20,38 28,34 36,38 36,46 28,50 20,46" fill="#0F0F0F" stroke="#C8956C" stroke-width="1"/>
+              <text x="28" y="44" text-anchor="middle" font-family="Georgia" font-size="4.5" font-weight="900" fill="#C8956C">KM</text>
+              <!-- Stiker 4: bintang -->
+              <text x="49" y="54" text-anchor="middle" font-size="18">⭐</text>
+            </svg>
+          </div>
+          <div>
+            <div style="font-size:.62rem;font-weight:800;color:var(--wood);letter-spacing:.08em;text-transform:uppercase;">Gift #3</div>
+            <div style="font-size:.88rem;font-weight:800;margin-bottom:2px;">Stiker Pack kayuMANIA</div>
+            <div style="font-size:.73rem;color:var(--g400);line-height:1.5;">4 desain eksklusif: logo bulat, ikon kayu, hexagon monogram, dan bintang. Bahan vinyl waterproof, tahan lama.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bundle label -->
+      <div style="background:linear-gradient(135deg,#0f0f0f,#1a1a1a);border:1px solid #C8956C;border-radius:10px;padding:12px 16px;text-align:center;">
+        <div style="font-size:.62rem;font-weight:800;color:var(--wood);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">✦ Semua Gift di atas</div>
+        <div style="font-size:1.05rem;font-weight:900;color:var(--white);font-family:'Fraunces',serif;">Dibundling Jadi Satu Paket!</div>
+        <div style="font-size:.72rem;color:#666;margin-top:4px;">Dikirim ke alamat pemenang · Gratis ongkir</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM KLAIM -->
+  <div class="fs" style="margin-top:20px;border:2px solid var(--wood);">
+    <h3 style="color:var(--black);">📬 Form Klaim Gift — Pembeli Terbaik</h3>
+    <div class="ib" style="margin-bottom:14px;">
+      ⚠️ Pastikan nama kamu <strong>tertera di leaderboard Top 10</strong> sebelum mengisi form ini. Data akan diverifikasi oleh admin sebelum gift dikirim.
+    </div>
+
+    <!-- Badge rank terpilih -->
+    <div id="klaim-rank-badge" style="display:none;background:var(--black);border-radius:9px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+      <div id="klaim-rank-ico" style="font-size:1.5rem;"></div>
+      <div>
+        <div style="font-size:.7rem;color:#666;font-weight:700;">TERDETEKSI SEBAGAI</div>
+        <div id="klaim-rank-txt" style="font-size:.88rem;font-weight:800;color:var(--white);"></div>
+      </div>
+    </div>
+
+    <div class="fg">
+      <div class="fg2">
+        <label>Nama Lengkap *</label>
+        <input type="text" id="klaim-nama" placeholder="Sesuai struk pesanan" oninput="cekNamaLeader(this.value)">
+      </div>
+      <div class="fg2">
+        <label>No. HP / WA *</label>
+        <input type="text" id="klaim-hp" placeholder="08xx-xxxx-xxxx">
+      </div>
+      <div class="fg2" style="grid-column:1/-1;">
+        <label>Alamat Pengiriman Lengkap *</label>
+        <textarea id="klaim-alamat" rows="3" placeholder="Jl. ... No. ... RT/RW ... Kelurahan ... Kecamatan ... Kota ... Kode Pos ..." style="resize:vertical;"></textarea>
+      </div>
+      <div class="fg2">
+        <label>Nomor Pesanan (dari struk) *</label>
+        <input type="text" id="klaim-no-order" placeholder="Contoh: ORD-049, ORD-052, ...">
+      </div>
+      <div class="fg2">
+        <label>Ukuran Kaos *</label>
+        <select id="klaim-size">
+          <option value="">-- Pilih Size --</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+          <option value="XXXL">XXXL</option>
+        </select>
+      </div>
+      <div class="fg2" style="grid-column:1/-1;">
+        <label>Daftar Nomor Struk Pesanan *</label>
+        <textarea id="klaim-struk" rows="4" placeholder="Salin nomor-nomor struk pesanan Anda di sini sebagai bukti pembelian. Contoh:&#10;ORD-049 · 5 Mar 2026 · Jati 4×6 ×50 · Rp 2.250.000&#10;ORD-052 · 8 Mar 2026 · Meranti 5×10 ×30 · Rp 1.350.000" style="resize:vertical;font-family:'Plus Jakarta Sans',sans-serif;font-size:.79rem;"></textarea>
+      </div>
+      <div class="fg2" style="grid-column:1/-1;">
+        <label>Catatan Tambahan</label>
+        <input type="text" id="klaim-catatan" placeholder="Tuliskan jika ada pesan atau permintaan khusus...">
+      </div>
+    </div>
+
+    <div class="fa" style="margin-top:16px;">
+      <button class="bs" style="background:var(--wood);color:var(--white);padding:11px 24px;font-size:.85rem;" onclick="kirimKlaim()">🎁 Kirim Klaim Gift</button>
+      <button class="bs bo" onclick="resetKlaim()">Reset Form</button>
+    </div>
+  </div>
+
+  <!-- Riwayat Klaim (Admin) -->
+  <div id="klaim-history-wrap" style="display:none;">
+    <div class="tw" style="margin-top:16px;">
+      <div class="th">
+        <h3>📋 Riwayat Pengajuan Klaim</h3>
+        <div class="ta">
+          <button class="bs bo" onclick="window.print()">🖨 Cetak</button>
+        </div>
+      </div>
+      <div class="t-scroll">
+        <table>
+          <thead><tr><th>#</th><th>Nama</th><th>HP</th><th>Rank</th><th>Size</th><th>No. Order</th><th>Tgl Klaim</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody id="klaim-tbody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -1262,7 +1863,404 @@ document.addEventListener('DOMContentLoaded', ()=>{
   if(tglEl) tglEl.value = today;
   const msTglEl = document.getElementById('ms-tgl');
   if(msTglEl) msTglEl.value = today;
+  const mTglEl = document.getElementById('m-tgl');
+  if(mTglEl) mTglEl.value = today;
+  renderLeaderboard();
 });
+
+// ── MEMBER DATA ──
+let members = [];
+let memberNum = 0;
+
+const TIER_INFO = {
+  1: { name:'Pendatang Mpruy', min:100,   disc:5,  cls:'mb1', ico:'🔵', clsCard:'tier-1' },
+  2: { name:'Ici Bos',         min:1000,  disc:7,  cls:'mb2', ico:'🟤', clsCard:'tier-2' },
+  3: { name:'Bos Besar',       min:10000, disc:10, cls:'mb3', ico:'🟢', clsCard:'tier-3' },
+};
+
+function getTier(btg){
+  if(btg >= 10000) return 3;
+  if(btg >= 1000)  return 2;
+  if(btg >= 100)   return 1;
+  return 0;
+}
+
+function previewTier(){
+  const btg = parseInt((document.getElementById('m-btg')||{}).value)||0;
+  const el = document.getElementById('tier-preview');
+  if(!el) return;
+  const tier = getTier(btg);
+  if(!tier){ el.innerHTML='<span style="color:#555;">Belum memenuhi syarat member (min. 100 btg)</span>'; return; }
+  const t = TIER_INFO[tier];
+  el.innerHTML=`<span class="mbadge ${t.cls}">${t.ico} ${t.name}</span>&nbsp; <span style="color:#6fcf6f;font-weight:700;font-size:.78rem;">Diskon ${t.disc}%</span>`;
+}
+
+function daftarMember(){
+  const nama = (document.getElementById('m-nama')||{}).value||'';
+  const hp   = (document.getElementById('m-hp')||{}).value||'-';
+  const alamat=(document.getElementById('m-alamat')||{}).value||'-';
+  const btg  = parseInt((document.getElementById('m-btg')||{}).value)||0;
+  const tgl  = (document.getElementById('m-tgl')||{}).value || new Date().toISOString().split('T')[0];
+  const cat  = (document.getElementById('m-catatan')||{}).value||'-';
+  if(!nama.trim()){ st('Nama member wajib diisi!','error'); return; }
+  if(btg < 100){ st('Minimal 100 batang untuk mendaftar member!','error'); return; }
+  const tier = getTier(btg);
+  memberNum++;
+  members.unshift({ id:'MBR-'+String(memberNum).padStart(3,'0'), nama, hp, alamat, btg, tier, tgl, cat });
+  resetFormMember();
+  renderMemberTable();
+  updateMemberStats();
+  st('Member '+nama+' berhasil didaftarkan!','success');
+  // update leaderboard juga
+  renderLeaderboard();
+}
+
+function resetFormMember(){
+  ['m-nama','m-hp','m-alamat','m-btg','m-catatan'].forEach(id=>{ const e=document.getElementById(id); if(e)e.value=''; });
+  const tp=document.getElementById('tier-preview');
+  if(tp) tp.innerHTML='<span style="color:#555;">Isi jumlah batang untuk melihat tier</span>';
+  const mTglEl = document.getElementById('m-tgl');
+  if(mTglEl) mTglEl.value=new Date().toISOString().split('T')[0];
+}
+
+function renderMemberTable(){
+  const tbody = document.getElementById('member-tbody');
+  if(!tbody) return;
+  const filterTier = (document.getElementById('filter-tier')||{}).value||'';
+  const filtered = filterTier ? members.filter(m=>m.tier==filterTier) : members;
+  if(!filtered.length){
+    tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--g400);padding:20px;font-size:.8rem;">Belum ada member'+(filterTier?' untuk tier ini':' terdaftar')+'</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map((m,i)=>{
+    const t = TIER_INFO[m.tier]||{};
+    return `<tr>
+      <td>${i+1}</td>
+      <td><b>${m.nama}</b></td>
+      <td>${m.hp}</td>
+      <td class="tn">${m.btg.toLocaleString('id-ID')} btg</td>
+      <td><span class="mbadge ${t.cls||''}">${t.ico||''} ${t.name||'-'}</span></td>
+      <td class="tg">${t.disc||0}%</td>
+      <td>${m.tgl}</td>
+      <td><button class="bs br2" style="font-size:.62rem;padding:3px 8px;" onclick="hapusMember('${m.id}')">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function hapusMember(id){
+  members = members.filter(m=>m.id!==id);
+  renderMemberTable();
+  updateMemberStats();
+  renderLeaderboard();
+  st('Member dihapus.','');
+}
+
+function updateMemberStats(){
+  const setTxt=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  setTxt('mem-total', members.length);
+  setTxt('mem-t1', members.filter(m=>m.tier===1).length);
+  setTxt('mem-t2', members.filter(m=>m.tier===2).length);
+  setTxt('mem-t3', members.filter(m=>m.tier===3).length);
+}
+
+// ── GIFT SIZE ──
+function pilihSize(el, size){
+  document.querySelectorAll('#gift-size .sz-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  st('Size kaos '+size+' dipilih ✓','success');
+}
+
+// ── LEADERBOARD ──
+// Data awal dummy untuk tampilan lebih menarik
+const dummyLeaderboard = [
+  { nama:'CV Bangun Jaya',     hp:'0812-3456-7890', btg:4280, tier:3 },
+  { nama:'Toko Mebel Sari',    hp:'0813-2345-6789', btg:3150, tier:3 },
+  { nama:'Pak Budi Konstruksi',hp:'0821-3456-7890', btg:2890, tier:2 },
+  { nama:'UD Kayu Makmur',     hp:'0814-5678-9012', btg:1740, tier:2 },
+  { nama:'Ibu Hartini',        hp:'0815-6789-0123', btg:1320, tier:2 },
+  { nama:'Pak Roni',           hp:'0816-7890-1234', btg:980,  tier:1 },
+  { nama:'Toko Material Jaya', hp:'0817-8901-2345', btg:640,  tier:1 },
+  { nama:'CV Karya Mandiri',   hp:'0818-9012-3456', btg:410,  tier:1 },
+  { nama:'Pak Hendra',         hp:'0819-0123-4567', btg:220,  tier:1 },
+  { nama:'Ibu Wati',           hp:'0820-1234-5678', btg:130,  tier:1 },
+];
+
+const AVATARS = ['🏗️','🔨','🪚','🛠️','🏚️','🪵','🌳','🏠','🔧','🪛'];
+
+function renderLeaderboard(){
+  const el = document.getElementById('lb-list');
+  if(!el) return;
+
+  // Gabungkan member nyata + dummy, sort berdasarkan btg
+  const realList = members.map(m=>({ nama:m.nama, hp:m.hp, btg:m.btg, tier:m.tier, real:true }));
+  const combined = [...realList, ...dummyLeaderboard]
+    .sort((a,b)=>b.btg-a.btg)
+    .slice(0,10);
+
+  if(!combined.length){ el.innerHTML='<div style="padding:20px;text-align:center;color:#555;font-size:.8rem;">Belum ada data</div>'; return; }
+
+  el.innerHTML = combined.map((p,i)=>{
+    const rankClass = i===0?'lbr1':i===1?'lbr2':i===2?'lbr3':'lbr-n';
+    const rankLabel = i===0?'👑':i===1?'🥈':i===2?'🥉':(i+1);
+    const t = p.tier ? TIER_INFO[p.tier] : null;
+    const badgeHtml = t ? `<span class="mbadge ${t.cls}" style="font-size:.55rem;">${t.ico} ${t.name}</span>` : '';
+    const giftHtml = i===0 ? '<span class="lb-gift">🎁 Gift Box</span>' : '';
+    return `<div class="lb-row">
+      <div class="lb-rank ${rankClass}">${rankLabel}</div>
+      <div class="lb-ava">${AVATARS[i]}</div>
+      <div class="lb-info">
+        <div class="lb-name">${p.nama} ${giftHtml}</div>
+        <div class="lb-sub">${badgeHtml} &nbsp;${p.hp}</div>
+      </div>
+      <div class="lb-qty">${p.btg.toLocaleString('id-ID')}<span style="font-size:.62rem;color:#555;font-weight:400;"> btg</span></div>
+    </div>`;
+  }).join('');
+
+  // Update bulan label
+  const bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const now = new Date();
+  const lbLabel = document.getElementById('lb-month-label');
+  if(lbLabel) lbLabel.textContent = bulan[now.getMonth()]+' '+now.getFullYear();
+}
+
+// ══ GIFT LEADERBOARD DATA ══
+const leaderboardData = {
+  maret: [
+    { rank:1,  nama:"Budi Konstruksi",    total:18500000, trx:12, claimed:false },
+    { rank:2,  nama:"CV Bangun Jaya",     total:15200000, trx:9,  claimed:false },
+    { rank:3,  nama:"Toko Mebel Sari",    total:12800000, trx:11, claimed:false },
+    { rank:4,  nama:"Pak Hartono",        total:9600000,  trx:7,  claimed:false },
+    { rank:5,  nama:"UD Kayu Makmur",     total:8400000,  trx:6,  claimed:false },
+    { rank:6,  nama:"Ibu Wati",           total:7200000,  trx:8,  claimed:false },
+    { rank:7,  nama:"PT Griya Indah",     total:6100000,  trx:5,  claimed:false },
+    { rank:8,  nama:"Pak Sugeng",         total:5300000,  trx:6,  claimed:false },
+    { rank:9,  nama:"Bengkel Las Jaya",   total:4800000,  trx:4,  claimed:false },
+    { rank:10, nama:"Toko Bangunan Maju", total:4200000,  trx:5,  claimed:false },
+  ],
+  feb: [
+    { rank:1,  nama:"CV Bangun Jaya",     total:16400000, trx:10, claimed:true  },
+    { rank:2,  nama:"Budi Konstruksi",    total:14100000, trx:11, claimed:true  },
+    { rank:3,  nama:"PT Griya Indah",     total:11500000, trx:8,  claimed:true  },
+    { rank:4,  nama:"UD Kayu Makmur",     total:9200000,  trx:7,  claimed:true  },
+    { rank:5,  nama:"Toko Mebel Sari",    total:8000000,  trx:9,  claimed:true  },
+    { rank:6,  nama:"Pak Hartono",        total:6800000,  trx:5,  claimed:true  },
+    { rank:7,  nama:"Ibu Wati",           total:5900000,  trx:6,  claimed:true  },
+    { rank:8,  nama:"Bengkel Las Jaya",   total:5100000,  trx:4,  claimed:true  },
+    { rank:9,  nama:"Pak Sugeng",         total:4600000,  trx:5,  claimed:true  },
+    { rank:10, nama:"Toko Bangunan Maju", total:3900000,  trx:4,  claimed:true  },
+  ],
+  jan: [
+    { rank:1,  nama:"Budi Konstruksi",    total:17200000, trx:13, claimed:true  },
+    { rank:2,  nama:"PT Griya Indah",     total:13600000, trx:9,  claimed:true  },
+    { rank:3,  nama:"CV Bangun Jaya",     total:10900000, trx:8,  claimed:true  },
+    { rank:4,  nama:"Toko Mebel Sari",    total:8700000,  trx:10, claimed:true  },
+    { rank:5,  nama:"UD Kayu Makmur",     total:7500000,  trx:6,  claimed:true  },
+    { rank:6,  nama:"Pak Hartono",        total:6300000,  trx:5,  claimed:true  },
+    { rank:7,  nama:"Ibu Wati",           total:5700000,  trx:7,  claimed:true  },
+    { rank:8,  nama:"Toko Bangunan Maju", total:4900000,  trx:4,  claimed:true  },
+    { rank:9,  nama:"Pak Sugeng",         total:4100000,  trx:5,  claimed:true  },
+    { rank:10, nama:"Bengkel Las Jaya",   total:3600000,  trx:3,  claimed:true  },
+  ]
+};
+
+let activeBulanGift='maret', selectedSize='', klaimList=[];
+const rankIco=['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
+const rankColors=['#FFD700','#C0C0C0','#CD7F32','#C8956C','#C8956C','#888','#888','#888','#888','#888'];
+
+function renderGiftLeaderboard(bulan){
+  bulan=bulan||'maret';
+  const tbody=document.getElementById('gift-leaderboard');
+  if(!tbody) return;
+  let data=[...(leaderboardData[bulan]||[])];
+  // Tambahkan pesanan dari sesi ini ke bulan maret
+  if(bulan==='maret'&&orders.length){
+    const sess={};
+    orders.forEach(o=>{ sess[o.nama]=(sess[o.nama]||0)+o.total; });
+    Object.entries(sess).forEach(([nama,total])=>{
+      const ex=data.find(d=>d.nama.toLowerCase()===nama.toLowerCase());
+      if(ex){ex.total+=total;ex.trx++;}
+      else data.push({rank:99,nama,total,trx:1,claimed:false});
+    });
+    data.sort((a,b)=>b.total-a.total);
+    data=data.slice(0,10).map((d,i)=>({...d,rank:i+1}));
+  }
+  tbody.innerHTML=data.map((d,i)=>{
+    const ico=rankIco[i]||'🔹';
+    const col=rankColors[i]||'#888';
+    const isTop3=i<3;
+    const bg=i===0?'rgba(255,215,0,.06)':i===1?'rgba(192,192,192,.05)':i===2?'rgba(205,127,50,.05)':'';
+    return `<tr style="background:${bg};">
+      <td style="text-align:center;font-size:1.1rem;">${ico}</td>
+      <td>
+        <div style="font-weight:${isTop3?800:700};font-size:.82rem;${isTop3?'color:var(--white);':''};">${d.nama}</div>
+        ${isTop3?`<div style="font-size:.62rem;color:${col};font-weight:700;">⭐ Top ${i+1} Pemenang Gift</div>`:''}
+      </td>
+      <td class="tn" style="color:${col};">Rp ${d.total.toLocaleString('id-ID')}</td>
+      <td style="font-size:.8rem;color:var(--g400);">${d.trx}x</td>
+      <td>${d.claimed?'<span class="stb sa">✓ Diklaim</span>':'<span class="stb st">Belum Klaim</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function filterBulanGift(v){
+  activeBulanGift=v||'maret';
+  renderGiftLeaderboard(activeBulanGift);
+}
+
+function pilihSize(el,size){
+  document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  selectedSize=size;
+  const sel=document.getElementById('klaim-size');
+  if(sel) sel.value=size;
+}
+
+function cekNamaLeader(nama){
+  const badge=document.getElementById('klaim-rank-badge');
+  const icoEl=document.getElementById('klaim-rank-ico');
+  const txtEl=document.getElementById('klaim-rank-txt');
+  if(!badge||!nama.trim()){if(badge)badge.style.display='none';return;}
+  const data=leaderboardData[activeBulanGift]||[];
+  const found=data.find(d=>d.nama.toLowerCase().includes(nama.toLowerCase().trim())||nama.toLowerCase().trim().includes(d.nama.toLowerCase()));
+  if(found){
+    badge.style.display='flex';
+    icoEl.textContent=rankIco[found.rank-1]||'🎯';
+    txtEl.textContent=`Rank #${found.rank} — ${found.nama} · Rp ${found.total.toLocaleString('id-ID')}`;
+  } else {badge.style.display='none';}
+}
+
+function kirimKlaim(){
+  const G=id=>(document.getElementById(id)||{}).value||'';
+  const nama=G('klaim-nama'), hp=G('klaim-hp'), alamat=G('klaim-alamat');
+  const noOrd=G('klaim-no-order'), size=G('klaim-size')||selectedSize, struk=G('klaim-struk');
+  if(!nama.trim()){st('Nama wajib diisi!','error');return;}
+  if(!hp.trim()){st('No. HP wajib diisi!','error');return;}
+  if(!alamat.trim()){st('Alamat pengiriman wajib diisi!','error');return;}
+  if(!noOrd.trim()){st('Nomor pesanan wajib diisi!','error');return;}
+  if(!size){st('Pilih ukuran kaos terlebih dahulu!','error');return;}
+  if(!struk.trim()){st('Bukti struk pesanan wajib diisi!','error');return;}
+  const data=leaderboardData[activeBulanGift]||[];
+  const found=data.find(d=>d.nama.toLowerCase().includes(nama.toLowerCase().trim())||nama.toLowerCase().trim().includes(d.nama.toLowerCase()));
+  const k={
+    id:'KLM-'+(klaimList.length+1).toString().padStart(3,'0'),
+    tgl:new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}),
+    nama:nama.trim(),hp:hp.trim(),alamat:alamat.trim(),
+    noOrd:noOrd.trim(),size,struk:struk.trim(),
+    rank:found?found.rank:'?',status:'Menunggu Verifikasi'
+  };
+  klaimList.unshift(k);
+  if(found) found.claimed=true;
+  renderGiftLeaderboard(activeBulanGift);
+  renderKlaimTable();
+  const wrap=document.getElementById('klaim-history-wrap');
+  if(wrap) wrap.style.display='block';
+  // Isi modal sukses
+  const s=id=>{ const e=document.getElementById(id); return e; };
+  if(s('klaim-preview-nama')) s('klaim-preview-nama').textContent=nama;
+  if(s('klaim-preview-rank')) s('klaim-preview-rank').textContent=found?`Rank #${found.rank} ✅`:'Perlu verifikasi admin';
+  if(s('klaim-preview-size')) s('klaim-preview-size').textContent=size;
+  if(s('klaim-preview-id'))   s('klaim-preview-id').textContent=k.id;
+  if(s('klaim-preview-alamat')) s('klaim-preview-alamat').textContent=alamat.length>70?alamat.slice(0,70)+'...':alamat;
+  const gse=document.getElementById('gift-size-echo'); if(gse) gse.textContent=size;
+  resetKlaim();
+  sm('m-klaim-sukses');
+  if(!found) st('⚠️ Nama tidak terdeteksi di Top 10. Klaim dikirim untuk diverifikasi admin.','');
+  else st(`🎁 Klaim #${k.id} berhasil dikirim!`,'success');
+}
+
+function resetKlaim(){
+  ['klaim-nama','klaim-hp','klaim-alamat','klaim-no-order','klaim-struk','klaim-catatan'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  const sz=document.getElementById('klaim-size');if(sz)sz.value='';
+  document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
+  selectedSize='';
+  const badge=document.getElementById('klaim-rank-badge');if(badge)badge.style.display='none';
+}
+
+function renderKlaimTable(){
+  const tbody=document.getElementById('klaim-tbody');
+  if(!tbody||!klaimList.length) return;
+  tbody.innerHTML=klaimList.map(k=>`
+    <tr>
+      <td><b>${k.id}</b></td>
+      <td>${k.nama}</td>
+      <td>${k.hp}</td>
+      <td style="text-align:center;">${rankIco[k.rank-1]||'❓'} ${k.rank!=='?'?'#'+k.rank:'?'}</td>
+      <td><span class="stb sb2">${k.size}</span></td>
+      <td style="font-size:.73rem;">${k.noOrd}</td>
+      <td>${k.tgl}</td>
+      <td><span class="stb ${k.status.includes('Terverifikasi')?'sa':'st'}">${k.status}</span></td>
+      <td><button class="bs bo" style="font-size:.63rem;padding:3px 7px;" onclick="verifikasiKlaim('${k.id}')">✓ Verif</button></td>
+    </tr>`).join('');
+}
+
+function verifikasiKlaim(id){
+  const k=klaimList.find(x=>x.id===id);
+  if(!k) return;
+  k.status='Terverifikasi — Dikirim 🚚';
+  renderKlaimTable();
+  st(`✅ Klaim ${id} diverifikasi! Gift dikirim ke ${k.nama}`,'success');
+}
+
+// Init gift saat pertama load
+document.addEventListener('DOMContentLoaded',()=>{
+  renderGiftLeaderboard('maret');
+});
+
 </script>
+<!-- Modal Klaim Sukses -->
+<div class="mo" id="m-klaim-sukses" onclick="cmo(event,'m-klaim-sukses')">
+  <div class="md" style="max-width:420px;text-align:center;">
+    <button class="mc" onclick="cm('m-klaim-sukses')">✕</button>
+    <div style="font-size:3rem;margin-bottom:10px;">🎁</div>
+    <h3 style="font-family:'Fraunces',serif;font-size:1.15rem;">Klaim Gift Berhasil Dikirim!</h3>
+    <p class="ms">Tim kayuMANIA akan memverifikasi data Anda dan mengirim gift bundle dalam 7 hari kerja.</p>
+    <!-- Detail klaim -->
+    <div style="background:var(--g100);border-radius:10px;padding:14px;text-align:left;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:6px;">
+        <span style="color:var(--g400);">ID Klaim</span>
+        <span style="font-weight:800;" id="klaim-preview-id">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:6px;">
+        <span style="color:var(--g400);">Nama</span>
+        <span style="font-weight:700;" id="klaim-preview-nama">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:6px;">
+        <span style="color:var(--g400);">Status Rank</span>
+        <span style="font-weight:700;color:var(--green);" id="klaim-preview-rank">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:6px;">
+        <span style="color:var(--g400);">Ukuran Kaos</span>
+        <span style="font-weight:700;" id="klaim-preview-size">—</span>
+      </div>
+      <div style="font-size:.78rem;margin-top:8px;padding-top:8px;border-top:1px solid var(--g200);">
+        <span style="color:var(--g400);">Alamat: </span>
+        <span id="klaim-preview-alamat" style="font-size:.75rem;color:#555;"></span>
+      </div>
+    </div>
+    <!-- Gift bundle isi -->
+    <div style="background:var(--black);border-radius:10px;padding:12px;margin-bottom:16px;">
+      <div style="font-size:.7rem;font-weight:800;color:var(--wood);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">🎁 Gift Bundle Yang Akan Dikirim</div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:#ccc;">
+          <span style="width:20px;text-align:center;">👕</span>
+          <span>Kaos Vintage kayuMANIA · Hitam (<span id="gift-size-echo" style="font-weight:700;color:var(--wood);">—</span>)</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:#ccc;">
+          <span style="width:20px;text-align:center;">🗝️</span>
+          <span>Gantungan Kunci Kayu Jati Ukir</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:#ccc;">
+          <span style="width:20px;text-align:center;">🎨</span>
+          <span>Stiker Pack kayuMANIA (4 desain)</span>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:.75rem;color:var(--g400);margin-bottom:14px;line-height:1.7;">
+      Pertanyaan? Hubungi kami di <strong>WA 0882-2132-9336</strong><br>dengan menyebutkan ID Klaim Anda.
+    </div>
+    <button class="bs bd" style="width:100%;padding:11px;font-size:.82rem;" onclick="cm('m-klaim-sukses')">✓ Mengerti</button>
+  </div>
+</div>
+
 </body>
 </html>
